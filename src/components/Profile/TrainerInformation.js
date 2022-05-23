@@ -547,14 +547,14 @@ function TrainerInformation() {
             </div>
 
             <Modal show={sessionReqModal} onHide={() => { setSessionReqModal(false); }} className="searchtrainer" size="md" scrollable={true} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Your booking details</Modal.Title>
+                <Modal.Header className="bg-transparent text-dark border-0 session-m pt-4" closeButton>
+                    <Modal.Title className="book-title mb-0 pl-5 ml-4 pt-2">Your booking details</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="pt-2 pb-5">
                     <div className="col-md-12 col-12">
                         <div className="history_block mb-4">
-                            <h4 className="mb-3">Cross-Fit</h4>
-                            <div className="crossfit-t">
+                            <h4 className="mb-3 text-left">Cross-Fit</h4>
+                            <div className="crossfit-t">    
                                 <div className="mb-1"><i className="far fa-calendar pr-2"></i><span>{startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></div>
                                 <div className="mb-1"><i className="far fa-clock pr-2"></i><span>{startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span></div>
                                 <div><i className="fas fa-map-marker-alt pr-2"></i><span>Online (Workout from home)</span></div>

@@ -1,9 +1,16 @@
 import axios from 'axios';
-import React, { useEffect, useState, useRef } from 'react';
+import $ from 'jquery';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { PlaidLink } from "react-plaid-link";
 import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import { apiUrl, PORT } from '../../environment/environment';
+
 function SignUp() {
+    const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const stripeUid = "acct_1KnsVtBI5VuvGZzp";
+
     const history = useHistory();
     const [IsNext, setIsNext] = useState(0);
     const [isHidden, setIsHidden] = useState(true);
@@ -12,6 +19,20 @@ function SignUp() {
     const [filterWorkout, setFilterWorkout] = useState([]);
     const [tags, settags] = useState([]);
     const ref = useRef(null);
+    useEffect(() => {
+        async function createLinkToken() {
+            axios.post(`${apiUrl}${PORT}/exchange/getLinkToken`, {}, {
+            }).then(function (response) {
+                if (response.data.status === 1) {
+                    setToken(response.data.link_token);
+                }
+                return true;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        };
+        createLinkToken();
+    }, []);
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -39,6 +60,55 @@ function SignUp() {
             setFilterWorkout([]);
         }
     };
+
+    const onSuccess = useCallback(
+        (publicToken, metadata) => {
+            document.querySelector('.loading').classList.remove('d-none');
+            // Exchange a public token for an access one.
+            async function exchangeTokens() {
+                var obj = {
+                    public_token: publicToken,
+                    account_id: metadata.account_id
+                };
+                axios.post(`${apiUrl}${PORT}/exchange/receivePublicToken`, obj, {
+                }).then(function (response) {
+                    if (response.data.status === 1) {
+                        console.log(response.data.result);
+                        // Bank account update
+                        var bankobj = {
+                            id: localStorage.getItem('trainerId'),
+                            stripebanktoken: response.data.result.stripebankaccountToken.stripe_bank_account_token,
+                            accountInfo: response.data.result.accountResponse
+                        };
+                        axios.post(`${apiUrl}${PORT}/trainer/accountinfo/saveaccountinfo`, bankobj, {
+                        }).then(function (response) {
+                            document.querySelector('.loading').classList.add('d-none');
+                            if (response.data.status === 1) {
+                                localStorage.removeItem('trainerId');
+                                history.push("/signupsuccess");
+                            }
+                            else {
+                                swal({
+                                    title: "Error!",
+                                    text: response.data.message,
+                                    icon: "error",
+                                    button: true
+                                })
+                            }
+                        }).catch(function (error) {
+                            document.querySelector('.loading').classList.add('d-none');
+                        });
+                    }
+                    document.querySelector('.loading').classList.add('d-none');
+                    return true;
+                }).catch(function (error) {
+                    document.querySelector('.loading').classList.add('d-none');
+                    console.log(error);
+                });
+            }
+            exchangeTokens();
+        }, [stripeUid]
+    );
 
     async function getTypeOfWorkout() {
         document.querySelector('.loading').classList.remove('d-none');
@@ -137,7 +207,8 @@ function SignUp() {
         e.preventDefault();
         var errormsg = {};
         var isValid = true;
-        
+
+        console.log("imagesQuaPathList", imagesQuaPathList);
         if (qualification === "") {
             errormsg.note = "Please enter note.";
             isValid = false;
@@ -146,6 +217,7 @@ function SignUp() {
             errormsg.image = "Please upload image here..";
             isValid = false;
         }
+
         if (qualificationslist.length > 0 && qualificationslist.filter(x => x === qualification).length > 0) {
             errormsg.already = "This qualification already exist!";
             isValid = false;
@@ -161,7 +233,7 @@ function SignUp() {
                 isValid = false;
             }
         }
-
+        // console.log("qualificationslist", qualificationslist);
         setErrors(errormsg);
         if (isValid) {
             qualificationslist.push(qualification);
@@ -182,14 +254,23 @@ function SignUp() {
                 </div>
             });
             setHtmlQualifications(updatedList);
+            // console.log("qualificationslist", qualificationslist);
         }
     }
 
     const removeQualifications = (index) => {
+        // console.log("index", index);
+        /* console.log("qualificationslist", qualificationslist);
+        console.log("imgQualificationslst", imagesQuaPathList); */
         qualificationslist.splice(index, 1);
         var qualificationslst = qualificationslist;
         setQualifications(qualificationslst);
 
+        imagesQuaPathList.splice(index, 1);
+        var imgQualificationslst = imagesQuaPathList;
+        setImagesQuaPathList(imgQualificationslst);
+
+        // console.log("imagesQuaPathList", imagesQuaPathList);
         const updatedList = qualificationslist.map((listItems, index) => {
             return <div key={'qualification' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
                 <div className="d-flex">
@@ -205,20 +286,28 @@ function SignUp() {
 
     const OnQualificationFileChange = (event, value) => {
         const file_size = event.target.files[0].size;
+        // console.log("value", value);
         if (file_size > 1048000) {
-            setImagesQuaPathList(null);
+            setImagesQuaPathList([]);
             alert("File size more than 1 MB. File size must under 1MB !");
             event.preventDefault();
         } else {
             const fileReader = new window.FileReader();
             const file = event.target.files[0];
 
+            const str = file.name;
+            const res = str.split('.');
+            const imgName = value + "." + res[1];
+
+            /* console.log("imgName", imgName);
+            console.log("file", file); */
             fileReader.onload = fileLoad => {
                 //const { result } = fileLoad.target;
                 var maxId = imagesQuaPathList.length > 0 ? (imagesQuaPathList.length + 1) : 1;
                 imagesQuaPathList.push({
                     "uri": file,
-                    "name": file.name,
+                    // "name": file.name,
+                    "name": imgName,
                     "type": file.type,
                     "id": maxId,
                     "qualification": value
@@ -240,11 +329,15 @@ function SignUp() {
     }
 
     const handleSpecialitys = (e) => {
+        // console.log("speciality", speciality);
         if (speciality === "")
             return;
+
+
         specialityslist.push(speciality);
         setSpecialitys(specialityslist);
         setSpeciality("");
+        // console.log(specialityslist);
 
         // const updatedSList = specialityslist.map((SlistItems, index) => {
         //     return <div key={'speciality' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
@@ -262,9 +355,18 @@ function SignUp() {
     }
 
     const removeSpecialitys = (index) => {
+        // document.getElementsByClassName(`hidespecialitys${index}`);
+        // var specialityslst = specialityslist.splice(index, 1);
+        // console.log("specialityslist", specialityslist);
         specialityslist.splice(index, 1);
         var specialityslst = specialityslist;
+        // var specialityslst = specialityslist.slice(index)
+        // ;
+        // var specialityslst = specialityslist;
+        // console.log("specialityslst", specialityslst);
         setSpecialitys(specialityslst);
+        setSpeciality("");
+        // console.log("specialityslist", specialityslist);
 
         // const updatedSList = specialityslist.map((SlistItems, index) => {
         //     return <div key={'speciality' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
@@ -359,7 +461,7 @@ function SignUp() {
     const onCertificationFileChange = (event, value) => {
         const file_size = event.target.files[0].size;
         if (file_size > 1048000) {
-            setCerImagesPathList(null);
+            setCerImagesPathList([]);
             alert("File size more than 1 MB. File size must under 1MB !");
             event.preventDefault();
         } else {
@@ -410,33 +512,33 @@ function SignUp() {
 
     const PostSignUp = async (e) => {
         e.preventDefault();
-        
-
+        // $('#plaidbutton > button').click();
+        // document.querySelector('.loading').classList.remove('d-none');
         let isValid = true;
         var errormsg = {};
 
         let reg_numbers = /^[0-9]+$/;
 
-        if (!profileimage) {
-            //window.alert("Please upload Profile.");
-            swal({
-                title: "Error!",
-                text: "Please upload Profile.",
-                icon: "error",
-                button: true
-            })
-            isValid = false;
-        }
-        if (!coverimage) {
-            swal({
-                title: "Error!",
-                text: "Please upload Cover Image.",
-                icon: "error",
-                button: true
-            })
-            //window.alert("Please upload Cover Image.");
-            isValid = false;
-        }
+        /*  if (!profileimage) {
+             //window.alert("Please upload Profile.");
+             swal({
+                 title: "Error!",
+                 text: "Please upload Profile.",
+                 icon: "error",
+                 button: true
+             })
+             isValid = false;
+         } */
+        /*  if (!coverimage) {
+             swal({
+                 title: "Error!",
+                 text: "Please upload Cover Image.",
+                 icon: "error",
+                 button: true
+             })
+             //window.alert("Please upload Cover Image.");
+             isValid = false;
+         } */
         if (user.firstname === "") {
             errormsg.firstname = "Please enter First Name.";
             isValid = false;
@@ -552,13 +654,16 @@ function SignUp() {
                 .then(response => {
 
                     document.querySelector('.loading').classList.add('d-none');
+                    console.log(response.data.message);
                     if (response.data.status === 1) {
-
                         localStorage.setItem('trainerId', response.data.result._id);
                         if (qualificationsObj != null || certificationsObj != null) {
                             updateTrainerPara(qualificationsObj, certificationsObj, response.data.result._id);
                         } else {
-                            history.push("/trainersaccountinfo");
+                            setUserId(response.data.result._id);
+                            //history.push("/trainersaccountinfo");
+                            document.querySelector('.loading').classList.remove('d-none');
+                            $('#plaidbutton > button').click();
                         }
                     }
                     else {
@@ -593,10 +698,12 @@ function SignUp() {
         document.querySelector('.loading').classList.remove('d-none');
         axios.post(`${apiUrl}${PORT}/trainer/account/updateTrainerPara`, form_data)
             .then(response => {
-
                 document.querySelector('.loading').classList.add('d-none');
                 if (response.data.status === 1) {
-                    history.push("/trainersaccountinfo");
+                    setUserId(response.data.result._id);
+                    //history.push("/trainersaccountinfo");
+                    document.querySelector('.loading').classList.remove('d-none');
+                    $('#plaidbutton > button').click();
                 }
                 else {
                     swal({
@@ -617,7 +724,6 @@ function SignUp() {
     }
     const handleChange = (objName, val) => {
         setFirstStepNext(prevState => ({ ...prevState, [objName]: val }));
-        console.log(firstStepNext);
     }
 
     const firstStepSignUpNext = (e) => {
@@ -631,6 +737,10 @@ function SignUp() {
         }
         if (firstStepNext.password === "") {
             errormsg.password = "Please enter password";
+            isSubmit = false;
+        }
+        if (firstStepNext.password.length <= 4) {
+            errormsg.password = "Password must have at least 5 character";
             isSubmit = false;
         }
         if (firstStepNext.confirmpassword === "") {
@@ -680,7 +790,7 @@ function SignUp() {
 
         let reg_numbers = /^[0-9]+$/;
 
-        if (!profileimage) {
+        /* if (!profileimage) {
             //window.alert("Please upload Profile.");
             swal({
                 title: "Error!",
@@ -689,17 +799,17 @@ function SignUp() {
                 button: true
             })
             isValid = false;
-        }
-        if (!coverimage) {
-            //window.alert("Please upload Cover Image.");
-            swal({
-                title: "Error!",
-                text: "Please upload Cover Image.",
-                icon: "error",
-                button: true
-            })
-            isValid = false;
-        }
+        } */
+        /*  if (!coverimage) {
+             //window.alert("Please upload Cover Image.");
+             swal({
+                 title: "Error!",
+                 text: "Please upload Cover Image.",
+                 icon: "error",
+                 button: true
+             })
+             isValid = false;
+         } */
         if (user.firstname === "") {
             errormsg.firstname = "Please enter First Name.";
             isValid = false;
@@ -781,7 +891,7 @@ function SignUp() {
     };
 
     const AddTags = text => {
-        
+
         settags([...tags, text]);
         user.trainingstyle = '';
         setUser(user);
@@ -789,6 +899,16 @@ function SignUp() {
     };
     return (
         <>
+            {(
+                <div id="plaidbutton">
+                    <PlaidLink style={{ display: "none" }}
+                        token={token}
+                        onSuccess={onSuccess}>
+                        Connect a bank account
+                    </PlaidLink>
+                </div>
+            )
+            }
             <div className="container my-md-5 py-md-4" ref={ref}>
                 <div className="commonbox" ref={ref}>
                     <div className="col-md-12">
@@ -879,7 +999,7 @@ function SignUp() {
                                         <div className="mainloader"></div>
                                     </div>
                                     <div className="col-md-12 mb-4">
-                                        <h6 className="text-center">Register Yourself</h6>
+                                        <h6 className="text-center"><strong>Register Yourself</strong></h6>
                                     </div>
                                     <div className="col-md-12">
                                         <div className="Profile coverprofile mb-3">
@@ -921,7 +1041,7 @@ function SignUp() {
                                         </div>
                                     </div>
                                     <div className="col-md-12">
-                                        <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="w-100  mb-3 input-box" placeholder="Mobile Number" />
+                                        <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="w-100  mb-3 input-box" maxLength={10} placeholder="Mobile Number" />
                                         <div className="text-danger">{errors.phoneno}</div>
                                     </div>
                                     <div className="col-md-12">
@@ -976,12 +1096,13 @@ function SignUp() {
                                                     className="w-100 mb-4"
                                                     value={user.trainingstyle}
                                                     onChange={(e) => { tagChange(e) }}
-                                                    onKeyDown={(e) => { handleKeyDown(e) }}
+                                                    onClick={(e) => { handleKeyDown(e) }}
                                                     placeholder="Describe your training style"
 
                                                 />
                                                 {Boolean(filterWorkout.length) && (
                                                     <div className="tags-suggestions">
+                                                        <span className="float-right" onClick={(e) => { setFilterWorkout([]); }}><button className="btn btn-sm btn-danger">X</button></span>
                                                         {filterWorkout.map(suggest => {
                                                             return <div
                                                                 className="suggestion-item"
@@ -1037,7 +1158,7 @@ function SignUp() {
                                             <div className="col-md-2 col-2 mt-3 pr-0 text-center">
                                                 <div className="uploadimg">
                                                     <input type="file" id="uploadQualification" onChange={(e) => { OnQualificationFileChange(e, qualification) }} accept=".png, .jpg, .jpeg, .pdf, .doc" />
-                                                    <label for="uploadQualification">
+                                                    <label htmlFor="uploadQualification">
                                                         <img src="/img/upload.png" alt='Upload' />
                                                     </label>
                                                 </div>
@@ -1064,11 +1185,11 @@ function SignUp() {
                                     </div>
                                     {qualificationslist.length > 0 && qualificationslist.map((listItems, index) => {
                                         return <>
-                                            <div key={`qualification${index}`} className="col-md-12">
+                                            <div key={`qualification${index}`} className={`col-md-12 control-group${index}`}>
                                                 <div className="row">
                                                     <div className="col-md-10 col-10">
                                                         <div className="copy">
-                                                            <div className="control-group input-group" style={{ marginTop: "10px" }} id={`qualification${index}`}>
+                                                            <div className=" input-group" style={{ marginTop: "10px" }} id={`qualification${index}`}>
                                                                 <div className="d-flex">
                                                                     <div name={'qualification' + index} className="removeinput">{listItems}</div>
                                                                     <div className="input-group-btn position-relative">
@@ -1080,8 +1201,8 @@ function SignUp() {
                                                     </div>
                                                     <div className="col-md-2 col-2 mt-2">
                                                         <div className="uploadimg">
-                                                            <input type="file" id="uploadQualification2" accept=".png, .jpg, .jpeg, .pdf, .doc" />
-                                                            <label htmlFor="uploadQualification2">
+                                                            <input type="file" id={`qualificationImg${index}`} accept=".png, .jpg, .jpeg, .pdf, .doc" />
+                                                            <label htmlFor={`qualificationImg${index}`}>
                                                                 <img src="/img/file.png" alt='File' className="Fileicon" style={{ position: "unset" }} />
                                                             </label>
                                                         </div>
@@ -1202,11 +1323,11 @@ function SignUp() {
                                         </div>
                                     </div>
                                     {certificationslist.length > 0 && certificationslist.map((ClistItems, index) => {
-                                        return <div key={`certification${index}`} className="col-md-12">
+                                        return <div key={`certification${index}`} className={`col-md-12 control-group${index}`}>
                                             <div className="row">
                                                 <div className="col-md-10 col-10">
                                                     <div className="copy">
-                                                        <div key={'certification' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
+                                                        <div key={'certification' + index} className="input-group" style={{ marginTop: "10px" }}>
                                                             <div className="d-flex">
                                                                 <div name="certifications" className="removeinput">{ClistItems}</div>
                                                                 <div className="input-group-btn position-relative">
@@ -1286,5 +1407,4 @@ function SignUp() {
         </>
     );
 }
-
 export default SignUp;

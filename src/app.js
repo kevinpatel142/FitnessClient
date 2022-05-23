@@ -41,10 +41,11 @@ import TrainerSchedule from './components/Trainer/TrainerSchedule';
 import { apiUrl, PORT } from './environment/environment';
 //import Fader from "./components/Notifications/Fader";
 //import BankLink from "./components/Others/BankLink";
-import { onMessageListener } from "./firebaseInit";
+////import { onMessageListener } from "./firebaseInit";
 //import { BankLink } from "./components/Others/BankLink";
 import ReactNotificationComponent from "./components/Notifications/ReactNotification";
 import "./app.css";
+import MobileVedioSession from "./components/Others/MobileVedioSession";
 
 
 function App() {
@@ -59,17 +60,23 @@ function App() {
   const serachText = useRef('');
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
+  const loginuserdetail = localStorage.getItem('user');
+  var loginUser = {};
+  if (loginuserdetail && loginuserdetail !== "[Object Object]" && loginuserdetail !== "[object Object]")
+    loginUser = JSON.parse(loginuserdetail);
+  else
+    history.push("/");
 
-  onMessageListener()
-    .then((payload) => {
-      setShow(true);
-      setNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-      });
-      // console.log(payload);
-    })
-    .catch((err) => console.log("failed: ", err));
+  // onMessageListener()
+  //   .then((payload) => {
+  //     setShow(true);
+  //     setNotification({
+  //       title: payload.notification.title,
+  //       body: payload.notification.body,
+  //     });
+  //     // console.log(payload);
+  //   })
+  //   .catch((err) => console.log("failed: ", err));
 
   // if (window.location.pathname !== '/calling' && window.location.pathname !== '/Incoming' && window.location.pathname !== '/videosession') {
   //   setTimeout(() => {
@@ -81,7 +88,6 @@ function App() {
   //     }
   //   }, 3000);
   // }
-
   useEffect(() => {
     setPathnameUrl(window.location.pathname);
     if (window.location.pathname !== '/trainer' && window.location.pathname !== '/savedtrainer')
@@ -103,10 +109,6 @@ function App() {
     }
   }, [usertype, pathnameUrl]);
 
-  const loginuserdetail = localStorage.getItem('user');
-  var loginUser = {};
-  if (loginuserdetail && loginuserdetail !== "[Object Object]")
-    loginUser = JSON.parse(loginuserdetail);
 
   const showclick = async (e) => {
     document.querySelector('.page-wrapper').classList.add('toggled');
@@ -161,7 +163,6 @@ function App() {
         ) : (
           <></>
         )}
-        {/* <Fader text=""></Fader> */}
       </div>
 
       <Router>
@@ -178,6 +179,7 @@ function App() {
         <Route path="/trainerschedule"><TrainerSchedule></TrainerSchedule></Route>
         <Route path="/trainersaccountinfo"><TrainerAccountInfo></TrainerAccountInfo></Route>
         <Route path="/termsandcondition"><TermsAndCondition></TermsAndCondition></Route>
+        <Route path="/mobilevideosession"><MobileVedioSession></MobileVedioSession></Route>
         {/* <Route path="/banklink"><BankLink></BankLink></Route> */}
         {
           (isLogin === true) ?
@@ -214,7 +216,7 @@ function App() {
                             </NavLink>
                           </li>
                           <li className="sidebar-dropdown">
-                            <NavLink to='/savedtrainer' onClick={(e) => { document.body.classList.add('scrollHide'); setPathnameUrl("/savedtrainer") }} className={({ isActive }) => isActive ? 'active' : ''}>
+                            <NavLink to='/savedtrainer' onClick={(e) => { document.body.classList.add('scrollHide'); setPathnameUrl("/savedtrainer") }} className={({ isActive }) => isActive ? 'active' : ''} >
                               <i className="far fa-bookmark"></i>
                               <span>Saved Trainers</span>
                             </NavLink>
@@ -328,7 +330,7 @@ function App() {
                                 {(pathnameUrl === "/trainer" || pathnameUrl === "/savedtrainer" || pathnameUrl === "/mysession") && (usertype === "client") ?
                                   <>
                                     <li className="list-inline-item" onClick={(e) => { e.preventDefault(); setFilterPanel(pathnameUrl === '/trainer' ? 'openFilter' : 'closeFilter'); }}>
-                                      <NavLink to={pathnameUrl === '/savedtrainer' ? '/trainer' : '/savedtrainer'} className={({ isActive }) => isActive ? 'active' : ''}>
+                                      <NavLink to={pathnameUrl === '/savedtrainer' ? '/trainer' : '/savedtrainer'} onClick={(e) => { document.body.classList.add('scrollHide'); setPathnameUrl("/savedtrainer") }} className={({ isActive }) => isActive ? 'active' : ''} title="Saved">
                                         <i className={`${(pathnameUrl === '/savedtrainer') ? "fa" : "far"} fa-bookmark`}></i>
                                       </NavLink>
                                     </li>
@@ -337,9 +339,9 @@ function App() {
                                         <li className="list-inline-item">
                                           {
                                             filterPanel === 'openFilter' ?
-                                              <button onClick={(e) => { e.preventDefault(); setFilterPanel('closeFilter') }}><i className="fas fa-sliders-h"></i></button>
+                                              <button onClick={(e) => { e.preventDefault(); setFilterPanel('closeFilter') }} title="Filter"><i className="fas fa-sliders-h"></i></button>
                                               :
-                                              <button onClick={(e) => { e.preventDefault(); setFilterPanel('openFilter') }}><i className="fas fa-sliders-h"></i></button>
+                                              <button onClick={(e) => { e.preventDefault(); setFilterPanel('openFilter') }} title="Filter"><i className="fas fa-sliders-h"></i></button>
                                           }
                                         </li>
                                       </> : <></>
@@ -348,7 +350,7 @@ function App() {
                                   : <></>
                                 }
                                 <li className="list-inline-item dropdown">
-                                  <button className="dropdown-toggle" data-toggle="dropdown">
+                                  <button className="dropdown-toggle" data-toggle="dropdown" title="Notification">
                                     <i className="far fa-bell"></i>
                                     <div className="qty">0</div>
                                   </button>

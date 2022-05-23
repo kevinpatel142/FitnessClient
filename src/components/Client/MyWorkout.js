@@ -72,7 +72,7 @@ function MyWorkout() {
                                                 <th>Trainer Name</th>
                                                 <th>Basic Movements</th>
                                                 <th>Fitness Goals </th>
-                                                <th>Injuries </th>
+                                                <th className="wd225">Injuries </th>
                                                 <th>Date</th>
                                                 <th className="text-center w130">Action</th>
                                             </tr>
@@ -84,11 +84,11 @@ function MyWorkout() {
                                                         <tr key={'index' + index}>
                                                             <td>{index + 1}</td>
                                                             <td>{ele?.client_data?.firstname}</td>
-                                                            <td>{ele?.sessionworkout?.basicMovements.map((rs,ind) => {
+                                                            <td>{ele?.sessionworkout?.basicMovements.map((rs, ind) => {
                                                                 return (<p key={'ind' + ind}>{rs.movementName}</p>)
                                                             })}</td>
                                                             <td>{ele?.sessionworkout?.fitnessGoals}</td>
-                                                            <td>{ele?.client_data?.injuriesorhelthissues ? ele?.client_data?.injuriesorhelthissues : 'N/A'}</td>
+                                                            <td><span className="injuries">{ele?.client_data?.injuriesorhelthissues ? ele?.client_data?.injuriesorhelthissues : 'N/A'}</span></td>
                                                             <td>{new Date(ele.date).toDateString()}</td>
                                                             <td className="text-center">
                                                                 <button className="btn btn-info mr-2" onClick={(e) => { isEdit(ele) }}><i className="ace-icon fa fa-eye"></i></button>
@@ -126,99 +126,144 @@ function MyWorkout() {
             {/*---------- workform view Detail Modal--------------*/}
 
             <Modal show={showModel} onHide={handleClose} size="lg" scrollable={true} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton className="d-block text-center wrokform-modal">
                     <Modal.Title>Workout Form Detail</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="col-md-12 pb-3 Workform">
+                    <div className="col-md-12 pb-3 pt-3 Workform">
                         <div className="row">
-                            <div className="col-lg-12 col-md-6 col-12">
-                                <div className="table-responsive">
-                                    <table className="table table-bordered table-hover">
-                                        <tr>
-                                            <th>Name</th>
-                                            <td>{getlist?.client_data?.firstname}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Age</th>
-                                            <td>{getlist?.client_data?.age}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Injuries</th>
-                                            <td>{getlist?.client_data?.injuriesorhelthissues}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Fitness Goals</th>
-                                            <td>{getlist?.sessionworkout?.fitnessGoals}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Additional Notes</th>
-                                            <td>{getlist?.sessionworkout?.additionalNotes}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Format</th>
-                                            <td>{getlist?.sessionworkout?.format}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-12 col-12">
-                                        <label className="w-100">Q. What did you focus on today to achieve. Your client's desired fitness goals?</label>
-                                        <p>A.{getlist?.sessionworkout?.desiredOne ? getlist?.sessionworkout?.desiredOne?.join(',') : 'N/A'}</p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12 col-12">
-                                        <label className="w-100">Q. What did you focus on today to achieve your client's desired fitness goals?</label>
-                                        <p>A.{getlist?.sessionworkout?.desiredTwo ? getlist?.sessionworkout?.desiredTwo?.join(',') : "N/A"}</p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12 col-12">
-                                        <label className="w-100">Q. Which of the 7 basic movements did you work on today? (Check all that apply) </label>
-                                        <p>A.{getlist?.sessionworkout?.basicMovements.length > 0 && getlist?.sessionworkout?.basicMovements.map(x => x.movementName).join(',')}</p>
-                                    </div>
-                                </div>
-                                {getlist?.sessionworkout?.basicMovements.length > 0 && getlist?.sessionworkout?.basicMovements.map((ele,i) => {
-                                    return (
-                                        <div key={'i_' + i} className="row">
-                                            <div className="col-md-12 col-12">
-                                                <h4 className="work-name">{ele.movementName}</h4>
-                                                <div className="table-responsive">
-                                                    <table className="table table-bordered table-hover">
-                                                        <tr>
-                                                            <th>Specify Movement</th>
-                                                            <td>{ele.specifyMovement ? ele.specifyMovement : "N/A"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Weight</th>
-                                                            <td>{ele.weight ? ele.weight : "N/A"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Rest Duration</th>
-                                                            <td>{ele.restDuration ? ele.restDuration : "N/A"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Sets</th>
-                                                            <td>{ele.sets ? ele.sets : "N/A"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Reps</th>
-                                                            <td>{ele.reps ? ele.reps : "N/A"}</td>
-                                                        </tr>
-                                                    </table>
+                            <div className="col-lg-12 col-md-12 col-12">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active mr-lg-3" data-toggle="tab" href="#trainer-info">Trainer Information</a>
+                                    </li>
+                                    <li class="nav-item mr-lg-3">
+                                        <a class="nav-link" data-toggle="tab" href="#trainer-workout">Trainer Workout</a>
+                                    </li>
+                                    <li class="nav-item mr-lg-3">
+                                        <a class="nav-link" data-toggle="tab" href="#basic-movement">Basic Movements</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content workformdetail">
+                                    <div id="trainer-info" class="tab-pane trainer_info active">
+                                        <div className="row">
+                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-6 col-md-6 col-12">Name <span className="colon">:</span></label>
+                                                    <div className="col-lg-6 col-md-6 col-12">{getlist?.client_data?.firstname}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-4 col-md-6 col-12">Age <span className="colon">:</span></label>
+                                                    <div className="col-lg-8 col-md-6 col-12">{getlist?.client_data?.age}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-6 col-md-6 col-12">Fitness Goals <span className="colon">:</span></label>
+                                                    <div className="col-lg-6 col-md-6 col-12">{getlist?.sessionworkout?.fitnessGoals}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-4 col-md-6 col-12">Format <span className="colon">:</span></label>
+                                                    <div className="col-lg-8 col-md-6 col-12">{getlist?.sessionworkout?.format}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-3 col-md-6 col-12">Injuries <span className="colon">:</span></label>
+                                                    <div className="col-lg-9 col-md-6 col-12">{getlist?.client_data?.injuriesorhelthissues}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-12 col-md-12 col-12 mb-2">
+                                                <div className="row">
+                                                    <label className="col-lg-3 col-md-6 col-12">Additional Notes <span className="colon">:</span></label>
+                                                    <div className="col-lg-9 col-md-6 col-12">{getlist?.sessionworkout?.format}</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    );
-                                })}
+                                    </div>
+                                    <div id="trainer-workout" class="tab-pane fade">
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <h4 className="work-name font-weight-bold">WorkOut Question</h4>
+                                            </div>
+                                            <div className="col-md-12 col-12">
+                                                <label className="w-100">Q. What did you focus on today to achieve. Your client's desired fitness goals?</label>
+                                                <p className="font-weight-bold">Ans. {getlist?.sessionworkout?.desiredOne ? getlist?.sessionworkout?.desiredOne?.join(',') : 'N/A'}</p>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-12 col-12">
+                                                <label className="w-100">Q. What did you focus on today to achieve your client's desired fitness goals?</label>
+                                                <p className="font-weight-bold">Ans. {getlist?.sessionworkout?.desiredTwo ? getlist?.sessionworkout?.desiredTwo?.join(',') : "N/A"}</p>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-12 col-12">
+                                                <label className="w-100">Q. Which of the 7 basic movements did you work on today? (Check all that apply) </label>
+                                                <p className="font-weight-bold">Ans. {getlist?.sessionworkout?.basicMovements.length > 0 && getlist?.sessionworkout?.basicMovements.map(x => x.movementName).join(',')}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="basic-movement" class="tab-pane trainer_info fade">
+                                        {getlist?.sessionworkout?.basicMovements.length > 0 && getlist?.sessionworkout?.basicMovements.map((ele, i) => {
+                                            return (
+                                                <div key={'i_' + i} className="row bor-b">
+                                                    <div className="col-md-12 col-12">
+                                                        <h4 className="work-name font-weight-bold">{ele.movementName}</h4>
+                                                            <div className="row">
+                                                                <div className="col-lg-12 col-md-12 col-12 mb-2">
+                                                                    <div className="row">
+                                                                        <label className="col-lg-3 col-md-6 col-12">Specify Movement <span className="colon">:</span></label>
+                                                                        <div className="col-lg-9 col-md-6 col-12">{ele.specifyMovement ? ele.specifyMovement : "N/A"}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                    <div className="row">
+                                                                        <label className="col-lg-6 col-md-6 col-12">Weight <span className="colon">:</span></label>
+                                                                        <div className="col-lg-6 col-md-6 col-12">{ele.weight ? ele.weight : "N/A"}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                    <div className="row">
+                                                                        <label className="col-lg-5 col-md-6 col-12">Rest Duration <span className="colon">:</span></label>
+                                                                        <div className="col-lg-7 col-md-6 col-12">{ele.restDuration ? ele.restDuration : "N/A"}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                    <div className="row">
+                                                                        <label className="col-lg-6 col-md-6 col-12">Sets <span className="colon">:</span></label>
+                                                                        <div className="col-lg-6 col-md-6 col-12">{ele.sets ? ele.sets : "N/A"}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                    <div className="row">
+                                                                        <label className="col-lg-5 col-md-6 col-12">Reps <span className="colon">:</span></label>
+                                                                        <div className="col-lg-7 col-md-6 col-12">{ele.reps ? ele.reps : "N/A"}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
+                {/* <Modal.Footer>
+                </Modal.Footer> */}
             </Modal>
 
             {/*---------- workform view Detail Modal End--------------*/}

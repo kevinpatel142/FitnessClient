@@ -9,6 +9,8 @@ function ClientPayment() {
     const [errors, setErrors] = useState({});
     const [isNewCard, setIsNewCard] = useState(false);
     const [newCardArr, setNewCardArr] = useState([]);
+    const [selectedCard, setSelectedCard] = useState([]);
+    const userData = JSON.parse(localStorage.getItem("user"));
     const initialState = {
         cardholdersName: "",
         cardNumber: "",
@@ -30,12 +32,43 @@ function ClientPayment() {
     const purchasePlan = JSON.parse(localStorage.getItem("PurchasePlan"));
     useEffect(() => {
         callToken();
+        retriveCustomer();
     }, []);
     const callToken = () => {
         verifytokenCall();
         setTimeout(() => {
             callToken();
         }, 3000);
+    }
+    const retriveCustomer = () => {
+        const data = {
+            "email": userData.email,
+        }
+        axios.post(`${apiUrl}${PORT}/payment/retrieveCustomer`, data)
+            .then(response => {
+                // document.querySelector('.loading').classList.add('d-none');
+                if (response.data.status === 1) {
+
+                    setNewCardArr(response.data.result.data);
+                    response.data.result.customer_id = response.data.customer_id;
+                    // console.log("response.data",response.data);
+                    localStorage.setItem("customer", JSON.stringify(response.data.result));
+                    // console.log("newCardArr",newCardArr);
+                    // history.push("/trainer");
+                } else {
+                    swal({
+                        title: "Error!",
+                        text: response.data.message,
+                        icon: "error",
+                        button: true
+                    })
+                    //window.alert(response.data.message);
+                }
+            }
+            ).catch(function (error) {
+                // document.querySelector('.loading').classList.add('d-none');
+            });
+
     }
 
     const handleChange = (objName, val) => {
@@ -52,14 +85,38 @@ function ClientPayment() {
     };
 
     const deleteCardDetail = (ele) => {
-        setNewCardArr(newCardArr.filter(item => item.cardNumber !== ele.cardNumber))
+        setNewCardArr(newCardArr.filter(item => item.id !== ele.id))
+        let deleteCard = {
+            customer_id: ele.customer,
+            card_id: ele.id
+        };
+        axios.post(`${apiUrl}${PORT}/payment/deleteCard`, deleteCard)
+            .then(response => {
+                document.querySelector('.loading').classList.add('d-none');
+                if (response.data.status === 1) {
+                    console.log("success return");
+                    // history.push("/trainer");
+                } else {
+                    swal({
+                        title: "Error!",
+                        text: response.data.message.code,
+                        icon: "error",
+                        button: true
+                    })
+                    //window.alert(response.data.message);
+                }
+            }
+            ).catch(function (error) {
+                document.querySelector('.loading').classList.add('d-none');
+            });
     }
 
     const onPayNow = (e) => {
         e.preventDefault();
-
+        const customer = JSON.parse(localStorage.getItem("customer"));
+        console.log(customer.customer_id);
         let isValid = true;
-        var errormsg = {};
+        /* var errormsg = {};
         if (payment.cardholdersName === "") {
             errormsg.cardholdersName = "Please enter holder name!";
             isValid = false;
@@ -80,21 +137,36 @@ function ClientPayment() {
         if (payment.cvv === "") {
             errormsg.cvv = "Please enter cvv number!";
             isValid = false;
-        }
-        setErrors(errormsg);
-        if (isValid) {
+        } */
+        console.log("payment", payment);
+        console.log("selectedCard", selectedCard);
+        console.log(selectedCard);
+       
             let savepayment = {
                 date: new Date(),
                 noofsession: purchasePlan.sessions,
                 plantype: purchasePlan.planType,
-                amount: purchasePlan.amount
+                amount: purchasePlan.amount,
+                payment_method: selectedCard.id,
+                customer_id: customer.customer_id,
+                currency: 'usd',
             }
+        console.log("savepayment",savepayment);
+        // setErrors(errormsg);
+        console.log(isValid);
+        if (isValid) {
+           /*  let savepayment = {
+                date: new Date(),
+                noofsession: purchasePlan.sessions,
+                plantype: purchasePlan.planType,
+                amount: purchasePlan.amount
+            } */
             document.querySelector('.loading').classList.remove('d-none');
             axios.post(`${apiUrl}${PORT}/payment/savepayment`, savepayment)
                 .then(response => {
                     document.querySelector('.loading').classList.add('d-none');
                     if (response.data.status === 1)
-                        history.push("/trainer");
+                        history.push("/trainer?status=1");
                     else {
                         swal({
                             title: "Error!",
@@ -138,12 +210,58 @@ function ClientPayment() {
         }
         setErrors(errormsg);
         if (isValid) {
-            setNewCardArr(prev => ([...prev, initialState]));
-            setErrors({});
-            setIsNewCard(false);
+            const customer = JSON.parse(localStorage.getItem("customer"));
+            // console.log("customer",customer);
+            let savepayment = {
+                // date: new Date(),
+                number: cardNumber,
+                exp_month: expirationMonth,
+                exp_year: expirationYear,
+                cvc: cvv,
+                customer_id: customer.customer_id,
+                cardholdersName: cardholdersName
+            }
+            // console.log("savepayment", savepayment);
+            document.querySelector('.loading').classList.remove('d-none');
+            axios.post(`${apiUrl}${PORT}/payment/addNewcard`, savepayment)
+                .then(response => {
+                    document.querySelector('.loading').classList.add('d-none');
+                    if (response.data.status === 1) {
+                        setNewCardArr(response.data.result.data);
+                        response.data.result.customer_id = response.data.customer_id;
+                        // console.log("response.data",response.data);
+                        localStorage.setItem("customer", JSON.stringify(response.data.result));
+
+                        /* console.log(response.data);
+                        setNewCardArr(prev => ([...prev, response.data.record]));
+                        console.log("newCardArr",newCardArr); */
+                        setErrors({});
+                        setIsNewCard(false);
+                        // history.push("/trainer");
+                    } else {
+                        console.log(response.data.message.code);
+                        swal({
+                            title: "Error!",
+                            text: response.data.message.code,
+                            icon: "error",
+                            button: true
+                        })
+                        //window.alert(response.data.message);
+                    }
+                }
+                ).catch(function (error) {
+                    document.querySelector('.loading').classList.add('d-none');
+                });
+
+
             console.log(initialState);
         }
     }
+    /* const setCardData = () => {
+        console.log(initialState);
+        console.log(newCardArr);
+    } */
+    // console.log("selectedCard",selectedCard);
     return (
         <>
             <div className="container my-md-5 py-md-4">
@@ -222,16 +340,25 @@ function ClientPayment() {
                                                                     </span>
                                                                 </label> */}
                                                             {newCardArr && newCardArr.map((ele) => {
-                                                                return <label className="card">
-                                                                    <input name="plan" className="radio" type="radio" />
+                                                                return <label className="card" onClick={(e) => {setSelectedCard(ele)} }>
+                                                                    <input name="plan" className="radio" /* onChange={setCardData} */ type="radio" vlaue={ele.id} />
                                                                     <span className="plan-details">
                                                                         <span className="d-flex justify-content-between">
-                                                                            <span>Debit card</span>
-                                                                            <img src="/img/visacard.png" className="cardimg visaimg" alt="Card" />
+                                                                            <span>{ele.funding.toUpperCase()} CARD</span>
+                                                                            {
+                                                                                ele.brand == "Visa" ? <img src="/img/visacard.png" className="cardimg visaimg" alt="Card" />
+                                                                                    : ele.brand == "MasterCard" ? <img src="/img/mastercard.png" className="cardimg visaimg" alt="Card" />
+                                                                                        : ele.brand == "JCB" ? <img src="/img/jcb.png" className="cardimg visaimg" alt="Card" />
+                                                                                            : ele.brand == "Discover" ? <img src="/img/discover.jpg" className="cardimg visaimg" alt="Card" />
+                                                                                                : ele.brand == "American Express" ? <img src="/img/american_exp.jpg" className="cardimg visaimg" alt="Card" />
+                                                                                                    : ele.brand
+                                                                            }
+
                                                                         </span>
-                                                                        <span>xxxx xxxx xxxx 2035</span>
+                                                                        {/* <span>xxxx xxxx xxxx 2035</span> */}
+                                                                        <span>xxxx xxxx xxxx {ele.last4}</span>
                                                                         <span className="d-flex justify-content-between">
-                                                                            <span>05/21</span>
+                                                                            <span>{ele.exp_month}/{ele.exp_year}</span>
                                                                             <a href={() => false} className="cursor-pointer" onClick={(e) => { deleteCardDetail(ele) }}><i className="fas fa-trash"></i><span className="pl-1">Delete</span></a>
                                                                         </span>
                                                                     </span>
@@ -242,7 +369,7 @@ function ClientPayment() {
                                                 </div>
                                             </>
                                         }
-                                        <h6 className="mb-4 ml-3 font-weight-bold">Payment:</h6>
+                                        {/* <h6 className="mb-4 ml-3 font-weight-bold">Payment:</h6>
                                         <h6 className="my-4 ml-3 font-weight-bold">Card Details:</h6>
                                         <div className="col-md-12">
                                             <input className="input-box w-100 mb-3" placeholder="Cardholder's Name" value={payment.cardholdersName} onChange={(e) => { handleChange("cardholdersName", e.target.value) }} />
@@ -307,7 +434,7 @@ function ClientPayment() {
                                                         }
                                                     }}
                                                     onChange={(e) => {
-                                                        if (e.target.value.length === 3)
+                                                        if (e.target.value.length === 4)
                                                             return;
                                                         handleChange("cvv", e.target.value)
                                                     }}
@@ -322,7 +449,7 @@ function ClientPayment() {
                                                 <label className="custom-control-label" htmlFor="Trainerreg">Remember My Card</label>
                                             </div>
                                             <div className="text-danger">{errors.rememberMyCard}</div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-12">
                                             <div className="loginbtn mt-4 bg-transparent text-primary" onClick={(e) => { setIsNewCard(true); setNewCardDetail({ ...initialState }); }}>Add New Card</div>
                                             {/* <Link to="/paymentSuccess" className="loginbtn mt-4">Pay Now</Link> */}
@@ -437,14 +564,14 @@ function ClientPayment() {
                                                 <div className="text-danger">{errors.newcvv}</div>
                                             </div>
                                         </div>
-                                        <div className="col-md-12">
+                                        {/* <div className="col-md-12">
                                             <div className="custom-control custom-checkbox">
                                                 <input type="checkbox" className="custom-control-input" id="Trainerreg" name="rememberMyCard" value={rememberMyCard}
                                                     onChange={newCardhandleChange} />
                                                 <label className="custom-control-label" htmlFor="Trainerreg">Remember My Card</label>
                                             </div>
                                             <div className="text-danger">{errors.rememberMyCard}</div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-12">
                                             <div className="loginbtn mt-4 bg-transparent text-primary" onClick={(e) => { setIsNewCard(false); setErrors({}); }}>Back</div>
                                             {/* <Link to="/paymentSuccess" className="loginbtn mt-4">Pay Now</Link> */}

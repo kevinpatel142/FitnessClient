@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.24.0",
     "cross-env": "^7.0.3",
-    "firebase": "^9.6.11",
+    "firebase": "^9.8.1",
     "jquery": "^3.6.0",
     "latest-version": "^6.0.0",
     "react": "^17.0.2",
@@ -28,7 +28,9 @@
     "build": "cross-env REACT_APP_ENV=staging cross-env REACT_APP_BASENAME=/ react-scripts build",
     "production-build": "cross-env REACT_APP_ENV=production cross-env REACT_APP_BASENAME=/ react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+	"deploy": "aws s3 sync build/ s3://knkt-web-app",
+	"prod": "npm run build && npm run deploy"
   },
   "eslintConfig": {
     "extends": [

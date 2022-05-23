@@ -134,7 +134,7 @@ function SavedTrainer({ type, flterValue }) {
         }
         else {
             const updatedList = finalList.map((listitem, index) => {
-                return (<div key={'mainkey' + index} className="col-md-4 col-12">
+                return (<div key={'mainkey' + index} className="col-xl-4 col-md-6 col-12">
                     <div className="loading d-none">
                         <div className="mainloader"></div>
                     </div>

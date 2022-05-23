@@ -177,7 +177,7 @@ function Notifications() {
                                             <div className="well notifi-box">
                                                 <div className="position-relative">
                                                     <label>Session Reminder</label>
-                                                    <select className="input-box" value={appNotif.appSessionReminder} onChange={(e) => { ; appNotif.appSessionReminder = e.target.value; setAppNotif(appNotif); updateNotification(); }}>
+                                                    <select className="input-box" value={appNotif.appSessionReminder} onChange={(e) => { appNotif.appSessionReminder = e.target.value; setAppNotif(appNotif); updateNotification(); }}>
                                                         <option value=''> Select session reminder</option>
                                                         {setMins.map((ele, min) => {
                                                             return <option key={'key' + min} value={`${ele} mins`}> {ele} mins</option>

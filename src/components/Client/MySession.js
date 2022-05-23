@@ -235,7 +235,7 @@ function MySession() {
                         <>
                             <div className="row">
                                 {upcomingList.map((item, index) => (
-                                    <div key={'index' + index} className="col-md-4 col-12 mb-3 cursor-pointer">
+                                    <div key={'index' + index} className="col-xl-4 col-md-6 col-12 mb-3 cursor-pointer">
                                         <div className="session-imgblock">
                                             <img src={`${apiUrl + PORT + item.trainer_data.coverprofile}`} onError={(e) => { e.target.src = "/img/Back-No-Image.png"; }} alt='Profile' />
                                         </div>

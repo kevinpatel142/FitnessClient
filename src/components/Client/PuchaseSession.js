@@ -67,12 +67,12 @@ function PurchaseSession() {
                                         <form>
                                             {list.length > 0 ?
                                                 list.map((ele, index) => {
-                                                    debugger
                                                     if (ele.plantype === "Stander") {
                                                         return (<div key={'index' + index} className="form-group">
                                                             <input checked={plan === `S-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`S-1-${ele.noofsession}`} id={`Standard${index}`} type="radio" name="custom-radio-btn" />
-                                                            <label className="custom-radio" htmlFor={`Standard${index}`}></label>
+                                                            <label className="custom-radio" htmlFor={`Standard${index}`}>
                                                             <span className="label-text">{ele.noofsession === '1' ? 'Single' : ele.noofsession} Sessions<span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
+                                                            </label>
                                                         </div>
                                                         );
                                                     } else {
@@ -97,7 +97,7 @@ function PurchaseSession() {
                                                 <span className="label-text">36 Sessions<span className="float-right">$1800</span></span>
                                                 <p className="pl-4 ml-2">Per Session $50 <br />$50*36</p>
                                             </div> */}
-                                            <a href={() => false} onClick={(e) => { callPurchasePlan(e); }} className="loginbtn">Continue</a>
+                                            <button onClick={(e) => { callPurchasePlan(e); }} className="loginbtn">Continue</button>
                                         </form>
                                     </div>
                                 </div>
@@ -114,9 +114,10 @@ function PurchaseSession() {
                                                 list.map((ele, index) => {
                                                     if (ele.plantype === "Elite") {
                                                         return (<div key={'index' + index} className="form-group">
-                                                            <input checked={plan === `E-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`E-1-${ele.noofsession}`} id={`Elite${index}`} type="radio" name="custom-radio-btn" />
-                                                            <label className="custom-radio" htmlFor={`Elite${index}`}></label>
+                                                            <input checked={plan === `E-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`E-1-${ele.noofsession}`} id={`Elite${index}`} type="radio" name="custom-radio-btn" />                                                                                                           
+                                                            <label className="custom-radio" htmlFor={`Elite${index}`}>
                                                             <span className="label-text">{ele.noofsession === '1' ? 'Single' : ele.noofsession} Sessions<span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
+                                                            </label>
                                                         </div>
                                                         );
                                                     } else {
@@ -128,6 +129,8 @@ function PurchaseSession() {
                                                     No sessions found!
                                                 </>
                                             }
+
+
                                             {/* <div className="form-group">
                                                 <input checked={plan === 'E-1-75'} onChange={(e) => { OnchnagePlan(e); }} value={'E-1-75'} id="Elite1" type="radio" name="custom-radio-btn" />
                                                 <label className="custom-radio" htmlFor="Elite1"></label>
@@ -145,7 +148,7 @@ function PurchaseSession() {
                                                 <span className="label-text">36 Sessions<span className="float-right">$2160</span></span>
                                                 <p className="pl-4 ml-2">Per Session $60 <br />$50*36</p>
                                             </div> */}
-                                            <a href={() => false} onClick={(e) => { callPurchasePlan(e); }} className="loginbtn">Continue</a>
+                                            <button onClick={(e) => { callPurchasePlan(e); }} className="loginbtn">Continue</button>
                                         </form>
                                     </div>
                                 </div>
@@ -153,22 +156,16 @@ function PurchaseSession() {
                             <div className="col-md-12">
                                 <h4 className="font-weight-bold my-4">Purchased Session</h4>
                             </div>
-                            <div className="col-md-12 mb-5">
-                                <div className="graysession">
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <span className="text-primary">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span>
-                                        </div>
-                                        <div className="col-md-3">
-                                            <span className="text-primary">Plan : </span><span><a href={() => false} className="text-primary font-weight-bold"> {planDetail.planType}</a></span>
-                                        </div>
-                                        <dikv className="col-md-3">
-                                            <span className="text-primary">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span>
-                                        </dikv>
-                                        <div className="col-md-3">
-                                            <span className="text-primary">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span>
-                                        </div>
-                                    </div>
+                            <div className="col-md-12 mb-5">                                
+                                <div class="graysession">
+                                <table class="w-100">
+                                    <tr>
+                                        <td> <span className="textgray">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
+                                        <td><span className="textgray">Plan : </span><span><button className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</button></span></td>
+                                        <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
+                                        <td><span className="textgray">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span></td>
+                                    </tr>
+                                </table>
                                 </div>
                             </div>
                         </div>

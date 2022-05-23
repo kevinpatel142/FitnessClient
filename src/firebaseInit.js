@@ -2,25 +2,17 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import "firebase/compat/messaging";
-
+import { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId } from './environment/environment';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  // apiKey: "FROM FIREBASE CONSOLE",
-  // authDomain: "FROM FIREBASE CONSOLE",
-  // databaseURL: "FROM FIREBASE CONSOLE",
-  // projectId: "FROM FIREBASE CONSOLE",
-  // storageBucket: "FROM FIREBASE CONSOLE",
-  // messagingSenderId: "FROM FIREBASE CONSOLE",
-  // appId: "FROM FIREBASE CONSOLE",
-  // measurementId: "FROM FIREBASE CONSOLE",
+  apiKey: apiKey,
+  authDomain: authDomain,
+  projectId: projectId,
+  storageBucket: storageBucket,
+  messagingSenderId: messagingSenderId,
+  appId: appId,
+  measurementId: measurementId
 
-  apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
-  authDomain: "knkt-fitness.firebaseapp.com",
-  projectId: "knkt-fitness",
-  storageBucket: "knkt-fitness.appspot.com",
-  messagingSenderId: "393182006473",
-  appId: "1:393182006473:web:8ba490cdd1eb733ec19118",
-  measurementId: "G-1PN8VFBQB8"
 };
 
 firebase.initializeApp(firebaseConfig);

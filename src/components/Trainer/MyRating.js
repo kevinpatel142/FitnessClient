@@ -65,12 +65,13 @@ function MyRating() {
                                 </h4>
                             </div>
                             : ""}
-                        <div className="col-lg-4 col-md-6 col-12">
+                        <div className="col-lg-12 col-md-12 col-12">
+                            <div className="row">
                             {list.length > 0 && list?.map((ele,index) => {
-                                return <div key={'index' + index} className="rating_box">
+                                return<div className="col-lg-4 col-md-6 col-12"><div key={'index' + index} className="rating_box">
                                     <div className="d-flex justify-content-between mb-3">
                                         <div className="rating-div d-flex">
-                                            <img src={`${apiUrl}${PORT}${ele.client_data.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' />
+                                            <a href="#"><img src={`${apiUrl}${PORT}${ele.client_data.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' /></a>
                                             <div className="rating-title">
                                                 <h5>{ele.client_data.firstname} {ele.client_data.lastname}</h5>
                                                 <span>{ele.sessionrating.rate / 20}</span>
@@ -91,7 +92,9 @@ function MyRating() {
                                     </div>
                                     <p className="text-body mb-0">Session : {ele.client_data.firstname}</p>
                                 </div>
+                            </div>
                             })}
+                            </div>
                             {/* <div className="rating_box">
                                 <div className="d-flex justify-content-between mb-3">
                                     <div className="rating-div d-flex">

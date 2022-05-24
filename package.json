@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.24.0",
     "cross-env": "^7.0.3",
-    "firebase": "^9.6.11",
+    "firebase": "8.2.0",
     "jquery": "^3.6.0",
     "latest-version": "^6.0.0",
     "plaid": "^10.3.0",

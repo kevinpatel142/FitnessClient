@@ -208,7 +208,6 @@ function SignUp() {
         var errormsg = {};
         var isValid = true;
 
-        console.log("imagesQuaPathList", imagesQuaPathList);
         if (qualification === "") {
             errormsg.note = "Please enter note.";
             isValid = false;
@@ -359,7 +358,7 @@ function SignUp() {
         // var specialityslst = specialityslist.splice(index, 1);
         // console.log("specialityslist", specialityslist);
         specialityslist.splice(index, 1);
-        var specialityslst = specialityslist;
+        var specialityslst = [...specialityslist];
         // var specialityslst = specialityslist.slice(index)
         // ;
         // var specialityslst = specialityslist;
@@ -654,7 +653,7 @@ function SignUp() {
                 .then(response => {
 
                     document.querySelector('.loading').classList.add('d-none');
-                    console.log(response.data.message);
+
                     if (response.data.status === 1) {
                         localStorage.setItem('trainerId', response.data.result._id);
                         if (qualificationsObj != null || certificationsObj != null) {

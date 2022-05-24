@@ -3,27 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
 import swal from 'sweetalert';
-//import { getToken } from "./../../firebaseInit";
+import { getToken } from "./../../firebaseInit";
 
 function Login() {
     const history = useHistory();
     const [isHidden, setIsHidden] = useState(true);
-    
-  const [isTokenFound, setTokenFound] = useState(false);
-  const [pushToken, setPushToken] = useState("ABC");
-//  // To load once
-//   useEffect(() => {
-//     let data;
-//     async function tokenFunc() {
-//       data = await getToken(setTokenFound);
-//       if (data) {
-//         console.log("Token is", data);
-//         setPushToken(data);
-//       }
-//       return data;
-//     }
-//     //tokenFunc();
-//   }, [setTokenFound]);
+
+    const [isTokenFound, setTokenFound] = useState(false);
+    const [pushToken, setPushToken] = useState("");
+    // To load once
+    useEffect(() => {
+        let data;
+        async function tokenFunc() {
+            data = await getToken(setTokenFound);
+            if (data) {
+                console.log("Token is", data);
+                setPushToken(data);
+            }
+            return data;
+        }
+        tokenFunc();
+    }, [setTokenFound]);
 
     useEffect(() => {
         localStorage.clear();
@@ -66,7 +66,7 @@ function Login() {
         }
         localStorage.clear();
         document.querySelector('.loading').classList.remove('d-none');
-        await axios.post(`${apiUrl}${PORT}/client/account/login`, { "email": user.email, "password": user.password, "deviceid": pushToken,"devicetype": "web" }, {
+        await axios.post(`${apiUrl}${PORT}/client/account/login`, { "email": user.email, "password": user.password, "deviceid": pushToken, "devicetype": "web" }, {
         }).then(function (response) {
             document.querySelector('.loading').classList.add('d-none');
             if (response.data.status === 1) {

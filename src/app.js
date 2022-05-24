@@ -39,10 +39,7 @@ import SessionDetails from "./components/Trainer/SessionDetails";
 import TrainerSignUp from "./components/Trainer/SignUp";
 import TrainerSchedule from './components/Trainer/TrainerSchedule';
 import { apiUrl, PORT } from './environment/environment';
-//import Fader from "./components/Notifications/Fader";
-//import BankLink from "./components/Others/BankLink";
-////import { onMessageListener } from "./firebaseInit";
-//import { BankLink } from "./components/Others/BankLink";
+import { onMessageListener } from "./firebaseInit";
 import ReactNotificationComponent from "./components/Notifications/ReactNotification";
 import "./app.css";
 import MobileVedioSession from "./components/Others/MobileVedioSession";
@@ -67,16 +64,16 @@ function App() {
   else
     history.push("/");
 
-  // onMessageListener()
-  //   .then((payload) => {
-  //     setShow(true);
-  //     setNotification({
-  //       title: payload.notification.title,
-  //       body: payload.notification.body,
-  //     });
-  //     // console.log(payload);
-  //   })
-  //   .catch((err) => console.log("failed: ", err));
+  onMessageListener()
+    .then((payload) => {
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      // console.log(payload);
+    })
+    .catch((err) => console.log("failed: ", err));
 
   // if (window.location.pathname !== '/calling' && window.location.pathname !== '/Incoming' && window.location.pathname !== '/videosession') {
   //   setTimeout(() => {

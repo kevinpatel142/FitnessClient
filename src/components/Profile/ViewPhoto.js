@@ -30,8 +30,9 @@ function ViewPhoto() {
         document.querySelector('.loading').classList.remove('d-none');
         axios.get(`${apiUrl}${PORT}/client/account/getprogressphotos`, {}, {}).then(function (response) {
             document.querySelector('.loading').classList.add('d-none');
+            console.log("response",response);
             if (response.data.status === 1) {
-                debugger
+                // debugger
                 if (response.data.result && response.data.result.length > 0) {
                     if (response.data.result.length > 0) {
                         if (response.data.result.filter(x => new Date(x.date).toLocaleDateString() === new Date().toLocaleDateString()).length === 0) {
@@ -74,7 +75,7 @@ function ViewPhoto() {
             alert("File size more than 1 MB. File size must under 1MB !");
             event.preventDefault();
         } else {
-            debugger
+            // debugger
             const fileReader = new window.FileReader();
             const file = event.target.files[0];
             if (file) {
@@ -103,7 +104,7 @@ function ViewPhoto() {
         document.querySelector('.loading').classList.remove('d-none');
         const formData = new FormData();
         var filelist = [];
-        debugger
+        // debugger
         for (var key in getAllPhotos[0].list) {
             if (getAllPhotos[0].list[key].type !== undefined) {
                 formData.append(getAllPhotos[0].list[key].name, getAllPhotos[0].list[key]);
@@ -126,7 +127,7 @@ function ViewPhoto() {
         }).then(function (response) {
             document.querySelector('.loading').classList.add('d-none');
             if (response.data.status === 1) {
-                history.push("/editprofile")
+                // history.push("/editprofile")
             }
             else {
                 swal({
@@ -162,7 +163,7 @@ function ViewPhoto() {
                             <h1 className="main_title mb-4">Progress Photos</h1>
                         </div>
                         {getAllPhotos.length > 0 && getAllPhotos.map((res, index) => {
-                            debugger
+                            // debugger
                             return <div key={index} className="col-md-6 col-12">
                                 <div className="row">
                                     <div className="col-md-12 col-12 mb-4">
@@ -198,7 +199,7 @@ function ViewPhoto() {
                                         }
                                     })}
                                     {new Date().toDateString() === new Date(res.date).toDateString() ?
-                                        <div className="col-lg-3 col-md-6 col-12">
+                                        <div className="col-lg-3 col-md-6 col-12 d-none">
                                             <div className="prog-img">
                                                 <input type="file" id="imgupload" onChange={(e) => { OnFileChange(e, res) }} />
                                             </div>

@@ -90,7 +90,7 @@ function MyRating() {
                                     <div className="rating-content">
                                         <p>{ele.sessionrating.review}</p>
                                     </div>
-                                    <p className="text-body mb-0">Session : {ele.client_data.firstname}</p>
+                                    <p className="text-body mb-0">Session : Cross-Fit {ele.client_data.firstname}</p>
                                 </div>
                             </div>
                             })}

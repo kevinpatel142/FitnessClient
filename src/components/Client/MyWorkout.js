@@ -89,9 +89,11 @@ function MyWorkout() {
                                                             })}</td>
                                                             <td>{ele?.sessionworkout?.fitnessGoals}</td>
                                                             <td><span className="injuries">{ele?.client_data?.injuriesorhelthissues ? ele?.client_data?.injuriesorhelthissues : 'N/A'}</span></td>
-                                                            <td>{new Date(ele.date).toDateString()}</td>
+                                                            <td className="text-nowrap">{new Date(ele.date).toDateString()}</td>
                                                             <td className="text-center">
-                                                                <button className="btn btn-info mr-2" onClick={(e) => { isEdit(ele) }}><i className="ace-icon fa fa-eye"></i></button>
+                                                                <div className="d-flex justify-content-center">
+                                                                    <button className="btn btn-info mr-2" onClick={(e) => { isEdit(ele) }}><i className="ace-icon fa fa-eye"></i></button>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     )
@@ -214,42 +216,42 @@ function MyWorkout() {
                                                 <div key={'i_' + i} className="row bor-b">
                                                     <div className="col-md-12 col-12">
                                                         <h4 className="work-name font-weight-bold">{ele.movementName}</h4>
-                                                            <div className="row">
-                                                                <div className="col-lg-12 col-md-12 col-12 mb-2">
-                                                                    <div className="row">
-                                                                        <label className="col-lg-3 col-md-6 col-12">Specify Movement <span className="colon">:</span></label>
-                                                                        <div className="col-lg-9 col-md-6 col-12">{ele.specifyMovement ? ele.specifyMovement : "N/A"}</div>
-                                                                    </div>
+                                                        <div className="row">
+                                                            <div className="col-lg-12 col-md-12 col-12 mb-2">
+                                                                <div className="row">
+                                                                    <label className="col-lg-3 col-md-6 col-12">Specify Movement <span className="colon">:</span></label>
+                                                                    <div className="col-lg-9 col-md-6 col-12">{ele.specifyMovement ? ele.specifyMovement : "N/A"}</div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row">
-                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
-                                                                    <div className="row">
-                                                                        <label className="col-lg-6 col-md-6 col-12">Weight <span className="colon">:</span></label>
-                                                                        <div className="col-lg-6 col-md-6 col-12">{ele.weight ? ele.weight : "N/A"}</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
-                                                                    <div className="row">
-                                                                        <label className="col-lg-5 col-md-6 col-12">Rest Duration <span className="colon">:</span></label>
-                                                                        <div className="col-lg-7 col-md-6 col-12">{ele.restDuration ? ele.restDuration : "N/A"}</div>
-                                                                    </div>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                <div className="row">
+                                                                    <label className="col-lg-6 col-md-6 col-12">Weight <span className="colon">:</span></label>
+                                                                    <div className="col-lg-6 col-md-6 col-12">{ele.weight ? ele.weight : "N/A"}</div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row">
-                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
-                                                                    <div className="row">
-                                                                        <label className="col-lg-6 col-md-6 col-12">Sets <span className="colon">:</span></label>
-                                                                        <div className="col-lg-6 col-md-6 col-12">{ele.sets ? ele.sets : "N/A"}</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-lg-6 col-md-12 col-12 mb-2">
-                                                                    <div className="row">
-                                                                        <label className="col-lg-5 col-md-6 col-12">Reps <span className="colon">:</span></label>
-                                                                        <div className="col-lg-7 col-md-6 col-12">{ele.reps ? ele.reps : "N/A"}</div>
-                                                                    </div>
+                                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                <div className="row">
+                                                                    <label className="col-lg-5 col-md-6 col-12">Rest Duration <span className="colon">:</span></label>
+                                                                    <div className="col-lg-7 col-md-6 col-12">{ele.restDuration ? ele.restDuration : "N/A"}</div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                <div className="row">
+                                                                    <label className="col-lg-6 col-md-6 col-12">Sets <span className="colon">:</span></label>
+                                                                    <div className="col-lg-6 col-md-6 col-12">{ele.sets ? ele.sets : "N/A"}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-lg-6 col-md-12 col-12 mb-2">
+                                                                <div className="row">
+                                                                    <label className="col-lg-5 col-md-6 col-12">Reps <span className="colon">:</span></label>
+                                                                    <div className="col-lg-7 col-md-6 col-12">{ele.reps ? ele.reps : "N/A"}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             );

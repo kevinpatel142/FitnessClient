@@ -9,6 +9,7 @@ function SignUp() {
     const [isHidden, setIsHidden] = useState(true);
     const [isPwdHidden, setIsPwdHidden] = useState(true);
     const [isCPwdHidden, setIsCPwdHidden] = useState(true);
+    const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -36,8 +37,13 @@ function SignUp() {
 
     const [firstStepNext, setFirstStepNext] = useState({ name: '', email: '', password: '', isAgree: false });
 
+    const [emailnotifications,setEmailnotifications] = useState(true);
+    const [maillinglist,setMaillinglist] = useState(true);
+    const [textnotifications,setTextnotifications] = useState(true);
+    const [webnotifications,setWebnotifications] = useState(true);
+    const [mobilenotifications,setMobilenotifications] = useState(true);
     const [user, setUser] = useState({
-        firstname: "", lastname: "", email: "", password: "", confirmpassword: "", phoneno: "", age: "", gender: "Male", heightisfeet: true, height: "", weightiskg: true, weight: "", equipmentavailable: "", fitnessgoals: "", otherfitnessgoals: "", injuriesorhelthissues: "", emailnotifications: false, maillinglist: false, textnotifications: false, webnotifications: false, mobilenotifications: false
+        firstname: "", lastname: "", email: "", password: "", confirmpassword: "", phoneno: "", age: "", gender: "Male", heightisfeet: true, height: "", weightiskg: true, weight: "", equipmentavailable: "", fitnessgoals: "", otherfitnessgoals: "", injuriesorhelthissues: "", emailnotifications: emailnotifications, maillinglist: maillinglist, textnotifications: textnotifications, webnotifications: webnotifications, mobilenotifications: mobilenotifications
     });
 
     const [errors, setErrors] = useState({});
@@ -68,14 +74,39 @@ function SignUp() {
     };
 
     const handleInputs = (e) => {
+        /* console.log(e.target.name, Boolean(e.target.value));
+        console.log(e.target.name, Boolean(!e.target.value)); */
         if (e.target.name === "heightisfeet")
             setUser({ ...user, [e.target.name]: !!JSON.parse(String(e.target.value).toLowerCase()) });
         if (e.target.name === "weightiskg")
             setUser({ ...user, [e.target.name]: !!JSON.parse(String(e.target.value).toLowerCase()) });
         else if (e.target.name !== "heightisfeet")
             setUser({ ...user, [e.target.name]: e.target.value });
-    }
 
+        if (e.target.name === "emailnotifications"){
+            setEmailnotifications(!emailnotifications);
+            // setUser({...user, [e.target.name] : emailnotifications})
+        }
+        if (e.target.name === "maillinglist"){
+            setMaillinglist(!maillinglist);
+            // setUser({ ...user, [e.target.name]: maillinglist });
+        }
+        if (e.target.name === "textnotifications"){
+            setTextnotifications(!textnotifications);
+            // setUser({ ...user, [e.target.name]: textnotifications });
+        }
+            
+        if (e.target.name === "webnotifications"){
+            setWebnotifications(!webnotifications);
+            // setUser({ ...user, [e.target.name]: webnotifications });
+        }
+            
+        if (e.target.name === "mobilenotifications"){
+            setMobilenotifications(!mobilenotifications);
+            // setUser({ ...user, [e.target.name]: mobilenotifications });
+        }
+    }
+    
     const SelectHeight = (e, number) => {
         if (document.querySelector('#heightul li.active') !== null)
             document.querySelector('#heightul li.active').classList.remove('active');
@@ -114,7 +145,7 @@ function SignUp() {
         let reg_email = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         let reg_numbers = /^[0-9]+$/;
 
-        if (!profileimage) {
+       /*  if (!profileimage) {
             //window.alert("Please upload Profile.");
             swal({
                 title: "Error!",
@@ -123,7 +154,7 @@ function SignUp() {
                 button: true
             })
             isValid = false;
-        }
+        } */
         if (user.firstname === "") {
             errormsg.firstname = "Please enter First Name.";
             isValid = false;
@@ -263,12 +294,13 @@ function SignUp() {
                 'fitnessgoals': user.fitnessgoals,
                 'otherfitnessgoals': user.otherfitnessgoals,
                 'injuriesorhelthissues': user.injuriesorhelthissues,
-                'emailnotifications': user.emailnotifications,
-                'maillinglist': user.maillinglist,
-                'textnotifications': user.textnotifications,
-                'webnotifications': user.webnotifications,
-                'mobilenotifications': user.mobilenotifications,
+                'emailnotifications': emailnotifications,
+                'maillinglist': maillinglist,
+                'textnotifications': textnotifications,
+                'webnotifications': webnotifications,
+                'mobilenotifications': mobilenotifications,
             }
+            console.log("obj",obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
@@ -300,7 +332,7 @@ function SignUp() {
 
     const handleChange = (objName, val) => {
         setFirstStepNext(prevState => ({ ...prevState, [objName]: val }));
-        console.log(firstStepNext);
+        // console.log(firstStepNext);
     }
 
     const firstStepSignUpNext = (e) => {
@@ -750,7 +782,7 @@ function SignUp() {
                                                 <span className="float-right">
                                                     <label className="switch">
                                                         <input onChange={(e) => handleInputs(e)} name="emailnotifications"
-                                                            defaultChecked="false" type="checkbox" className="default" />
+                                                            defaultChecked="true" type="checkbox" value={user.emailnotifications} className="default" />
                                                         <span className="slider round"></span>
                                                     </label>
                                                 </span>
@@ -759,7 +791,7 @@ function SignUp() {
                                                 Mailing List
                                                 <span className="float-right">
                                                     <label className="switch">
-                                                        <input onChange={(e) => handleInputs(e)} name="maillinglist" defaultChecked="false" type="checkbox" className="default" />
+                                                        <input onChange={(e) => handleInputs(e)} value={!user.maillinglist} name="maillinglist" defaultChecked="false" type="checkbox" className="default" />
                                                         <span className="slider round"></span>
                                                     </label>
                                                 </span>
@@ -768,7 +800,7 @@ function SignUp() {
                                                 Text Notifications
                                                 <span className="float-right">
                                                     <label className="switch">
-                                                        <input onChange={(e) => handleInputs(e)} name="textnotifications" defaultChecked="false" type="checkbox" className="default" />
+                                                        <input onChange={(e) => handleInputs(e)} value={!user.textnotifications} name="textnotifications" defaultChecked="false" type="checkbox" className="default" />
                                                         <span className="slider round"></span>
                                                     </label>
                                                 </span>
@@ -777,7 +809,7 @@ function SignUp() {
                                                 Web Notifications
                                                 <span className="float-right">
                                                     <label className="switch">
-                                                        <input onChange={(e) => handleInputs(e)} name="webnotifications" defaultChecked="false" type="checkbox" className="default" />
+                                                        <input onChange={(e) => handleInputs(e)} value={!user.webnotifications} name="webnotifications" defaultChecked="false" type="checkbox" className="default" />
                                                         <span className="slider round"></span>
                                                     </label>
                                                 </span>
@@ -786,7 +818,7 @@ function SignUp() {
                                                 Mobile Notifications
                                                 <span className="float-right">
                                                     <label className="switch">
-                                                        <input onChange={(e) => handleInputs(e)} name="mobilenotifications" defaultChecked="false" type="checkbox" className="default" />
+                                                        <input onChange={(e) => handleInputs(e)} value={!user.emailnotifications} name="mobilenotifications" defaultChecked="false" type="checkbox" className="default" />
                                                         <span className="slider round"></span>
                                                     </label>
                                                 </span>

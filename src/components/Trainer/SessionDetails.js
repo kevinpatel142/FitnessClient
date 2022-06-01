@@ -4,11 +4,13 @@ import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import { apiUrl, PORT } from '../../environment/environment';
 import { verifytokenCall } from '../Others/Utils.js';
+import $ from 'jquery';
 function SessionDetails() {
     const [basicMovementsArr, setBasicMovementsArr] = useState([]);
     const history = useHistory();
     const [errors, setErrors] = useState({});
     const [sessionId, setSessionId] = useState();
+    const [sessionUser, setSessionUser] = useState();
     const [weightList, setWeight] = useState([]);
     const [restDurationList, setRestDuration] = useState([]);
     const [setsList, setSets] = useState([]);
@@ -31,6 +33,7 @@ function SessionDetails() {
 
     useEffect(() => {
         setSessionId(sesId);
+        getUserDetails(sesId);
         callToken();
         GetMasterList();
     }, [sesId])
@@ -40,6 +43,34 @@ function SessionDetails() {
         setTimeout(() => {
             callToken();
         }, 3000);
+    }
+    async function getUserDetails(sesId) {
+        setIsLoader(true);
+        await axios.post(`${apiUrl}${PORT}/client/session/clientdetails`,{ id:sesId }).then(function (response) {
+            setIsLoader(false);
+            if (response.data.status === 1) {
+                if (response?.data?.result) {
+                    debugger
+                    setSessionUser(response?.data?.result);
+                }
+            }
+            else {
+                swal({
+                    title: "Error!",
+                    text: response.data.message,
+                    icon: "error",
+                    button: true
+                })
+            }
+        }).catch(function (error) {
+            setIsLoader(false);
+            swal({
+                title: "Error!",
+                text: error,
+                icon: "error",
+                button: true
+            })
+        });
     }
     const [desiredOneArr, setDesiredOneArr] = useState([]);
     const changeDesiredOne = (bool, value) => {
@@ -183,6 +214,10 @@ function SessionDetails() {
                 });
         }
     }
+    const addBank = (e) => {
+        e. preventDefault();
+        $('#plaidbutton > button').click();
+    }
     return (
         <>
             {isLoader &&
@@ -192,24 +227,25 @@ function SessionDetails() {
             }
             <div className="container-fluid">
                 <div className="fixedblock">
+                {/* <div onClick={(e) => { addBank(e) }} className="loginbtn w-25 d-block float-right">Add Bank</div> */}
                     <h1 className="main_title mb-3">Workout From</h1>
                     <div className="row">
                         <div className="col-md-4">
                             <div className="grayarea d-flex justify-content-between">
-                                <h6>Name</h6>
-                                <p>{loginUser?.firstname || "Guest"}</p>
+                                <h6>Name : </h6>
+                                <p>{sessionUser?.firstname || "Guest"}</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <div className="grayarea d-flex justify-content-between">
-                                <h6>Age</h6>
-                                <p>{loginUser?.age || "N/A"}</p>
+                                <h6>Age : </h6>
+                                <p>{sessionUser?.age || "N/A"}</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <div className="grayarea d-flex justify-content-between">
-                                <h6>Injuries</h6>
-                                <p>{loginUser?.injuriesorhelthissues || "N/A"}</p>
+                                <h6>Injuries : </h6>
+                                <p>{sessionUser?.injuriesorhelthissues?.substr(1, 60) || "N/A"}</p>
                             </div>
                         </div>
                     </div>
@@ -407,6 +443,8 @@ function SessionDetails() {
                     </div>
                     <div className="col-md-12">
                         <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div>
+                        
+
                     </div>
                 </div>
             </div>

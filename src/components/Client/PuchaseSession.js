@@ -161,7 +161,7 @@ function PurchaseSession() {
                                 <table class="w-100">
                                     <tr>
                                         <td> <span className="textgray">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
-                                        <td><span className="textgray">Plan : </span><span><button className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</button></span></td>
+                                        <td><span className="textgray">Plan : </span><span className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</span></td>
                                         <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
                                         <td><span className="textgray">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span></td>
                                     </tr>

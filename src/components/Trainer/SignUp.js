@@ -941,7 +941,7 @@ function SignUp() {
                                                     <div className="text-danger">{errors.name}</div>
                                                 </div>
                                                 <div className="col-md-12">
-                                                    <input type="text" className="w-100  mb-3 input-box" placeholder="Email Address" value={firstStepNext.email} onChange={(e) => { handleChange("email", e.target.value) }} />
+                                                    <input type="email" className="w-100  mb-3 input-box" placeholder="Email Address" value={firstStepNext.email} onChange={(e) => { handleChange("email", e.target.value) }} />
                                                     <div className="text-danger">{errors.email}</div>
                                                 </div>
                                                 <div className="col-md-12">

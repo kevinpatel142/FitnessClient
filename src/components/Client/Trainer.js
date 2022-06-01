@@ -106,8 +106,11 @@ function Trainer({ type, flterValue }) {
                                                                         <Rating ratingValue={tainerlist.averageRating * 20} size="20" readonly="true" allowHover="false" allowHalfIcon="true" />
                                                                         <p className="mb-0">
                                                                             {tainerlist.trainingstyle !== "" && tainerlist.trainingstyle ?
-                                                                                <span>{tainerlist.trainingstyle.substr(1, 10)}</span> : <></>
+                                                                                <span>{tainerlist.trainingstyle.substr(1, 25)}</span> : <></>
                                                                             }
+                                                                            {/* {
+                                                                                tainerlist.type !== "" && tainerlist.type ? <span>{tainerlist.type}</span> : <></>
+                                                                            } */}
                                                                         </p>
                                                                     </div>
                                                                 </Link>
@@ -262,6 +265,7 @@ function Trainer({ type, flterValue }) {
             .then(function (response) {
                 if (response.data.status === 1)
                     setWorkOutList(response.data.result);
+                    
                 else {
                     swal({
                         title: "Error!",
@@ -501,7 +505,7 @@ function Trainer({ type, flterValue }) {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div className="col-md-3 col-12">
+                                        <div className="col-md-3 col-12 d-none">
                                             <div className="training_btn mt-4" onClick={() => { clearObj() }}>Cancel</div>
                                         </div>
                                     </div>

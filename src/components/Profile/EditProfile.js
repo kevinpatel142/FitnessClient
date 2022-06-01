@@ -232,6 +232,7 @@ function EditProfile() {
         }
         setErrors(errormsg);
         if (isValid === true) {
+            console.log("progressphotos",typeof(progressphotos[0]));
             let obj = {
                 //'profile': profileimage,
                 'firstname': user.firstname,
@@ -257,8 +258,9 @@ function EditProfile() {
                 'oldpassword': user.oldpassword,
                 'password': user.password,
                 'confirmpassword': user.confirmpassword,
-                //'progressphotos': progressphotos,
+                // 'progressphotos': progressphotos,
             }
+            console.log("obj",obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
@@ -267,7 +269,14 @@ function EditProfile() {
                 form_data.append("edprofile", profileimage);
             } else {
                 form_data.append("profile", profileimage);
-            }
+            } 
+            if (progressphotos?.type === undefined) {
+                form_data.append('edprogressphotos', progressphotos);
+            } else {
+                form_data.append("progressphotos", progressphotos);
+            } 
+            
+
 
             document.querySelector('.loading').classList.remove('d-none');
             await axios.post(`${apiUrl}${PORT}/client/account/updateprofile`, form_data, {
@@ -275,6 +284,9 @@ function EditProfile() {
                 document.querySelector('.loading').classList.add('d-none');
                 if (response.data.status === 1) {
                     localStorage.setItem("progressphotos", []);
+                    // localStorage.setItem("user", []);
+                    console.log("response",response);
+                    localStorage.setItem('user', JSON.stringify(response.data.result));
                     /* history.push("/editprofile"); */
                     fetchProfile(1);
                     swal({
@@ -306,6 +318,52 @@ function EditProfile() {
         history.push("/viewphoto");
     }
 
+    const inputProgressImage = (event) => {
+        const file_size = event.target.files[0].size;
+        if (file_size > 1048000) {
+            alert("File size more than 1 MB. File size must under 1MB !");
+            event.preventDefault();
+        } else {
+            const file = event.target.files[0];
+            // console.log(file);
+            /* result.push(Object.values(file));
+            const result = Object.keys(file).map((key) => file[key]);
+            console.log("file",typeof(result[Object.keys(result)[0]]));
+            
+            console.log("result",result[Object.keys(result)[0]]); */
+            setProgressphotos(file);
+        }
+    };
+    /* const inputProgressImage = (event, obj) => {
+        const file_size = event.target.files[0].size;
+        if (file_size > 1048000) {
+            alert("File size more than 1 MB. File size must under 1MB !");
+            event.preventDefault();
+        } else {
+            // debugger
+            const fileReader = new window.FileReader();
+            const file = event.target.files[0];
+            this.setState({ files: [...this.state.files, ...e.target.files] })
+            if (file) {
+                fileReader.onload = fileLoad => {
+                    const { result } = fileLoad.target;
+                     if (getAllPhotos.length > 0) {
+                        if (obj && obj.date === getAllPhotos.filter(x => x.date === obj.date)[0]?.date) {
+                            getAllPhotos.filter(x => x.date === obj.date)[0].list.push(file);
+                            getAllPhotos.filter(x => x.date === obj.date)[0].base64Img.push(result);
+                        }
+                    } else {
+                        obj.list.push(file);
+                        obj.base64Img.push(result);
+                        setGetAllPhotos(old => [...old, obj]);
+                    }
+                    setProfileImagePreview(result);
+                    setProfileImage(file);
+                };
+                fileReader.readAsDataURL(file);
+            }
+        }
+    }; */
     async function GetCountryList() {
         document.querySelector('.loading').classList.remove('d-none');
         await axios.get(`${apiUrl}${PORT}/admin/getcountrylist`).then(function (response) {
@@ -347,6 +405,7 @@ function EditProfile() {
                             <a className="noti-btn" href="/notifications"><i className="fas fa-cog"></i></a>
                         </div>
                     </div>
+                    {/* <form encType='multipart/form-data'> */}
                     <div className="edit-profile">
                         <div className="row">
                             <div className="col-lg-6 col-12">
@@ -616,7 +675,9 @@ function EditProfile() {
                                         <label className="mt-2 mb-3">Progress Photos</label>
                                         <div className="banner-btn float-right mt-0 mb-3" onClick={(e) => { pageNavigate(e) }}> VIEW</div>
                                         {/* <Link className="banner-btn float-right mt-0 mb-3" to="/viewphoto">VIEW</Link> */}
-                                        {/* <a className="upload_btn mb-4" href="/viewphoto">Upload</a> */}
+                                        <a className="upload_btn mb-4" href="/viewphoto">Upload</a>
+                                        {/* <input type="file" className="upload_btn mb-4" onChange={inputProgressImage} multiple/> */}
+                                        
                                     </div>
                                     <h2 className="main_title mb-2 px-3 mb-4">New Password</h2>
                                     <div className="col-12">
@@ -640,6 +701,7 @@ function EditProfile() {
                             </div>
                         </div>
                     </div>
+                    {/* </form> */}
                 </div>
             </div>
         </>

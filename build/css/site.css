@@ -128,11 +128,13 @@
     height: 44px;
     width: 35px;
     line-height: 45px !important;
-    font-size: 20px !important;
+    font-size: 18px !important;
     color: #6a7ab3;
     cursor: pointer;
-}
-
+    z-index: 9;
+    top: 0;
+  }
+  
 .icon img {
     width: 25px;
     margin-top: 40px;
@@ -158,7 +160,7 @@
     margin-bottom: 10px;
     width: 92%;
     font-size: 15px;
-  }
+}
 
 .font-13 {
     font-size: 13px;
@@ -676,12 +678,12 @@ input:checked+.slider:before {
     width: 20px;
     height: 20px;
     content: "\f00c";
-    font-family: "Font Awesome 5 Free";
+    /* font-family: "Font Awesome 5 Free"; */
     font-weight: 900;
     margin-top: 3px;
-  }
+}
 
-  .chooseplan .custom-radio-wrap form .form-group .label-text {
+.chooseplan .custom-radio-wrap form .form-group .label-text {
     cursor: pointer;
     padding-left: 20px;
     font-weight: bold;
@@ -691,7 +693,8 @@ input:checked+.slider:before {
     width: 280px !important;
     display: block;
     line-height: 0;
-  } 
+    font-weight: 600;
+}
 
 .chooseplan .custom-radio-wrap form .form-group input {
     display: none;
@@ -737,7 +740,7 @@ input:checked+.slider:before {
     left: 5px;
     position: absolute;
     font-size: 10px;
-  }
+}
 
 .headerblock {
     border-bottom: 1px solid #ddd;
@@ -1888,8 +1891,8 @@ button.dropdown-item {
 .main_title {
     font-size: 22px;
     font-weight: bold;
-    margin-top: 8px;
-}
+    margin-top: 5px;
+  }
 
 .filter_nav li.active button,
 .filter_nav li:hover button {
@@ -2716,7 +2719,7 @@ label.workout_t {
 }
 
 .workout_Summary label {
-    color: #243881;
+    color: #919bc0;
     font-size: 14px;
     margin-bottom: 5px;
     line-height: 20px;
@@ -2957,7 +2960,22 @@ a.edit-btn:hover {
     text-decoration: none !important;
     color: #243881 !important;
     border: 1px dashed #243881;
+    background-color: #fff;
 }
+.upload-btn-wrapper {
+    position: relative;
+  }
+ 
+  .upload-btn-wrapper input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    height: 50px;
+    width: 100%;
+    cursor: pointer;
+  }
 
 .edit_save {
     width: 310px;
@@ -3063,6 +3081,7 @@ a.edit-btn:hover {
     width: 108px;
     border-radius: 16px;
     border: 1px solid #bce5ea;
+    margin-bottom: 15px;
 }
 
 .prog-upload {
@@ -4047,16 +4066,35 @@ a.edit-btn:hover {
     right: 15px;
     top: 13px;
 }
+
 .planborder {
-    border-bottom: 1px solid #243881 !important;
     border: 0;
-  }
-  .textgray {
+    outline: none;
+}
+
+.textgray {
     color: #8e97bb;
-  }
-  .chooseplan .custom-radio-wrap form .form-group input:checked+label span {
+}
+
+.chooseplan .custom-radio-wrap form .form-group input:checked+label span {
     color: #04af37;
 }
+
+.submitblock-trainer .modal-body {
+    padding: 40px;
+}
+
+.submitblock-trainer .close {
+    right: 30px;
+    top: 34px;
+}
+
+.Workform .nav-tabs {
+    margin-bottom: 20px;
+}
+.record_table thead th {
+    white-space: nowrap;
+  }
 
 /**-----------------  Media Query Css  start-------------------**/
 
@@ -4064,6 +4102,7 @@ a.edit-btn:hover {
     .sessioninfo {
         font-size: 11px;
     }
+
     .s-whitebox {
         width: 56px;
         height: 26px;
@@ -4078,7 +4117,8 @@ a.edit-btn:hover {
         line-height: 25px;
         font-size: 10px;
     }
-    .my-session-content{
+
+    .my-session-content {
         padding: 20px 35px 17px 33px;
     }
 
@@ -4453,6 +4493,12 @@ a.edit-btn:hover {
         padding: 45px !important;
         margin-top: 60px;
     }
+    .workout_Summary .row.mb-3{
+        border-bottom: 1px solid #ddd;
+    }
+    .workout_Summary .row.mb-3:last-child{
+        border-bottom:0 ;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -4689,6 +4735,10 @@ a.edit-btn:hover {
     .upcomingblock {
         text-align: center;
     }
+
+    .ratingblock {
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 575px) {
@@ -4743,6 +4793,18 @@ a.edit-btn:hover {
 
     .bookhistory .tab-content {
         padding: 25px 5px;
+    }
+
+    .ratingblock .wrapper {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 20px 5px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        margin-bottom: 10px;
+    }
+    .ratingblock .wrapper .option{
+        padding: 0 16px;
     }
 }
 

@@ -68,7 +68,7 @@ function WorkOutForm() {
                         </div>
                         <div className="col-md-12 col-12" id="dvWorkoutForm">
                             <h1 className="main_title mb-2 pt-2">{workout?.trainer_data?.firstname}</h1>
-                            <div className="col-md-4 col-12 pl-0 mb-5">
+                            <div className="col-xl-4 col-md-6 col-12 pl-0 mb-5">
                                 <div className="workout-dt d-flex justify-content-between">
                                     <div className="">{workout?.trainer_data?.trainingstyle}</div>
                                 </div>

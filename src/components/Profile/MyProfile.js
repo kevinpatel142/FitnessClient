@@ -49,7 +49,7 @@ function MyProfile() {
 
     const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
-            debugger
+            // debugger
             trainingstyle.current = '';
             setFilterWorkout([]);
         }
@@ -70,6 +70,7 @@ function MyProfile() {
         let _url = (usertype === "client") ? '/client/account' : '/trainer/account';
         await axios.get(`${apiUrl}${PORT}${_url}/getprofile`, {}, {}
         ).then(function (response) {
+            console.log("response", response);
             document.querySelector('.loading').classList.add('d-none');
             if (response.data.status === 1) {
                 if (usertype === "client") {
@@ -84,18 +85,20 @@ function MyProfile() {
                         setTrainerImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
                     }
                 } else {
-                    debugger
+                    // debugger
                     response.data.result.oldpassword = ""; response.data.result.password = ""; response.data.result.confirmPassword = "";
                     if (response.data.result) {
+                        setExp(response.data.result.experience);
                         setUser(response.data.result);
+                        console.log("response.data.result.profile", response.data.result);
                         setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
-                        setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
+                        setProfileImage((response.data.result.profile) ? /* apiUrl + PORT + */ response.data.result.profile : ProfileImage_URL);
 
                         setTrainerProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
-                        setTrainerImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerImage((response.data.result.profile) ? /* apiUrl + PORT + */ response.data.result.profile : TrainerProfileImage_URL);
 
                         setCoverImagePreview((response.data?.result?.coverprofile) ? apiUrl + PORT + response.data?.result?.coverprofile : CoverImage_URL);
-                        setCoverImage((response.data?.result?.coverprofile) ? apiUrl + PORT + response.data?.result?.coverprofile : CoverImage_URL);
+                        setCoverImage((response.data?.result?.coverprofile) ? /* apiUrl + PORT + */ response.data?.result?.coverprofile : CoverImage_URL);
                         setImagesQuaPathList(response.data?.result?.qualifications?.path || []);
 
                         const newTags = response.data?.result?.trainingstyle.split(',');
@@ -123,12 +126,13 @@ function MyProfile() {
 
     const PostEditProfile = async (e) => {
         e.preventDefault();
-        debugger
+        // debugger
 
         let isValid = true;
         var errormsg = {};
 
         let reg_numbers = /^[0-9]+$/;
+        // console.log("profileimage", profileimage);
         if (!profileimage && (usertype === "client")) {
             //window.alert("Please upload Profile.");
             swal({
@@ -149,6 +153,7 @@ function MyProfile() {
             })
             isValid = false;
         }
+        // console.log("coverimage", coverimage);
         if (!coverimage) {
             //window.alert("Please upload Cover Image.");
             swal({
@@ -249,10 +254,11 @@ function MyProfile() {
                 trainingstyle: tags.join(','),
                 quote: user.quote,
                 experience: parseInt(expVal),//parseInt(document.getElementById("experience").value),
-                oldpassword: user.oldpasswor || "",
-                password: user.passwor || "",
-                confirmpassword: user.confirmpasswor || ""
+                oldpassword: user.oldpassword || "",
+                password: user.password || "",
+                confirmpassword: user.confirmpassword || ""
             }
+            console.log("obj", obj);
             // "specialitys": specialityslist.toString(),
             // "introduction": user.introduction,
             // "certifications": certificationsObj,
@@ -269,9 +275,12 @@ function MyProfile() {
             } else {
                 formData.append("profile", trainerimagepreview);
             }
+            console.log("coverimage--",coverimage);
+            // coverimage.split('/');
+            // console.log(coverimage);
             if (coverimage?.type === undefined) {
                 formData.append("edcoverprofile", coverimage);
-            } else {
+            } else { 
                 formData.append("coverprofile", coverimage);
             }
             // formData.append('profile', trainerimagepreview);
@@ -283,6 +292,7 @@ function MyProfile() {
                     document.querySelector('.loading').classList.add('d-none');
                     if (response.data.status === 1) {
                         if (qualificationsObj != null) {
+
                             updateTrainerPara(qualificationsObj, "", user._id);
                         } else {
                             history.push("/myprofile");
@@ -310,6 +320,7 @@ function MyProfile() {
         for (var key in qualificationsObj?.path) {
             form_data.append(qualificationsObj?.path[key].name, qualificationsObj?.path[key].uri);
         }
+        console.log("qualificationsObj", qualificationsObj);
         form_data.append("id", tid);
         form_data.append("qualifications", JSON.stringify(qualificationsObj));
         form_data.append("certifications", "");
@@ -317,7 +328,9 @@ function MyProfile() {
         axios.post(`${apiUrl}${PORT}/trainer/account/updateTrainerPara`, form_data)
             .then(response => {
                 document.querySelector('.loading').classList.add('d-none');
+                console.log("response", response);
                 if (response.data.status === 1) {
+                    let userData = localStorage.setItem("user", JSON.stringify(response.data.result));
                     //window.alert(response.data.message);
                     swal({
                         title: "Success!",
@@ -351,7 +364,7 @@ function MyProfile() {
 
     const handleQualifications = (e) => {
         e.preventDefault();
-        debugger
+        // debugger
         var errormsg = {};
         var isValid = true;
         if (qualification === "") {
@@ -406,6 +419,11 @@ function MyProfile() {
         var qualificationslst = qualificationslist;
         setQualifications(qualificationslst);
 
+        imagesQuaPathList.splice(index,1);
+        let imageQuapathlst = imagesQuaPathList;
+        setImagesQuaPathList(imageQuapathlst);
+
+        
         const updatedList = qualificationslist.map((listItems, index) => {
             return <div key={'qualification' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
                 <div className="d-flex">
@@ -422,12 +440,13 @@ function MyProfile() {
     const OnQualificationFileChange = (event, value) => {
         const file_size = event.target.files[0]?.size;
         if (file_size > 1048000) {
-            setImagesQuaPathList(null);
+            setImagesQuaPathList([]);
             alert("File size more than 1 MB. File size must under 1MB !");
             event.preventDefault();
         } else {
             const fileReader = new window.FileReader();
             const file = event.target.files[0];
+            console.log("file",file);
 
             fileReader.onload = fileLoad => {
                 //const { result } = fileLoad.target;
@@ -435,6 +454,7 @@ function MyProfile() {
                 var maxId = imagesQuaPathList.length > 0 ? (imagesQuaPathList.length + 1) : 1;
                 imagesQuaPathList.push({
                     "uri": file,
+                    "path": '/public/trainerqualifications/' + file.name,
                     "name": file.name,
                     "type": file.type,
                     "id": maxId,
@@ -521,6 +541,7 @@ function MyProfile() {
 
             fileReader.onload = fileLoad => {
                 const { result } = fileLoad.target;
+                // console.log("result",result);
                 setCoverImagePreview(result);
                 //setCoverImage(result);
             };
@@ -665,7 +686,7 @@ function MyProfile() {
                         </>
                         :
                         <>
-                            <div className="row">
+                            <div className="row trainer-profile">
 
                                 <div className="col-md-12">
                                     <h1 className="main_title mb-3">My Profile</h1>
@@ -695,7 +716,7 @@ function MyProfile() {
                                                                 <label htmlFor="imageUpload"><i className="fas fa-camera"></i></label>
                                                             </div>
                                                             <div className="avatar-preview">
-                                                                <div id="imagePreview" style={{ backgroundImage: `url(${trainerProfileImagePreview})` }}></div>
+                                                                <div id="imagePreview" style={{ backgroundImage: `url(${/* apiUrl + PORT + */ trainerProfileImagePreview})` }}></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -713,28 +734,28 @@ function MyProfile() {
                                                 </div>
                                                 <div className="col-md-12">
                                                     <h6>Gender</h6>
-                                                    <div className="genderbox">
+                                                    <div className="genderbox mb-3">
                                                         <div className="row">
-                                                            <div className="col-md-4">
+                                                            <div className="col">
                                                                 <div className="genderblock">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Male" type="radio" defaultChecked={user.gender === "Male"} className="custom-control-input" id="Male" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Male" type="radio" checked={(user.gender === "Male")?'checked':''} /* defaultChecked={user.gender === "Male"} */ className="custom-control-input" id="Male" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Male"></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-4">
+                                                            <div className="col">
                                                                 <div className="genderblock genderblock1">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Female" type="radio" defaultChecked={user.gender === "Female"} className="custom-control-input" id="Female" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Female" type="radio" checked={(user.gender === "Female")?'checked':''} /* defaultChecked={user.gender === "Female"} */ className="custom-control-input" id="Female" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Female"></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-4">
+                                                            <div className="col">
                                                                 <div className="genderblock genderblock2">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Non-Binary" type="radio" defaultChecked={user.gender === "Non-Binary"} className="custom-control-input" id="Non-Binary" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Non-Binary" type="radio" checked={(user.gender === "Non-Binary")?'checked':''} /* defaultChecked={user.gender === "Non-Binary"} */ className="custom-control-input" id="Non-Binary" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Non-Binary"></label>
                                                                     </div>
                                                                 </div>
@@ -763,15 +784,16 @@ function MyProfile() {
                                                             <input
                                                                 type="text"
                                                                 className="w-100 mb-4"
-                                                                value={trainingstyle.current}
+                                                                // value={trainingstyle.current}
                                                                 ref={trainingstyle}
-                                                                onChange={(e) => { tagChange(e) }}
+                                                                onClick={(e) => { tagChange(e) }}
                                                                 onKeyDown={(e) => { handleKeyDown(e) }}
                                                                 placeholder="Describe your training style"
 
                                                             />
                                                             {Boolean(filterWorkout.length) && (
                                                                 <div className="tags-suggestions">
+                                                                    <span className="float-right" onClick={(e) => { setFilterWorkout([]); }}><button className="btn btn-sm btn-danger">X</button></span>
                                                                     {filterWorkout.map(suggest => {
                                                                         return <div
                                                                             className="suggestion-item"
@@ -810,7 +832,7 @@ function MyProfile() {
                                 </div>
                                 <div className="col-md-6 pl-lg-5">
                                     <div className="col-md-12">
-                                        <div className="row m-1">
+                                        <div className="row m-0">
                                             <div className="col-md-12 p-0">
                                                 <div className="number">
                                                     <div className="row">
@@ -830,7 +852,7 @@ function MyProfile() {
                                             <div className="col-md-10 mt-4">
                                                 <div className="row unused">
                                                     <div className="input-group control-group after-add-more position-relative">
-                                                        <input onChange={(e) => handleQualification(e)} type="text" name="qualification" value={qualification} className="input-box w-100" placeholder="Cross-Fit Trainer" autocomplete="off" />
+                                                        <input onChange={(e) => handleQualification(e)} type="text" name="qualification" value={qualification} className="input-box w-100 mb-3" placeholder="Cross-Fit Trainer" autocomplete="off" />
                                                         <div className="input-group-btn">
                                                             <button onClick={(e) => { handleQualifications(e) }} className="add-more position-absolute" type="button"><i className="fas fa-plus"></i></button>
                                                         </div>
@@ -853,11 +875,11 @@ function MyProfile() {
                                     </div>
                                     {qualificationslist.length > 0 && qualificationslist.map((listItems, index) => {
                                         return <>
-                                            <div key={`qualification${index}`} className="col-md-12">
+                                            <div key={`qualification${index}`} className={`col-md-12 control-group${index}`}>
                                                 <div className="row">
                                                     <div className="col-md-10">
                                                         <div className="copy">
-                                                            <div className="control-group input-group" style={{ marginTop: "10px" }} id={`qualification${index}`}>
+                                                            <div className="input-group" style={{ marginTop: "10px" }} id={`qualification${index}`}>
                                                                 <div className="d-flex">
                                                                     <div name={'qualification' + index} className="removeinput">{listItems}</div>
                                                                     <div className="input-group-btn position-relative">
@@ -881,6 +903,8 @@ function MyProfile() {
                                     })}
                                     <div className="col-md-12 mt-4">
                                         <h4 className="font-weight-bold mb-3">New Password</h4>
+                                    </div>
+                                    <div className="col-md-12 mt-4">
                                         <input onChange={(e) => handleInputs(e)} value={user.oldpassword} type={isOwdHidden === true ? "password" : "text"} name="oldpassword" className="input-box" placeholder="old password" autocomplete="off" />
                                         <i className={`fa fa-eye${isOwdHidden === false ? "" : "-slash"} icon`} onClick={() => setIsOwdHidden(!isOwdHidden)}></i>
                                         <div className="text-danger">{errors.oldpassword}</div>

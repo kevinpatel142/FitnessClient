@@ -43,6 +43,8 @@ import { apiUrl, PORT } from './environment/environment';
 import ReactNotificationComponent from "./components/Notifications/ReactNotification";
 import "./app.css";
 import MobileVedioSession from "./components/Others/MobileVedioSession";
+import PendingWorkout from './components/Trainer/PendingWorkout';
+import Moment from 'react-moment';
 
 
 function App() {
@@ -57,6 +59,7 @@ function App() {
   const serachText = useRef('');
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
+  const [allNotification, setAllNotification] = useState([]);
   const loginuserdetail = localStorage.getItem('user');
   var loginUser = {};
   if (loginuserdetail && loginuserdetail !== "[Object Object]" && loginuserdetail !== "[object Object]")
@@ -104,6 +107,7 @@ function App() {
         console.log(error);
       });
     }
+    allNotifications();
   }, [usertype, pathnameUrl]);
 
 
@@ -148,7 +152,16 @@ function App() {
       history.push(_url);
     }
   }
-
+  const allNotifications = async () => {
+    await axios.get(`${apiUrl}${PORT}/notification/getAll`, {}, {
+    }).then(function (response) {
+      console.log("responseNot", response);
+      setAllNotification(response.data.result);
+      console.log("allNotification", allNotification);
+    }).catch(function (err) {
+      console.log(err);
+    })
+  }
   return (
     <>
       <div className="App">
@@ -275,6 +288,13 @@ function App() {
                               <span>Payment History</span>
                             </NavLink>
                           </li>
+                          <li className="sidebar-dropdown">
+                            <NavLink to='/pendingworkout' onClick={(e) => { callTrainer(e, '/pendingworkout'); }} className={({ isActive }) => isActive ? 'active' : ''}>
+                              {/* <i className="fas fa-wallet"></i> */}
+                              <i className="fa fa-list"></i>
+                              <span>Pending Workout Forms</span>
+                            </NavLink>
+                          </li>
                           {/* <li className="sidebar-dropdown">
                             <NavLink to='/videosessionhistory' onClick={(e) => { callTrainer(e, '/videosessionhistory'); }} className={({ isActive }) => isActive ? 'active' : ''}>
                               <i className="fas fa-wallet"></i>
@@ -355,7 +375,41 @@ function App() {
                                     <li className="d-flex justify-content-between"><span className="noti-text">Notifications</span><span className="noti_subtext">Mark all as read</span></li>
                                     <li>
                                       <ul className="list-inline noti_submenu">
-                                        <li>
+                                        {/* {Object.keys(allNotification).map(function (key, value) {
+                                          return <li>
+                                            <button className="dropdown-item">
+                                              <div className="text-right">
+                                                <span>{key}</span>
+                                              </div>
+                                              <div className="d-flex notification_i">
+                                                <i className="far fa-check-circle green-text"></i>
+                                                <div className="noti_content">
+                                                  <h5>{value}</h5>
+                                                  <p className="mb-2">{value}</p>
+                                                </div>
+                                              </div>
+                                            </button>
+                                          </li>
+                                        })} */}
+                                        {allNotification.map((elem) => {
+                                          let hour;
+                                          return <li>
+                                            <button className="dropdown-item">
+                                              <div className="text-right">
+                                                <span><Moment format="hh:m A" date={elem.date} /></span>
+                                              </div>
+                                              <div className="d-flex notification_i">
+                                                <i className="far fa-check-circle green-text"></i>
+                                                <div className="noti_content">
+                                                  <h5>{elem.title}</h5>
+                                                  <p className="mb-2">{elem.message}</p>
+                                                </div>
+                                              </div>
+                                            </button>
+                                          </li>
+
+                                        })}
+                                        {/* <li>
                                           <button className="dropdown-item">
                                             <div className="text-right">
                                               <span>09:20</span>
@@ -424,8 +478,8 @@ function App() {
                                               </div>
                                             </div>
                                           </button>
-                                        </li>
-                                        <li>
+                                        </li> */}
+                                        {/* <li>
                                           <button className="dropdown-item">
                                             <div className="text-right">
                                               <span>04:11</span>
@@ -452,7 +506,7 @@ function App() {
                                               </div>
                                             </div>
                                           </button>
-                                        </li>
+                                        </li> */}
                                       </ul>
                                     </li>
                                   </ul>
@@ -490,6 +544,7 @@ function App() {
                 <Route path="/paymenthistory"><PaymentHistory></PaymentHistory></Route>
                 <Route path="/mysession"><MySession></MySession></Route>
                 <Route path="/booksessionsdetail"><BookSessionsDetail></BookSessionsDetail></Route>
+                <Route path="/pendingworkout"><PendingWorkout></PendingWorkout></Route>
                 <Route exact path="/savedtrainer"
                   component={() => <SavedTrainer type={filterPanel} flterValue={serachValue} />}
                 />

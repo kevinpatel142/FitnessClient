@@ -73,6 +73,12 @@ function FeedBackRating() {
                 .then(response => {
                     document.querySelector('.loading').classList.add('d-none');
                     if (response.data.status === 1) {
+                        swal({
+                            title: "Success",
+                            text: response.data.message,
+                            icon: "success",
+                            button: true
+                        })
                         history.push("/mysession");
                     }
                     else {
@@ -99,7 +105,7 @@ function FeedBackRating() {
             <div className="container">
                 <div className="col-md-12">
                     <div className="row my-5">
-                        <div className="ratingblock mx-auto d-block my-5 py-5">
+                        <div className="ratingblock mx-auto d-block py-5">
                             {/* <ul className="list-inline text-center">
                                 <li className="list-inline-item"><i className="fas fa-star"></i></li>
                                 <li className="list-inline-item"><i className="fas fa-star"></i></li>

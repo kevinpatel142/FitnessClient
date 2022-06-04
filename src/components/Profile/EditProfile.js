@@ -28,24 +28,26 @@ function EditProfile() {
     const beautifyMobileNumber = (rowMobileNumber) => {
         let index = 0
         let mobileNumber = ''
-        if (mask.length < rowMobileNumber.length) {
-            return
+        if (mask !== undefined) {
+            if (mask.length < rowMobileNumber.length) {
+                return
+            }
+            for (const letter of rowMobileNumber.trim()) {
+                if (mask.charAt(index) == '_') {
+                    mobileNumber = mobileNumber + letter
+                } else if (mask.charAt(index) == '(') {
+                    mobileNumber = mobileNumber + letter
+                }
+                else if (mask.charAt(index) == ')') {
+                    mobileNumber = mobileNumber + letter
+                }
+                else {
+                    mobileNumber = mobileNumber + ' '
+                }
+                index++
+            }
+            // console.log(mobileNumber)
         }
-        for (const letter of rowMobileNumber.trim()) {
-            if (mask.charAt(index) == '_') {
-                mobileNumber = mobileNumber + letter
-            } else if (mask.charAt(index) == '(') {
-                mobileNumber = mobileNumber + letter
-            }
-            else if (mask.charAt(index) == ')') {
-                mobileNumber = mobileNumber + letter
-            }
-            else {
-                mobileNumber = mobileNumber + ' '
-            }
-            index++
-        }
-        console.log(mobileNumber)
         setMobilenumber(mobileNumber)
 
     }
@@ -232,7 +234,7 @@ function EditProfile() {
         }
         setErrors(errormsg);
         if (isValid === true) {
-            console.log("progressphotos",typeof(progressphotos[0]));
+            console.log("progressphotos", typeof (progressphotos[0]));
             let obj = {
                 //'profile': profileimage,
                 'firstname': user.firstname,
@@ -260,7 +262,7 @@ function EditProfile() {
                 'confirmpassword': user.confirmpassword,
                 // 'progressphotos': progressphotos,
             }
-            console.log("obj",obj);
+            console.log("obj", obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
@@ -269,25 +271,26 @@ function EditProfile() {
                 form_data.append("edprofile", profileimage);
             } else {
                 form_data.append("profile", profileimage);
-            } 
+            }
             if (progressphotos?.type === undefined) {
                 form_data.append('edprogressphotos', progressphotos);
             } else {
                 form_data.append("progressphotos", progressphotos);
-            } 
-            
+            }
+
 
 
             document.querySelector('.loading').classList.remove('d-none');
             await axios.post(`${apiUrl}${PORT}/client/account/updateprofile`, form_data, {
             }).then(function (response) {
                 document.querySelector('.loading').classList.add('d-none');
+                console.log("response",response);
                 if (response.data.status === 1) {
                     localStorage.setItem("progressphotos", []);
                     // localStorage.setItem("user", []);
-                    console.log("response",response);
+                    console.log("response", response);
                     localStorage.setItem('user', JSON.stringify(response.data.result));
-                    /* history.push("/editprofile"); */
+                    // history.push("/editprofile");
                     fetchProfile(1);
                     swal({
                         title: "Success!",
@@ -388,7 +391,7 @@ function EditProfile() {
                 button: true
             })
         });
-    };   
+    };
 
     return (
         <>
@@ -677,7 +680,7 @@ function EditProfile() {
                                         {/* <Link className="banner-btn float-right mt-0 mb-3" to="/viewphoto">VIEW</Link> */}
                                         <a className="upload_btn mb-4" href="/viewphoto">Upload</a>
                                         {/* <input type="file" className="upload_btn mb-4" onChange={inputProgressImage} multiple/> */}
-                                        
+
                                     </div>
                                     <h2 className="main_title mb-2 px-3 mb-4">New Password</h2>
                                     <div className="col-12">

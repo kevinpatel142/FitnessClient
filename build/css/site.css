@@ -131,7 +131,7 @@
     font-size: 18px !important;
     color: #6a7ab3;
     cursor: pointer;
-    z-index: 9;
+    z-index: 1;
     top: 0;
   }
   
@@ -273,6 +273,7 @@
     content: "Male";
     color: #243881;
     padding-top: 45px;
+    border-radius: 8px;
 }
 
 .custom-control-input:checked~.custom-control-label::after {
@@ -2995,18 +2996,18 @@ a.edit-btn:hover {
 }
 
 .edit-profile .genderblock .custom-control-label::before,
-.edit-profile .genderblock .custom-control-label::after {
+.edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
     width: 135px;
     height: 95px;
     border-radius: 8px;
 }
 
-.edit-profile .genderblock .custom-control-label::before {
+.edit-profile .genderblock .custom-control-label::before, .trainer-profile .genderblock .custom-control-label::before {
     font-size: 29px;
     padding-top: 13px;
 }
 
-.edit-profile .genderblock .custom-control-label::after {
+.edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after {
     padding-top: 59px;
 }
 
@@ -4140,7 +4141,7 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after {
+    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before{
         width: 112px;
     }
 
@@ -4187,7 +4188,7 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after {
+    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
         width: 90px;
     }
 
@@ -4469,7 +4470,7 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after {
+    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
         width: 100px;
     }
 
@@ -4787,7 +4788,7 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after {
+    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
         width: 90px;
     }
 
@@ -4889,7 +4890,7 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after {
+    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
         width: 68px;
     }
 

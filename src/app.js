@@ -155,9 +155,9 @@ function App() {
   const allNotifications = async () => {
     await axios.get(`${apiUrl}${PORT}/notification/getAll`, {}, {
     }).then(function (response) {
-      console.log("responseNot", response);
+      // console.log("responseNot", response);
       setAllNotification(response.data.result);
-      console.log("allNotification", allNotification);
+      // console.log("allNotification", allNotification);
     }).catch(function (err) {
       console.log(err);
     })
@@ -391,7 +391,7 @@ function App() {
                                             </button>
                                           </li>
                                         })} */}
-                                        {allNotification.map((elem) => {
+                                        {Object.keys(allNotification).length > 0 ? allNotification.map((elem) => {
                                           let hour;
                                           return <li>
                                             <button className="dropdown-item">
@@ -408,7 +408,7 @@ function App() {
                                             </button>
                                           </li>
 
-                                        })}
+                                        }) : <><p className='my-2 text-center'>No notifications</p></>}
                                         {/* <li>
                                           <button className="dropdown-item">
                                             <div className="text-right">

@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
 import swal from 'sweetalert';
 import { verifytokenCall } from '../Others/Utils.js';
+import Plaid from '../Others/Plaid';
 
 function MyProfile() {
     const history = useHistory();
@@ -15,6 +16,7 @@ function MyProfile() {
     const [isPwdHidden, setIsPwdHidden] = useState(true);
     const [isCPwdHidden, setIsCPwdHidden] = useState(true);
     const [client, setClient] = useState({});
+    const [trainerData, setTrainerData] = useState();
     const [user, setUser] = useState({
         firstname: "", lastname: "", email: "", oldpassword: "", password: "", confirmpassword: "", phoneno: "", gender: "Male", aboutus: "", trainingstyle: "", quote: "", experience: 0, qualifications: "",
         specialitys: "", introduction: "", certifications: "", emailnotifications: false, maillinglist: false, textnotifications: false
@@ -37,6 +39,8 @@ function MyProfile() {
     const ref = useRef(null);
     const trainingstyle = useRef('');
     useEffect(() => {
+
+        setTrainerData(JSON.parse(localStorage.getItem('user')));
         document.body.classList.remove('scrollHide');
         callToken();
         fetchProfile();
@@ -90,15 +94,15 @@ function MyProfile() {
                     if (response.data.result) {
                         setExp(response.data.result.experience);
                         setUser(response.data.result);
-                        console.log("response.data.result.profile", response.data.result);
+                        // console.log("response.data.result.profile", response.data.result);
                         setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
-                        setProfileImage((response.data.result.profile) ? /* apiUrl + PORT + */ response.data.result.profile : ProfileImage_URL);
+                        setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
 
                         setTrainerProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
-                        setTrainerImage((response.data.result.profile) ? /* apiUrl + PORT + */ response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
 
                         setCoverImagePreview((response.data?.result?.coverprofile) ? apiUrl + PORT + response.data?.result?.coverprofile : CoverImage_URL);
-                        setCoverImage((response.data?.result?.coverprofile) ? /* apiUrl + PORT + */ response.data?.result?.coverprofile : CoverImage_URL);
+                        setCoverImage((response.data?.result?.coverprofile) ? apiUrl + PORT + response.data?.result?.coverprofile : CoverImage_URL);
                         setImagesQuaPathList(response.data?.result?.qualifications?.path || []);
 
                         const newTags = response.data?.result?.trainingstyle.split(',');
@@ -133,7 +137,7 @@ function MyProfile() {
 
         let reg_numbers = /^[0-9]+$/;
         // console.log("profileimage", profileimage);
-        if (!profileimage && (usertype === "client")) {
+        /* if (!profileimage && (usertype === "client")) {
             //window.alert("Please upload Profile.");
             swal({
                 title: "Error!",
@@ -142,8 +146,8 @@ function MyProfile() {
                 button: true
             })
             isValid = false;
-        }
-        if (!trainerimagepreview && (usertype !== "client")) {
+        } */
+        /* if (!trainerimagepreview && (usertype !== "client")) {
             //window.alert("Please upload Profile.");
             swal({
                 title: "Error!",
@@ -152,9 +156,9 @@ function MyProfile() {
                 button: true
             })
             isValid = false;
-        }
+        } */
         // console.log("coverimage", coverimage);
-        if (!coverimage) {
+        /* if (!coverimage) {
             //window.alert("Please upload Cover Image.");
             swal({
                 title: "Error!",
@@ -163,7 +167,7 @@ function MyProfile() {
                 button: true
             })
             isValid = false;
-        }
+        } */
         if (user.firstname === "") {
             errormsg.firstname = "Please enter First Name.";
             isValid = false;
@@ -196,6 +200,7 @@ function MyProfile() {
             errormsg.quote = "Please enter quote description.";
             isValid = false;
         }
+        console.log("qualificationslist",qualificationslist);
         if (qualificationslist.length === 0) {
             errormsg.qualification = "Please enter qualifications.";
             isValid = false;
@@ -238,6 +243,7 @@ function MyProfile() {
                 "name": qualificationslist.join(","),
                 "path": imagesQuaPathList
             }
+            console.log(qualificationsObj);
             // let certificationsObj = {
             //     "name": certificationslist.join(","),
             //     "path": cerimagesPathList
@@ -270,18 +276,38 @@ function MyProfile() {
                 formData.append(key, obj[key]);
             }
 
-            if (trainerimagepreview?.type === undefined) {
-                formData.append("edprofile", trainerimagepreview);
+            console.log("trainerimagepreview", typeof (trainerimagepreview));
+
+            // PROFILE IMAGE
+            let profile;
+            if (typeof (trainerimagepreview) == 'string') {
+                profile = trainerimagepreview.split(apiUrl + PORT);
+                profile = profile[1];
+                setTrainerImage(...trainerimagepreview, profile[1]);
             } else {
-                formData.append("profile", trainerimagepreview);
+                profile = trainerimagepreview;
             }
-            console.log("coverimage--",coverimage);
-            // coverimage.split('/');
-            // console.log(coverimage);
+
+            if (trainerimagepreview?.type === undefined) {
+                formData.append("edprofile", profile);
+            } else {
+                formData.append("profile", profile);
+            }
+
+            // COVER PROFILE
+            let coverProfile;
+            if (typeof (coverimage) == "string") {
+                coverProfile = coverimage.split(apiUrl + PORT);
+                coverProfile = coverProfile[1];
+            } else {
+                coverProfile = coverimage;
+            }
+
+
             if (coverimage?.type === undefined) {
-                formData.append("edcoverprofile", coverimage);
-            } else { 
-                formData.append("coverprofile", coverimage);
+                formData.append("edcoverprofile", coverProfile);
+            } else {
+                formData.append("coverprofile", coverProfile);
             }
             // formData.append('profile', trainerimagepreview);
             // formData.append("coverprofile", coverimage);
@@ -292,7 +318,6 @@ function MyProfile() {
                     document.querySelector('.loading').classList.add('d-none');
                     if (response.data.status === 1) {
                         if (qualificationsObj != null) {
-
                             updateTrainerPara(qualificationsObj, "", user._id);
                         } else {
                             history.push("/myprofile");
@@ -330,7 +355,7 @@ function MyProfile() {
                 document.querySelector('.loading').classList.add('d-none');
                 console.log("response", response);
                 if (response.data.status === 1) {
-                    let userData = localStorage.setItem("user", JSON.stringify(response.data.result));
+                    localStorage.setItem("user", JSON.stringify(response.data.result));
                     //window.alert(response.data.message);
                     swal({
                         title: "Success!",
@@ -419,11 +444,11 @@ function MyProfile() {
         var qualificationslst = qualificationslist;
         setQualifications(qualificationslst);
 
-        imagesQuaPathList.splice(index,1);
+        imagesQuaPathList.splice(index, 1);
         let imageQuapathlst = imagesQuaPathList;
         setImagesQuaPathList(imageQuapathlst);
 
-        
+
         const updatedList = qualificationslist.map((listItems, index) => {
             return <div key={'qualification' + index} className="control-group input-group" style={{ marginTop: "10px" }}>
                 <div className="d-flex">
@@ -446,7 +471,7 @@ function MyProfile() {
         } else {
             const fileReader = new window.FileReader();
             const file = event.target.files[0];
-            console.log("file",file);
+            console.log("file", file);
 
             fileReader.onload = fileLoad => {
                 //const { result } = fileLoad.target;
@@ -739,7 +764,7 @@ function MyProfile() {
                                                             <div className="col">
                                                                 <div className="genderblock">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Male" type="radio" checked={(user.gender === "Male")?'checked':''} /* defaultChecked={user.gender === "Male"} */ className="custom-control-input" id="Male" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Male" type="radio" checked={(user.gender === "Male") ? 'checked' : ''} /* defaultChecked={user.gender === "Male"} */ className="custom-control-input" id="Male" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Male"></label>
                                                                     </div>
                                                                 </div>
@@ -747,7 +772,7 @@ function MyProfile() {
                                                             <div className="col">
                                                                 <div className="genderblock genderblock1">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Female" type="radio" checked={(user.gender === "Female")?'checked':''} /* defaultChecked={user.gender === "Female"} */ className="custom-control-input" id="Female" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Female" type="radio" checked={(user.gender === "Female") ? 'checked' : ''} /* defaultChecked={user.gender === "Female"} */ className="custom-control-input" id="Female" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Female"></label>
                                                                     </div>
                                                                 </div>
@@ -755,7 +780,7 @@ function MyProfile() {
                                                             <div className="col">
                                                                 <div className="genderblock genderblock2">
                                                                     <div className="custom-control custom-checkbox mb-3">
-                                                                        <input onChange={(e) => handleInputs(e)} value="Non-Binary" type="radio" checked={(user.gender === "Non-Binary")?'checked':''} /* defaultChecked={user.gender === "Non-Binary"} */ className="custom-control-input" id="Non-Binary" name="gender" />
+                                                                        <input onChange={(e) => handleInputs(e)} value="Non-Binary" type="radio" checked={(user.gender === "Non-Binary") ? 'checked' : ''} /* defaultChecked={user.gender === "Non-Binary"} */ className="custom-control-input" id="Non-Binary" name="gender" />
                                                                         <label className="custom-control-label" htmlFor="Non-Binary"></label>
                                                                     </div>
                                                                 </div>
@@ -919,6 +944,11 @@ function MyProfile() {
                                         <i className={`fa fa-eye${isCPwdHidden === false ? "" : "-slash"} icon`} onClick={() => setIsCPwdHidden(!isCPwdHidden)}></i>
                                         <div className="text-danger">{errors.confirmpassword}</div>
                                     </div>
+                                    <div className="col-md-12">
+
+                                        {!trainerData?.bankaccount ? <> <h4 class="font-weight-bold mb-3">Add Bank Account</h4> <h5 className='text-danger'><Plaid /></h5></> : ''}
+                                    </div>
+
                                 </div>
                             </div>
                         </>

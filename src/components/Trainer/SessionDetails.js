@@ -5,6 +5,8 @@ import swal from 'sweetalert';
 import { apiUrl, PORT } from '../../environment/environment';
 import { verifytokenCall } from '../Others/Utils.js';
 import $ from 'jquery';
+import Plaid from '../Others/Plaid';
+
 function SessionDetails() {
     const [basicMovementsArr, setBasicMovementsArr] = useState([]);
     const history = useHistory();
@@ -16,8 +18,10 @@ function SessionDetails() {
     const [setsList, setSets] = useState([]);
     const [repsList, setReps] = useState([]);
     const [isLoader, setIsLoader] = useState(false);
+    const [trainerData, setTrainerData] = useState();
     const queryStringPara = new URLSearchParams(window.location.search);
     let sesId = queryStringPara.get("id");
+
 
     const [workout, setWorkout] = useState({
         id: sesId, fitnessGoals: "", desiredOne: "", desiredTwo: "", basicMovements: [], additionalNotes: "", format: ""
@@ -32,6 +36,9 @@ function SessionDetails() {
     }
 
     useEffect(() => {
+        setTrainerData(JSON.parse(localStorage.getItem('user')));
+        // setbankaccount(trainerData?.bankaccount)
+        // console.log("trainerData", trainerData);
         setSessionId(sesId);
         getUserDetails(sesId);
         callToken();
@@ -46,11 +53,12 @@ function SessionDetails() {
     }
     async function getUserDetails(sesId) {
         setIsLoader(true);
-        await axios.post(`${apiUrl}${PORT}/client/session/clientdetails`,{ id:sesId }).then(function (response) {
+        await axios.post(`${apiUrl}${PORT}/client/session/clientdetails`, { id: sesId }).then(function (response) {
             setIsLoader(false);
+            console.log("response", response);
             if (response.data.status === 1) {
                 if (response?.data?.result) {
-                    debugger
+                    // debugger
                     setSessionUser(response?.data?.result);
                 }
             }
@@ -72,16 +80,21 @@ function SessionDetails() {
             })
         });
     }
+    let newDesireOne;
     const [desiredOneArr, setDesiredOneArr] = useState([]);
     const changeDesiredOne = (bool, value) => {
         if (bool === true) {
             desiredOneArr.push(value);
             setDesiredOneArr([...new Set(desiredOneArr)])
+            handleChange("desiredOne", desiredOneArr);
         }
         else {
-            setDesiredOneArr([...new Set(desiredOneArr.filter(item => item !== value))]);
+            // setDesiredOneArr([...new Set(desiredOneArr.filter(item => item !== value))]);
+            newDesireOne = desiredOneArr.filter(item => item !== value)
+
+            setDesiredOneArr([...new Set(newDesireOne)]);
+            handleChange("desiredOne", newDesireOne);
         }
-        handleChange("desiredOne", desiredOneArr);
     }
 
     async function GetMasterList() {
@@ -90,7 +103,7 @@ function SessionDetails() {
             setIsLoader(false);
             if (response.data.status === 1) {
                 if (response?.data?.result) {
-                    debugger
+                    // debugger
                     setWeight(response?.data?.result.filter(x => x?.name === 'Weight'));
                     setRestDuration(response?.data?.result.filter(x => x?.name === 'Rest Duration'));
                     setSets(response?.data?.result.filter(x => x?.name === 'Sets'));
@@ -115,20 +128,25 @@ function SessionDetails() {
             })
         });
     };
-
     const [desiredTwoArr, setDesiredTwoArr] = useState([]);
+    let newDesireTwo;
     const changeDesiredTwo = (bool, value) => {
         if (bool === true) {
             desiredTwoArr.push(value);
             setDesiredTwoArr([...new Set(desiredTwoArr)])
+            handleChange("desiredTwo", desiredTwoArr);
         }
         else {
-            setDesiredTwoArr([...new Set(desiredTwoArr.filter(item => item !== value))]);
+            // setDesiredTwoArr([...new Set(desiredTwoArr.filter(item => item !== value))]);
+            newDesireTwo = desiredTwoArr.filter(item => item !== value)
+            setDesiredTwoArr([...new Set(newDesireTwo)]);
+            handleChange("desiredTwo", newDesireTwo);
         }
-        handleChange("desiredTwo", desiredTwoArr);
+        // handleChange("desiredTwo", desiredTwoArr);
     }
 
     const changebBasicMovements = (bool, value) => {
+        let basicMovements;
         if (bool === true) {
             basicMovementsArr.push(
                 {
@@ -138,16 +156,21 @@ function SessionDetails() {
                     restDuration: "",
                     sets: "",
                     reps: ""
-
                 }
             );
             setBasicMovementsArr([...new Set(basicMovementsArr)]);
+            handleChange("basicMovements", basicMovementsArr);
         }
         else {
-            setBasicMovementsArr([...new Set(basicMovementsArr.filter(item => item.movementName !== value))]);
+            // setBasicMovementsArr([...new Set(basicMovementsArr.filter(item => item.movementName !== value))]);
+            basicMovements = basicMovementsArr.filter(item => item.movementName !== value)
+            // console.log("basicMovements", basicMovements);
+            setBasicMovementsArr([...new Set(basicMovements)]);
+            handleChange("basicMovements", basicMovements);
         }
-        handleChange("basicMovements", basicMovementsArr);
+        // console.log("basicMovementsArr",basicMovementsArr);
     }
+
     const handleDyanamicVal = (name, type, val) => {
         let obj = workout.basicMovements.filter(x => x.movementName === name)[0];
         obj[type] = val
@@ -162,6 +185,7 @@ function SessionDetails() {
     const onSubmit = (e) => {
         e.preventDefault();
         let isValid = true;
+        // $('#plaidbutton > button').click();
         var errormsg = {};
         workout.id = sessionId;
         if (workout.fitnessGoals === "") {
@@ -182,7 +206,9 @@ function SessionDetails() {
             isValid = false;
         }
         workout.createdate = new Date();
+        // console.log("workout", workout);
         setErrors(errormsg);
+        // isValid = false;
         if (isValid) {
             setIsLoader(true);
             axios.post(`${apiUrl}${PORT}/trainer/session/workout`, workout)
@@ -214,12 +240,9 @@ function SessionDetails() {
                 });
         }
     }
-    const addBank = (e) => {
-        e. preventDefault();
-        $('#plaidbutton > button').click();
-    }
     return (
         <>
+
             {isLoader &&
                 <div className="loading">
                     <div className="mainloader"></div>
@@ -227,7 +250,9 @@ function SessionDetails() {
             }
             <div className="container-fluid">
                 <div className="fixedblock">
-                {/* <div onClick={(e) => { addBank(e) }} className="loginbtn w-25 d-block float-right">Add Bank</div> */}
+
+                    {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid /></h5> : ''}
+                    {/* <div onClick={(e) => { addBank(e) }} className="loginbtn w-25 d-block float-right">Add Bank</div> */}
                     <h1 className="main_title mb-3">Workout From</h1>
                     <div className="row">
                         <div className="col-md-4">
@@ -245,7 +270,7 @@ function SessionDetails() {
                         <div className="col-md-4">
                             <div className="grayarea d-flex justify-content-between">
                                 <h6>Injuries : </h6>
-                                <p>{sessionUser?.injuriesorhelthissues?.substr(1, 60) || "N/A"}</p>
+                                <p>{sessionUser?.injuriesorhelthissues?.substr(0, 60) || "N/A"}</p>
                             </div>
                         </div>
                     </div>
@@ -380,7 +405,7 @@ function SessionDetails() {
                                     {workout.basicMovements.map((ele, index) => {
                                         return (<>
                                             <div key={index} className="col-md-12">
-                                                <h6 className="text-primary">{ele.movementName}</h6>
+                                                <h6 className="text-primary"><strong>{ele.movementName}</strong></h6>
                                                 <label className="text-primary">Specify Movement</label>
                                                 <input className="input-box" placeholder="pushup" value={ele.specifyMovement} onChange={(e) => { handleDyanamicVal(ele.movementName, "specifyMovement", e.target.value) }} />
                                             </div>
@@ -442,9 +467,9 @@ function SessionDetails() {
                         </div>
                     </div>
                     <div className="col-md-12">
-                        <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div>
-                        
-
+                        {/* {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid /></h5> : ''} */}
+                        {!trainerData?.bankaccount ? <div onClick={(e) => { alert('Bank doesn\'t added.') }} className="loginbtn w-25 mx-auto d-block mt-5 disabled">Submit</div> : <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div>}
+                        {/* <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div> */}
                     </div>
                 </div>
             </div>

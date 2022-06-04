@@ -28,6 +28,8 @@ function Notifications() {
 
 
     const onRadioClick = async (source) => {
+
+        
         setOpen(open)
         setActive(isActiveAppNotification);
         appNotif.isApp = !appNotif.isApp;
@@ -63,27 +65,30 @@ function Notifications() {
         setIsLoader(true);
         await axios.get(`${apiUrl}${PORT}/client/account/getNotification`, {}, {})
             .then(function (response) {
-                debugger
+                // debugger
                 setIsLoader(false);
+                console.log("response", response);
+                console.log("length", Object.keys(response.data.result).length > 0);
                 if (response.data.status === 1) {
-                    setActive(response.data.result.app.isApp);
-                    setOpen(response.data.result.app.isApp);
+                    // if (Object.keys(response.data.result).length > 0) {
+                        setActive(response.data.result.app.isApp);
+                        setOpen(response.data.result.app.isApp);
 
-                    setActiveTextNotification(response.data.result.text.isText);
-                    setTextNotification(response.data.result.text.isText);
+                        setActiveTextNotification(response.data.result.text.isText);
+                        setTextNotification(response.data.result.text.isText);
 
-                    setActiveMailingNotification(response.data.result.mailing.ismailing);
-                    setMailingNotification(response.data.result.mailing.ismailing);
+                        setActiveMailingNotification(response.data.result.mailing.ismailing);
+                        setMailingNotification(response.data.result.mailing.ismailing);
 
-                    setActiveEmailNotification(response.data.result.email.isEmail);
-                    setEmailNotification(response.data.result.email.isEmail);
+                        setActiveEmailNotification(response.data.result.email.isEmail);
+                        setEmailNotification(response.data.result.email.isEmail);
 
-                    setAppNotif(response.data.result.app);
-                    setTextNotif(response.data.result.text);
-                    setEmailNotif(response.data.result.email);
-                    setMailingNotif(response.data.result.mailing);
-                }
-                else {
+                        setAppNotif(response.data.result.app);
+                        setTextNotif(response.data.result.text);
+                        setEmailNotif(response.data.result.email);
+                        setMailingNotif(response.data.result.mailing);
+                    // }
+                } else {
                     swal({
                         title: "Error!",
                         text: response.data.message,
@@ -109,7 +114,7 @@ function Notifications() {
             email: emailNotif,
             mailing: mailingNotif
         }
-        debugger
+        // debugger
         setIsLoader(true);
         await axios.post(`${apiUrl}${PORT}/client/account/updateNotification`, { notification: notifications }).then(function (response) {
             setIsLoader(false);
@@ -126,7 +131,7 @@ function Notifications() {
 
                 setActiveEmailNotification(response.data.result.email.isEmail);
                 setEmailNotification(response.data.result.email.isEmail);
-                
+
                 setAppNotif(response.data.result.app);
                 setTextNotif(response.data.result.text);
                 setEmailNotif(response.data.result.email);

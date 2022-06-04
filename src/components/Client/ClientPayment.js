@@ -114,7 +114,7 @@ function ClientPayment() {
     const onPayNow = (e) => {
         e.preventDefault();
         const customer = JSON.parse(localStorage.getItem("customer"));
-        console.log(customer.customer_id);
+        // console.log(customer.customer_id);
         let isValid = true;
         /* var errormsg = {};
         if (payment.cardholdersName === "") {
@@ -138,9 +138,19 @@ function ClientPayment() {
             errormsg.cvv = "Please enter cvv number!";
             isValid = false;
         } */
-        console.log("payment", payment);
+        /* console.log("payment", payment);
         console.log("selectedCard", selectedCard);
-        console.log(selectedCard);
+        console.log(selectedCard.length === 0); */
+        if(selectedCard.length === 0){
+            isValid = false;
+            swal({
+                title: "Error!",
+                text: "Please Add/Choose Card",
+                icon: "error",
+                button: true
+            })
+        }
+            
        
             let savepayment = {
                 date: new Date(),
@@ -151,9 +161,9 @@ function ClientPayment() {
                 customer_id: customer.customer_id,
                 currency: 'usd',
             }
-        console.log("savepayment",savepayment);
+        // console.log("savepayment",savepayment);
         // setErrors(errormsg);
-        console.log(isValid);
+        // console.log(isValid);
         if (isValid) {
            /*  let savepayment = {
                 date: new Date(),

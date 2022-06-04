@@ -662,6 +662,7 @@ function SignUp() {
                             setUserId(response.data.result._id);
                             //history.push("/trainersaccountinfo");
                             document.querySelector('.loading').classList.remove('d-none');
+                            // <button data-toggle="modal" data-target="#report-block"><i className="far fa-flag"></i></button>
                             $('#plaidbutton > button').click();
                         }
                     }
@@ -702,7 +703,9 @@ function SignUp() {
                     setUserId(response.data.result._id);
                     //history.push("/trainersaccountinfo");
                     document.querySelector('.loading').classList.remove('d-none');
-                    $('#plaidbutton > button').click();
+                    // $('#plaidbutton > button').click();
+                    console.log("on trigger");
+                    $('#add_bank_modal').click();
                 }
                 else {
                     swal({
@@ -908,6 +911,26 @@ function SignUp() {
                 </div>
             )
             }
+            {(
+                <>
+                    <button id="add_bank_modal" type="button" className="btn btn-primary d-none" data-toggle="modal" data-target="#add_bank"></button>
+                    <div className="modal fade" id="add_bank" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content p-4">
+                                <div className="modal-body">
+                                    <h2 className='text-center'>
+                                        <i class="far fa-check-circle check-i m-0"></i>
+                                    </h2>
+                                    <h4 className='text-center'>Registered Successfully</h4>
+                                    <button type="button" onClick={() => $('#plaidbutton > button').click()} className="training_btn bg-transparent text-primary my-3" data-toggle="modal" data-dismiss="modal" /* data-target="#plaidbutton" */>Add Bank</button>
+                                    <button type="button" onClick={() => history.push("/signupsuccess")} className="training_btn my-3" data-dismiss="modal">Skip Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
             <div className="container my-md-5 py-md-4" ref={ref}>
                 <div className="commonbox" ref={ref}>
                     <div className="col-md-12">
@@ -933,6 +956,7 @@ function SignUp() {
                                             <div className="nav-link text-center active" data-toggle="tab" onClick={() => { history.push('/trainer/login') }}>TRAINER</div>
                                         </li>
                                     </ul>
+
                                     <div className='tab-content'>
                                         <div id="TRAINER" className="container tab-pane fade active">
                                             <div className="row my-4">

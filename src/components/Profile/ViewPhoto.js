@@ -12,10 +12,12 @@ function ViewPhoto() {
     const initState = { date: new Date(), list: [], base64Img: [] };
     const [getAllPhotos, setGetAllPhotos] = useState([]);
     const [isMountRender, setMountRender] = useState(true);
+    const [trainerData, setTrainerData] = useState();
     useEffect(() => {
         if (isMountRender) return;
     }, [isMountRender]);
     useEffect(() => {
+        setTrainerData(JSON.parse(localStorage.getItem('user')));
         setMountRender(false);
         callToken();
         fetchProgressPhotos();
@@ -30,7 +32,7 @@ function ViewPhoto() {
         document.querySelector('.loading').classList.remove('d-none');
         axios.get(`${apiUrl}${PORT}/client/account/getprogressphotos`, {}, {}).then(function (response) {
             document.querySelector('.loading').classList.add('d-none');
-            console.log("response",response);
+            // console.log("response",response);
             if (response.data.status === 1) {
                 // debugger
                 if (response.data.result && response.data.result.length > 0) {
@@ -81,7 +83,9 @@ function ViewPhoto() {
             if (file) {
                 fileReader.onload = fileLoad => {
                     const { result } = fileLoad.target;
+                    // console.log("getAllPhotos.length > 0 ",getAllPhotos.length > 0);
                     if (getAllPhotos.length > 0) {
+                        // console.log("cond",obj && obj.date === getAllPhotos.filter(x => x.date === obj.date)[0]?.date);
                         if (obj && obj.date === getAllPhotos.filter(x => x.date === obj.date)[0]?.date) {
                             getAllPhotos.filter(x => x.date === obj.date)[0].list.push(file);
                             getAllPhotos.filter(x => x.date === obj.date)[0].base64Img.push(result);
@@ -91,6 +95,7 @@ function ViewPhoto() {
                         obj.base64Img.push(result);
                         setGetAllPhotos(old => [...old, obj]);
                     }
+                    // console.log("getAllPhotos",getAllPhotos);
                     setProfileImagePreview(result);
                     setProfileImage(file);
                 };
@@ -105,6 +110,7 @@ function ViewPhoto() {
         const formData = new FormData();
         var filelist = [];
         // debugger
+        // console.log("getAllPhotos",getAllPhotos);
         for (var key in getAllPhotos[0].list) {
             if (getAllPhotos[0].list[key].type !== undefined) {
                 formData.append(getAllPhotos[0].list[key].name, getAllPhotos[0].list[key]);
@@ -151,6 +157,7 @@ function ViewPhoto() {
         history.push("/editprofile")
     } */
 
+    // console.log("getAllPhotos",getAllPhotos);
     return (
         <>
             <div className="container-fluid">
@@ -169,7 +176,7 @@ function ViewPhoto() {
                                     <div className="col-md-12 col-12 mb-4">
                                         <div className="d-flex">
                                             <div className="p-photo">
-                                                <img src="/img/Small-no-img.png" onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' />
+                                                <img src={apiUrl+PORT+trainerData.profile} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' />
                                             </div>
                                             <div className="progress-content">
                                                 <p>Photos</p>
@@ -199,7 +206,7 @@ function ViewPhoto() {
                                         }
                                     })}
                                     {new Date().toDateString() === new Date(res.date).toDateString() ?
-                                        <div className="col-lg-3 col-md-6 col-12 d-none">
+                                        <div className="col-lg-3 col-md-6 col-12 -d-none">
                                             <div className="prog-img">
                                                 <input type="file" id="imgupload" onChange={(e) => { OnFileChange(e, res) }} />
                                             </div>

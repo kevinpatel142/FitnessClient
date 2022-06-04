@@ -83,7 +83,7 @@ function MyWorkout() {
                                                     return (
                                                         <tr key={'index' + index}>
                                                             <td>{index + 1}</td>
-                                                            <td>{ele?.client_data?.firstname}</td>
+                                                            <td style={{ textTransform: "capitalize"}}>{ele?.trainer_data?.firstname}</td>
                                                             <td>{ele?.sessionworkout?.basicMovements.map((rs, ind) => {
                                                                 return (<p key={'ind' + ind}>{rs.movementName}</p>)
                                                             })}</td>

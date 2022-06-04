@@ -14,30 +14,23 @@ const PendingWorkout = () => {
     async function GetList() {
         const user = localStorage.getItem('user');
         const userData = JSON.parse(user);
-        console.log("userData", userData._id);
         document.querySelector('.loading').classList.remove('d-none');
         // setTrainerId(id);
-
-
         const userParam = {
             "user_id": userData._id,
         }
-        await axios.post(`${apiUrl}${PORT}/client/session/getAllworkout`, { userParam })
+        await axios.get(`${apiUrl}${PORT}/client/session/getAllworkout`, { userParam })
             .then(function (response) {
-                console.log("response", response.data.result);
                 document.querySelector('.loading').classList.add('d-none');
-                // srlist = response.data.result;
                 setSessionRequestList(response.data.result);
                 // setSessionRequestList(...srlist, response.data.result);
-                // console.log("srlist",srlist);
-
                 /* renderArr(response.data.result); */
             }).catch(function (error) {
                 //document.querySelector('.loading').classList.add('d-none');
                 console.log(error);
             });
 
-        console.log("srlist-1", srlist);
+        
         //  console.log("test-1", test);
     };
     return (
@@ -68,13 +61,13 @@ const PendingWorkout = () => {
                                                 return (<><tr>
                                                     <td>
                                                         <div className="">
-                                                            <img className="history-img" src={elem.client_data.profile.length > 0 ? `${apiUrl}${PORT}${elem.client_data.profile}` : '/img/Small-no-img.png'} alt="img" />
+                                                            <img className="history-img" src={apiUrl + PORT + elem?.client_data?.profile} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt="img" style={{objectFit:"cover"}} />
                                                             <span className="history-name">{elem.client_data.firstname} {elem.client_data.lastname}</span>
                                                         </div>
                                                     </td>
                                                     <td><span><Moment format="YYYY/MM/DD, hh:m A" date={elem.date} /></span></td>
 
-                                                    <td>{elem.sessionworkout ? <span className="btn-success p-status">Completed</span> : <Link title='Go Workout Form' to={`/sessiondetails?Id=${elem._id}`}><span className="btn-warning p-status">Pending</span></Link>}</td>
+                                                    <td>{elem.sessionworkout ? <span className="btn-success p-status">Completed</span> : <Link title='Go Workout Form' to={`/sessiondetails?id=${elem._id}`}><span className="btn-warning p-status">Pending</span></Link>}</td>
                                                 </tr></>)
                                             }) : <><tr><td colspan="10">No Records Found</td></tr></>
                                         }

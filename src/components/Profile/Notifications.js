@@ -68,6 +68,7 @@ function Notifications() {
                 // debugger
                 setIsLoader(false);
                 console.log("response", response);
+                console.log("long", response.data.result.app == undefined);
                 console.log("length", Object.keys(response.data.result).length > 0);
                 if (response.data.status === 1) {
                     // if (Object.keys(response.data.result).length > 0) {
@@ -97,6 +98,7 @@ function Notifications() {
                     });
                 }
             }).catch(function (error) {
+                console.log("error",error);
                 setIsLoader(false);
                 swal({
                     title: "Error!",

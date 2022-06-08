@@ -82,11 +82,11 @@ function MyProfile() {
                     if (response.data.result) {
                         setClient(response.data.result);
 
-                        setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
-                        setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
+                        setProfileImagePreview((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
+                        setProfileImage((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
 
-                        setTrainerProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
-                        setTrainerImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerProfileImagePreview((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerImage((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
                     }
                 } else {
                     // debugger
@@ -94,7 +94,7 @@ function MyProfile() {
                     if (response.data.result) {
                         setExp(response.data.result.experience);
                         setUser(response.data.result);
-                        // console.log("response.data.result.profile", response.data.result);
+                        console.log("response.data.result.profile", response.data.result);
                         setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
                         setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
 
@@ -283,7 +283,7 @@ function MyProfile() {
             if (typeof (trainerimagepreview) == 'string') {
                 profile = trainerimagepreview.split(apiUrl + PORT);
                 profile = profile[1];
-                setTrainerImage(...trainerimagepreview, profile[1]);
+                setTrainerImage(...trainerimagepreview, profile);
             } else {
                 profile = trainerimagepreview;
             }

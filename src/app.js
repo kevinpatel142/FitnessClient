@@ -45,6 +45,7 @@ import "./app.css";
 import MobileVedioSession from "./components/Others/MobileVedioSession";
 import PendingWorkout from './components/Trainer/PendingWorkout';
 import Moment from 'react-moment';
+import ClientPaymentHistory from "./components/Client/ClientPaymentHistory";
 
 
 function App() {
@@ -372,7 +373,7 @@ function App() {
                                     <div className="qty">0</div>
                                   </button>
                                   <ul className="dropdown-menu">
-                                    <li className="d-flex justify-content-between"><span className="noti-text">Notifications</span><span className="noti_subtext">Mark all as read</span></li>
+                                    <li className="d-flex justify-content-between"><span className="noti-text">Notifications</span>{Object.keys(allNotification).length > 0 ? <span className="noti_subtext">Mark all as read</span> : <></> }</li>
                                     <li>
                                       <ul className="list-inline noti_submenu">
                                         {/* {Object.keys(allNotification).map(function (key, value) {
@@ -542,6 +543,7 @@ function App() {
                 <Route path="/schedulerequest"><ScheduleRequest></ScheduleRequest></Route>
                 <Route path="/sessiondetails"><SessionDetails></SessionDetails></Route>
                 <Route path="/paymenthistory"><PaymentHistory></PaymentHistory></Route>
+                <Route path="/payment/clientpaymenthistory"><ClientPaymentHistory></ClientPaymentHistory></Route>
                 <Route path="/mysession"><MySession></MySession></Route>
                 <Route path="/booksessionsdetail"><BookSessionsDetail></BookSessionsDetail></Route>
                 <Route path="/pendingworkout"><PendingWorkout></PendingWorkout></Route>

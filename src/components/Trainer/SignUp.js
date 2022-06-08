@@ -73,7 +73,7 @@ function SignUp() {
                 axios.post(`${apiUrl}${PORT}/exchange/receivePublicToken`, obj, {
                 }).then(function (response) {
                     if (response.data.status === 1) {
-                        console.log(response.data.result);
+                        // console.log(response.data.result);
                         // Bank account update
                         var bankobj = {
                             id: localStorage.getItem('trainerId'),
@@ -189,9 +189,16 @@ function SignUp() {
         }
     };
 
+
+    const [emailnotifications,setEmailnotifications] = useState(true);
+    const [maillinglist,setMaillinglist] = useState(true);
+    const [textnotifications,setTextnotifications] = useState(true);
+    /* const [webnotifications,setWebnotifications] = useState(true);
+    const [mobilenotifications,setMobilenotifications] = useState(true); */
+
     const [user, setUser] = useState({
         firstname: "", lastname: "", email: "", password: "", confirmpassword: "", phoneno: "", gender: "Male", aboutus: "", trainingstyle: "", quote: "", experience: 0, qualifications: "",
-        specialitys: "", introduction: "", certifications: "", emailnotifications: false, maillinglist: false, textnotifications: false
+        specialitys: "", introduction: "", certifications: "", emailnotifications: emailnotifications, maillinglist: maillinglist, textnotifications: textnotifications
     });
     const [qualificationslist, setQualifications] = useState([]);
     const [qualificationshtmllist, setHtmlQualifications] = useState([]);
@@ -485,6 +492,19 @@ function SignUp() {
     };
 
     const handleInputs = (e) => {
+        if (e.target.name === "emailnotifications"){
+            setEmailnotifications(!emailnotifications);
+            // setUser({...user, [e.target.name] : emailnotifications})
+        }
+
+        if (e.target.name === "maillinglist"){
+            setMaillinglist(!maillinglist);
+            // setUser({ ...user, [e.target.name]: maillinglist });
+        }
+        if (e.target.name === "textnotifications"){
+            setTextnotifications(!textnotifications);
+            // setUser({ ...user, [e.target.name]: textnotifications });
+        }
         setUser({ ...user, [e.target.name]: e.target.value });
     }
 
@@ -620,11 +640,16 @@ function SignUp() {
             formData.append('experience', parseInt(expVal));//parseInt(document.getElementById("experience").value));
             formData.append('specialitys', specialityslist.toString());
             formData.append('introduction', user.introduction);
+           
+            formData.append('emailnotifications', emailnotifications);
+            formData.append('maillinglist', maillinglist);
+            formData.append('textnotifications', textnotifications);
+
             //formData.append('qualifications', qualificationsObj);
             //formData.append('certifications', certificationsObj);
-            formData.append('emailnotifications', (user.emailnotifications === "on") ? true : user.emailnotifications);
+            /* formData.append('emailnotifications', (user.emailnotifications === "on") ? true : user.emailnotifications);
             formData.append('maillinglist', (user.maillinglist === "on") ? true : user.maillinglist);
-            formData.append('textnotifications', (user.textnotifications === "on") ? true : user.textnotifications);
+            formData.append('textnotifications', (user.textnotifications === "on") ? true : user.textnotifications); */
             // const formData = {
             //     "coverprofile": coverimage,
             //     "profile": profileimage,
@@ -704,7 +729,7 @@ function SignUp() {
                     //history.push("/trainersaccountinfo");
                     document.querySelector('.loading').classList.remove('d-none');
                     // $('#plaidbutton > button').click();
-                    console.log("on trigger");
+                    // console.log("on trigger");
                     $('#add_bank_modal').click();
                 }
                 else {

@@ -349,7 +349,7 @@ function BookSessionsDetail() {
                                             <div className="d-flex justify-content-between">
                                                 <h4 className="mb-3">
                                                     {item.trainer_data.trainingstyle !== "" && item.trainer_data.trainingstyle ?
-                                                        <span>{item.trainer_data.trainingstyle.substr(1, 20)}</span> : <>Strength</>
+                                                        <span>{item.trainer_data.trainingstyle.substr(0, 20)}</span> : <>Strength</>
                                                     }
                                                 </h4>
                                                 <span className="exercies">{item?.sessionworkout?.basicMovements?.length} Exercises</span>
@@ -401,7 +401,7 @@ function BookSessionsDetail() {
                                                                 </span>
                                                                 <p className="text-gray clr">
                                                                     {item.trainer_data.trainingstyle !== "" && item.trainer_data.trainingstyle ?
-                                                                        <span>{item.trainer_data.trainingstyle.substr(1, 10)}</span> : <></>
+                                                                        <span>{item.trainer_data.trainingstyle.substr(0, 10)}</span> : <></>
                                                                     }
                                                                 </p>
                                                             </div>
@@ -434,7 +434,7 @@ function BookSessionsDetail() {
                                 <div className="history_block mb-4">
                                     <h4 className="mb-3">
                                         {item.trainer_data.trainingstyle !== "" && item.trainer_data.trainingstyle ?
-                                            <span>{item.trainer_data.trainingstyle.substr(1, 20)}</span> : <>Strength</>
+                                            <span>{item.trainer_data.trainingstyle.substr(0, 20)}</span> : <>Strength</>
                                         }
                                     </h4>
                                     <div className="crossfit-t">
@@ -536,7 +536,7 @@ function BookSessionsDetail() {
                             onClick={() => { $(".modal-backdrop").removeClass("show"); setSessionConfirmModal(false); }}
                             data-dismiss="modal" data-toggle="modal" data-target="#cancel-b">Cancel Training</a>
                         <Link className="training_btn mb-2" onClick={() => { $(".modal-backdrop").removeClass("show"); setSessionConfirmModal(false); }} to="/MySession">No,Thanks</Link>
-                        <p className="c-policy">Please review our cancellation policy <Link to="">Cancel/ Rescheduling Policy.</Link></p>
+                        <p className="c-policy">Please review our cancellation policy <Link to="/cancellationpolicy">Cancel/ Rescheduling Policy.</Link></p>
                     </div>
                 </Modal.Body>
             </Modal>

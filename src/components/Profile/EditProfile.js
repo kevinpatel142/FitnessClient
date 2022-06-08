@@ -91,8 +91,11 @@ function EditProfile() {
                 /* localStorage.setItem("progressphotos", JSON.stringify(response.data.result.progressphotos)); */
                 /* setProgressphotos(JSON.parse(localStorage.getItem("progressphotos"))); */
                 /* console.log(progressphotos); */
-                setProfileImagePreview(apiUrl + PORT + response.data?.result?.profile || ProfileImage_URL);
-                setProfileImage(response.data?.result?.profile || ProfileImage_URL);
+                // console.log(response.data?.result?.profile != "null");
+                let profileImage = response.data?.result?.profile != "null" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
+                console.log("profileImage",profileImage);
+                setProfileImagePreview(profileImage);
+                setProfileImage(profileImage);
                 if (val === 1) {
                     const loginuserdetail = localStorage.getItem('user');
                     var loginUser = {};

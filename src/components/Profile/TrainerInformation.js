@@ -225,10 +225,10 @@ function TrainerInformation() {
 
         const formData = new FormData();
         formData.append('tainerId', Id);
-        document.querySelector('.loading').classList.remove('d-none');
+        // document.querySelector('.loading').classList.remove('d-none');
         await axios.post(`${apiUrl}${PORT}/client/bookmarktrainer`, formData, {
         }).then(function (response) {
-            document.querySelector('.loading').classList.add('d-none');
+            // document.querySelector('.loading').classList.add('d-none');
             if (response.data.status === 1) {
                 //GetList(Id);
                 //history.push("trainerinformation?Id=" + Id);
@@ -400,7 +400,7 @@ function TrainerInformation() {
                                                 <h4>{list.firstname} <i className="fas fa-circle text-success dot_i"></i></h4>
                                                 <p>
                                                     {list.trainingstyle !== "" && list.trainingstyle ?
-                                                        <span>{list.trainingstyle?.substr(1, 10)}</span> : <></>
+                                                        <span>{list.trainingstyle?.substr(0, 15)}</span> : <></>
                                                     }
                                                 </p>
                                             </div>

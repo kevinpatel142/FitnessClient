@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
 import swal from 'sweetalert';
 import { verifytokenCall } from '../Others/Utils.js';
+import { Link } from 'react-router-dom';
 function ClientPayment() {
     const history = useHistory();
     const [errors, setErrors] = useState({});
@@ -141,7 +142,7 @@ function ClientPayment() {
         /* console.log("payment", payment);
         console.log("selectedCard", selectedCard);
         console.log(selectedCard.length === 0); */
-        if(selectedCard.length === 0){
+        if (selectedCard.length === 0) {
             isValid = false;
             swal({
                 title: "Error!",
@@ -150,27 +151,27 @@ function ClientPayment() {
                 button: true
             })
         }
-            
-       
-            let savepayment = {
-                date: new Date(),
-                noofsession: purchasePlan.sessions,
-                plantype: purchasePlan.planType,
-                amount: purchasePlan.amount,
-                payment_method: selectedCard.id,
-                customer_id: customer.customer_id,
-                currency: 'usd',
-            }
+
+
+        let savepayment = {
+            date: new Date(),
+            noofsession: purchasePlan.sessions,
+            plantype: purchasePlan.planType,
+            amount: purchasePlan.amount,
+            payment_method: selectedCard.id,
+            customer_id: customer.customer_id,
+            currency: 'usd',
+        }
         // console.log("savepayment",savepayment);
         // setErrors(errormsg);
         // console.log(isValid);
         if (isValid) {
-           /*  let savepayment = {
-                date: new Date(),
-                noofsession: purchasePlan.sessions,
-                plantype: purchasePlan.planType,
-                amount: purchasePlan.amount
-            } */
+            /*  let savepayment = {
+                 date: new Date(),
+                 noofsession: purchasePlan.sessions,
+                 plantype: purchasePlan.planType,
+                 amount: purchasePlan.amount
+             } */
             document.querySelector('.loading').classList.remove('d-none');
             axios.post(`${apiUrl}${PORT}/payment/savepayment`, savepayment)
                 .then(response => {
@@ -274,6 +275,11 @@ function ClientPayment() {
     // console.log("selectedCard",selectedCard);
     return (
         <>
+            <div clasName="col-12">
+                <h5 className='float-right'>
+                    <small><Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary">Payment History</Link></small>
+                </h5>
+            </div>
             <div className="container my-md-5 py-md-4">
                 <div className="loading d-none">
                     <div className="mainloader"></div>
@@ -350,7 +356,7 @@ function ClientPayment() {
                                                                     </span>
                                                                 </label> */}
                                                             {newCardArr && newCardArr.map((ele) => {
-                                                                return <label className="card" onClick={(e) => {setSelectedCard(ele)} }>
+                                                                return <label className="card" onClick={(e) => { setSelectedCard(ele) }}>
                                                                     <input name="plan" className="radio" /* onChange={setCardData} */ type="radio" vlaue={ele.id} />
                                                                     <span className="plan-details">
                                                                         <span className="d-flex justify-content-between">
@@ -530,7 +536,7 @@ function ClientPayment() {
                                                 <label>Expiration date</label>
                                                 <div className="d-flex justify-content-between">
                                                     <select className="input-box w-100 mr-2" value={expirationMonth} name="expirationMonth" onChange={newCardhandleChange}>
-                                                        <option></option>
+                                                        <option>Month</option>
                                                         <option>1</option>
                                                         <option>2</option>
                                                         <option>3</option>
@@ -545,7 +551,7 @@ function ClientPayment() {
                                                         <option>12</option>
                                                     </select>
                                                     <select className="input-box w-100 mr-2" value={expirationYear} name="expirationYear" onChange={newCardhandleChange}>
-                                                        <option></option>
+                                                        <option>Year</option>
                                                         <option>2022</option>
                                                         <option>2023</option>
                                                         <option>2024</option>
@@ -563,6 +569,7 @@ function ClientPayment() {
                                             <div className="col-md-4">
                                                 <label>CVC/CVV</label>
                                                 <input className="input-box w-100 mr-2" type="text" maxLength={"3"}
+                                                    placeholder="CVV"
                                                     name="cvv" value={cvv}
                                                     onKeyPress={(event) => {
                                                         if (!/[0-9]/.test(event.key)) {

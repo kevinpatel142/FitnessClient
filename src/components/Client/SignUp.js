@@ -546,7 +546,7 @@ function SignUp() {
                                     </div>
                                     <div className="col-md-12">
                                         <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno"
-                                            pattern="[+-]?\d+(?:[.,]\d+)?" type="number" className="w-100 mb-3 input-box" placeholder="Mobile Number" />
+                                            pattern="[+-]?\d+(?:[.,]\d+)?" type="number" maxLength={10} className="w-100 mb-3 input-box" placeholder="Mobile Number" />
                                         <div className="text-danger">{errors.phoneno}</div>
                                     </div>
                                     <div className="col-12">

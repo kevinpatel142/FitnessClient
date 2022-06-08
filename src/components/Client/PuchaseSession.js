@@ -71,7 +71,7 @@ function PurchaseSession() {
                                                         return (<div key={'index' + index} className="form-group">
                                                             <input checked={plan === `S-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`S-1-${ele.noofsession}`} id={`Standard${index}`} type="radio" name="custom-radio-btn" />
                                                             <label className="custom-radio" htmlFor={`Standard${index}`}>
-                                                            <span className="label-text">{ele.noofsession === '1' ? 'Single' : ele.noofsession} Sessions<span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
+                                                                <span className="label-text">{ele.noofsession === '1' ? 'Single' : `${ele.noofsession} Sessions`} <span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
                                                             </label>
                                                         </div>
                                                         );
@@ -114,9 +114,9 @@ function PurchaseSession() {
                                                 list.map((ele, index) => {
                                                     if (ele.plantype === "Elite") {
                                                         return (<div key={'index' + index} className="form-group">
-                                                            <input checked={plan === `E-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`E-1-${ele.noofsession}`} id={`Elite${index}`} type="radio" name="custom-radio-btn" />                                                                                                           
+                                                            <input checked={plan === `E-1-${ele.noofsession}`} onChange={(e) => { OnchnagePlan(e, ele); }} value={`E-1-${ele.noofsession}`} id={`Elite${index}`} type="radio" name="custom-radio-btn" />
                                                             <label className="custom-radio" htmlFor={`Elite${index}`}>
-                                                            <span className="label-text">{ele.noofsession === '1' ? 'Single' : ele.noofsession} Sessions<span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
+                                                                <span className="label-text">{ele.noofsession === '1' ? 'Single' : `${ele.noofsession} Sessions`}<span className="float-right">${ele.amount}<span className="text-gray font-13"></span></span></span>
                                                             </label>
                                                         </div>
                                                         );
@@ -156,16 +156,16 @@ function PurchaseSession() {
                             <div className="col-md-12">
                                 <h4 className="font-weight-bold my-4">Purchased Session</h4>
                             </div>
-                            <div className="col-md-12 mb-5">                                
+                            <div className="col-md-12 mb-5">
                                 <div class="graysession">
-                                <table class="w-100">
-                                    <tr>
-                                        <td> <span className="textgray">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
-                                        <td><span className="textgray">Plan : </span><span className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</span></td>
-                                        <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
-                                        <td><span className="textgray">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span></td>
-                                    </tr>
-                                </table>
+                                    <table class="w-100">
+                                        <tr>
+                                            <td> <span className="textgray">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
+                                            <td><span className="textgray">Plan : </span><span className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</span></td>
+                                            <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
+                                            <td><span className="textgray">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -172,7 +172,7 @@ function SavedTrainer({ type, flterValue }) {
                                                                     <Rating initialValue={tainerlist.rankingtrainer} size="17" readonly="true" allowHover="false" allowHalfIcon="true" />
                                                                     <p className="mb-0">
                                                                         {tainerlist.trainingstyle !== "" && tainerlist.trainingstyle ?
-                                                                            <span>{tainerlist.trainingstyle.substr(1, 10)}</span> : <></>
+                                                                            <span>{tainerlist.trainingstyle.substr(0, 25)}</span> : <></>
                                                                         }
                                                                     </p>
                                                                 </div>

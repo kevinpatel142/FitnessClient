@@ -106,7 +106,7 @@ function Trainer({ type, flterValue }) {
                                                                         <Rating ratingValue={tainerlist.averageRating * 20} size="20" readonly="true" allowHover="false" allowHalfIcon="true" />
                                                                         <p className="mb-0">
                                                                             {tainerlist.trainingstyle !== "" && tainerlist.trainingstyle ?
-                                                                                <span>{tainerlist.trainingstyle.substr(1, 25)}</span> : <></>
+                                                                                <span>{tainerlist.trainingstyle.substr(0, 25)}</span> : <></>
                                                                             }
                                                                             {/* {
                                                                                 tainerlist.type !== "" && tainerlist.type ? <span>{tainerlist.type}</span> : <></>
@@ -144,6 +144,8 @@ function Trainer({ type, flterValue }) {
     };
 
     const bookmarkTainer = async (e, status) => {
+        console.log("e",e);
+        console.log("status",status);
         const formData = new FormData();
         formData.append('tainerId', e._id);
         setIsLoader(true);
@@ -203,12 +205,15 @@ function Trainer({ type, flterValue }) {
                     tempList = response.data?.result?.trainerlist;
                 } else {
                     if (noOfRec >= allTrainerList.length) {
-                        tempList = allTrainerList;
+                        // tempList = allTrainerList;
+                        console.log("tempList", tempList);
+                        console.log(response.data?.result?.trainerlist);
                         for (let index = 0; index < response.data?.result?.trainerlist.length; index++) {
                             tempList.push(response.data?.result?.trainerlist[index]);
                         }
                     }
                 }
+                console.log("tempList", tempList);
                 actualnoOfRec = tempList.length || 0;
                 allTrainerList = tempList;
                 setAllList(tempList);

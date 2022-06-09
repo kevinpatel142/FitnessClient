@@ -74,7 +74,7 @@ function MyProfile() {
         let _url = (usertype === "client") ? '/client/account' : '/trainer/account';
         await axios.get(`${apiUrl}${PORT}${_url}/getprofile`, {}, {}
         ).then(function (response) {
-            console.log("response", response);
+            // console.log("response", response);
             document.querySelector('.loading').classList.add('d-none');
             if (response.data.status === 1) {
                 if (usertype === "client") {
@@ -94,7 +94,7 @@ function MyProfile() {
                     if (response.data.result) {
                         setExp(response.data.result.experience);
                         setUser(response.data.result);
-                        console.log("response.data.result.profile", response.data.result);
+                        // console.log("response.data.result.profile", response.data.result);
                         setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
                         setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
 
@@ -200,7 +200,7 @@ function MyProfile() {
             errormsg.quote = "Please enter quote description.";
             isValid = false;
         }
-        console.log("qualificationslist",qualificationslist);
+        // console.log("qualificationslist", qualificationslist);
         if (qualificationslist.length === 0) {
             errormsg.qualification = "Please enter qualifications.";
             isValid = false;
@@ -243,7 +243,7 @@ function MyProfile() {
                 "name": qualificationslist.join(","),
                 "path": imagesQuaPathList
             }
-            console.log(qualificationsObj);
+            // console.log(qualificationsObj);
             // let certificationsObj = {
             //     "name": certificationslist.join(","),
             //     "path": cerimagesPathList
@@ -264,7 +264,7 @@ function MyProfile() {
                 password: user.password || "",
                 confirmpassword: user.confirmpassword || ""
             }
-            console.log("obj", obj);
+            // console.log("obj", obj);
             // "specialitys": specialityslist.toString(),
             // "introduction": user.introduction,
             // "certifications": certificationsObj,
@@ -276,7 +276,7 @@ function MyProfile() {
                 formData.append(key, obj[key]);
             }
 
-            console.log("trainerimagepreview", typeof (trainerimagepreview));
+            // console.log("trainerimagepreview", typeof (trainerimagepreview));
 
             // PROFILE IMAGE
             let profile;
@@ -345,7 +345,7 @@ function MyProfile() {
         for (var key in qualificationsObj?.path) {
             form_data.append(qualificationsObj?.path[key].name, qualificationsObj?.path[key].uri);
         }
-        console.log("qualificationsObj", qualificationsObj);
+        // console.log("qualificationsObj", qualificationsObj);
         form_data.append("id", tid);
         form_data.append("qualifications", JSON.stringify(qualificationsObj));
         form_data.append("certifications", "");
@@ -353,7 +353,7 @@ function MyProfile() {
         axios.post(`${apiUrl}${PORT}/trainer/account/updateTrainerPara`, form_data)
             .then(response => {
                 document.querySelector('.loading').classList.add('d-none');
-                console.log("response", response);
+                // console.log("response", response);
                 if (response.data.status === 1) {
                     localStorage.setItem("user", JSON.stringify(response.data.result));
                     //window.alert(response.data.message);
@@ -471,7 +471,7 @@ function MyProfile() {
         } else {
             const fileReader = new window.FileReader();
             const file = event.target.files[0];
-            console.log("file", file);
+            // console.log("file", file);
 
             fileReader.onload = fileLoad => {
                 //const { result } = fileLoad.target;
@@ -754,11 +754,15 @@ function MyProfile() {
 
                                                 </div>
                                                 <div className="col-md-12">
-                                                    <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="input-box" placeholder="Mobile Number" />
+                                                    <input onChange={(e) => {
+                                                        if (e.target.value.length === 11)
+                                                            return;
+                                                        handleInputs(e)
+                                                    }} value={user.phoneno} name="phoneno" className="input-box" placeholder="Mobile Number" />
                                                     <div className="text-danger">{errors.phoneno}</div>
                                                 </div>
                                                 <div className="col-md-12">
-                                                    <h6>Gender</h6>
+                                                    <h6 className="text-blue">Gender</h6>
                                                     <div className="genderbox mb-3">
                                                         <div className="row">
                                                             <div className="col">
@@ -861,8 +865,8 @@ function MyProfile() {
                                             <div className="col-md-12 p-0">
                                                 <div className="number">
                                                     <div className="row">
-                                                        <div className="col-md-6 pt-2">
-                                                            <h6 className="text-gray">Experience (in years)</h6>
+                                                        <div className="col-md-6 pt-3">
+                                                            <h6 className="text-light-gray">Experience (in years)</h6>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="pmclass">
@@ -946,7 +950,7 @@ function MyProfile() {
                                     </div>
                                     <div className="col-md-12">
 
-                                        {!trainerData?.bankaccount ? <> <h4 class="font-weight-bold mb-3">Add Bank Account</h4> <h5 className='text-danger'><Plaid /></h5></> : ''}
+                                        {!trainerData?.bankaccount ? <> <h4 class="font-weight-bold mb-3 float-left">Add Bank Account</h4> <h5 className='text-danger'><Plaid /></h5></> : ''}
                                     </div>
 
                                 </div>

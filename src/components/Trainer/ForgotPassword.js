@@ -74,7 +74,7 @@ function ForgotPassword() {
                                 <div className="loginbox Forgotbox">
                                     <h6 className="text-center mb-4">Link to reset password will be sent to your email account</h6>
                                     <div className="col-md-12">
-                                        <input onChange={(e) => handleInputs(e)} name="email" type="text" className="w-100  mb-3 input-box" placeholder="Email Address" />
+                                        <input onChange={(e) => handleInputs(e)} name="email" type="text" className="w-100 mb-2 input-box" placeholder="Email Address" />
                                     </div>
                                     <div className="col-md-12">
                                         <button onClick={(e) => PostForgotPassword(e)} className="loginbtn mt-4">Submit</button>

@@ -300,7 +300,7 @@ function SignUp() {
                 'webnotifications': webnotifications,
                 'mobilenotifications': mobilenotifications,
             }
-            console.log("obj",obj);
+            // console.log("obj",obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
@@ -545,8 +545,12 @@ function SignUp() {
                                         </div>
                                     </div>
                                     <div className="col-md-12">
-                                        <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno"
-                                            pattern="[+-]?\d+(?:[.,]\d+)?" type="number" maxLength={10} className="w-100 mb-3 input-box" placeholder="Mobile Number" />
+                                        <input onChange={(e) =>{ 
+                                        if (e.target.value.length === 11)
+                                            return;
+                                        handleInputs(e)} } value={user.phoneno} name="phoneno"
+                                            pattern="[+-]?\d+(?:[.,]\d+)?" type="number" className="w-100 mb-3 input-box" placeholder="Mobile Number" 
+                                            />
                                         <div className="text-danger">{errors.phoneno}</div>
                                     </div>
                                     <div className="col-12">

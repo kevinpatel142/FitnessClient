@@ -139,7 +139,7 @@ function SavedTrainer({ type, flterValue }) {
                         <div className="mainloader"></div>
                     </div>
                     <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '5px' }}>
-                        <div className="frame smart" id={'smart' + index} style={{ height: 'auto', scrollbarWidth: 'none' }}>
+                        <div className="frame smart" id={'smart' + index} style={{ overflow: 'auto', height: '500px', scrollbarWidth: 'none' }}>
                             <ul key={'mainulkey' + index} className="items">
                                 {listitem.List.map((tainerlist, sindex) => {
                                     //if (status === 0 || tainerlist.availablestatus === status) {

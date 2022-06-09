@@ -4,6 +4,7 @@ import { apiUrl, PORT } from '../../environment/environment';
 import { Rating } from 'react-simple-star-rating';
 import swal from 'sweetalert';
 import { verifytokenCall } from '../Others/Utils.js';
+import ReactReadMoreReadLess from "react-read-more-read-less";
 function MyRating() {
     const [list, setList] = useState({});
     const [isMountRender, setMountRender] = useState(true);
@@ -67,33 +68,46 @@ function MyRating() {
                             : ""}
                         <div className="col-lg-12 col-md-12 col-12">
                             <div className="row">
-                            {list.length > 0 && list?.map((ele,index) => {
-                                return<div className="col-lg-4 col-md-6 col-12"><div key={'index' + index} className="rating_box">
-                                    <div className="d-flex justify-content-between mb-3">
-                                        <div className="rating-div d-flex">
-                                            <a href="#"><img src={`${apiUrl}${PORT}${ele.client_data.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' /></a>
-                                            <div className="rating-title">
-                                                <h5>{ele.client_data.firstname} {ele.client_data.lastname}</h5>
-                                                <span>{ele.sessionrating.rate / 20}</span>
-                                                <Rating size={20} ratingValue={ele.sessionrating.rate} allowHover="false" allowHalfIcon="true" readonly={true} />
-                                                {/* <span className="rating pl-2">
+                                {list.length > 0 && list?.map((ele, index) => {
+                                    return <div className="col-xl-4 col-md-6 col-12"><div key={'index' + index} className="rating_box">
+                                        <div className="spoiler">
+                                            <div className="d-sm-flex justify-content-sm-between mb-3">
+                                                <div className="rating-div d-flex">
+                                                    <a href="#"><img src={`${apiUrl}${PORT}${ele.client_data.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt='Profile' /></a>
+                                                    <div className="rating-title">
+                                                        <h5>{ele.client_data.firstname} {ele.client_data.lastname}</h5>
+                                                        <span>{ele.sessionrating.rate / 20}</span>
+                                                        <Rating size={20} ratingValue={ele.sessionrating.rate} allowHover="false" allowHalfIcon="true" readonly={true} />
+                                                        {/* <span className="rating pl-2">
                                                     <i className="fas fa-star"></i>
                                                     <i className="fas fa-star"></i>
                                                     <i className="fas fa-star"></i>
                                                     <i className="fas fa-star"></i>
                                                     <i className="fas fa-star"></i>
                                                 </span> */}
+                                                    </div>
+                                                </div>
+                                                <span className="rating-date">{new Date(ele.date).toLocaleDateString("en-IN", { month: 'short', day: 'numeric' })}</span>
                                             </div>
+                                            <div className="rating-content">
+                                                <p><ReactReadMoreReadLess
+                                                    charLimit={150}
+                                                    readMoreText={"Read more ▼"}
+                                                    readLessText={"Read less ▲"}
+                                                    readMoreClassName="read-more-less--more"
+                                                    readLessClassName="read-more-less--less"
+                                                >
+                                                    {ele.sessionrating.review}
+                                                </ReactReadMoreReadLess>
+                                                </p>
+                                                {/* <p>{ele.sessionrating.review.substr(0,150)} {ele.sessionrating.review.length > 150 ? "View more":""}</p> */}
+                                                {/* <p>{ele.sessionrating.review} {ele.sessionrating.review.length > 150 ? "View more" : ""}</p> */}
+                                            </div>
+                                            <p className="text-body mb-0">Session : Cross-Fit {ele.client_data.firstname}</p>
                                         </div>
-                                        <span>{new Date(ele.date).toLocaleDateString("en-IN", { month: 'short', day: 'numeric' })}</span>
                                     </div>
-                                    <div className="rating-content">
-                                        <p>{ele.sessionrating.review}</p>
                                     </div>
-                                    <p className="text-body mb-0">Session : Cross-Fit {ele.client_data.firstname}</p>
-                                </div>
-                            </div>
-                            })}
+                                })}
                             </div>
                             {/* <div className="rating_box">
                                 <div className="d-flex justify-content-between mb-3">

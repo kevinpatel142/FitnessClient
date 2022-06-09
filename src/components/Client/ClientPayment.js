@@ -95,7 +95,7 @@ function ClientPayment() {
             .then(response => {
                 document.querySelector('.loading').classList.add('d-none');
                 if (response.data.status === 1) {
-                    console.log("success return");
+                    // console.log("success return");
                     // history.push("/trainer");
                 } else {
                     swal({
@@ -117,6 +117,8 @@ function ClientPayment() {
         const customer = JSON.parse(localStorage.getItem("customer"));
         // console.log(customer.customer_id);
         let isValid = true;
+        /* console.log("selectedCard",selectedCard);
+        console.log("selectedCard.length",selectedCard.length); */
         /* var errormsg = {};
         if (payment.cardholdersName === "") {
             errormsg.cardholdersName = "Please enter holder name!";
@@ -141,8 +143,9 @@ function ClientPayment() {
         } */
         /* console.log("payment", payment);
         console.log("selectedCard", selectedCard);
-        console.log(selectedCard.length === 0); */
-        if (selectedCard.length === 0) {
+        console.log(selectedCard.length === 0); 
+        console.log(selectedCard.length === 0 || selectedCard.length === undefined);*/
+        if (selectedCard.length === 0 || selectedCard.length === undefined) {
             isValid = false;
             swal({
                 title: "Error!",
@@ -250,7 +253,7 @@ function ClientPayment() {
                         setIsNewCard(false);
                         // history.push("/trainer");
                     } else {
-                        console.log(response.data.message.code);
+                        // console.log(response.data.message.code);
                         swal({
                             title: "Error!",
                             text: response.data.message.code,
@@ -265,7 +268,7 @@ function ClientPayment() {
                 });
 
 
-            console.log(initialState);
+            // console.log(initialState);
         }
     }
     /* const setCardData = () => {

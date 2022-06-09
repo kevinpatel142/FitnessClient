@@ -13,6 +13,7 @@ function Trainer({ type, flterValue }) {
     const [List, setList] = useState([]);
     const [workoutList, setWorkOutList] = useState([]);
     const [sessionBook, setSessionBook] = useState('');
+    const [trainingStyle, setTrainingStyle] = useState('');
     const [status, setStatus] = useState();
     const [isLoader, setIsLoader] = useState(false);
     const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ function Trainer({ type, flterValue }) {
     const selectedStartDate = new Date();
     const [pageNum, setPageNum] = useState(1);
     const [noOfRecords, setNoOfRecords] = useState(0);
+    const [requestActive, setRequestActive] = useState('');
     var noOfRec = 0;
     var actualnoOfRec = 0;
     var isLoaderVal = false;
@@ -78,7 +80,7 @@ function Trainer({ type, flterValue }) {
                         <div className="mainloader"></div>
                     </div>
                     <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '5px' }}>
-                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '800px', scrollbarWidth: 'none' }}>
+                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '500px', scrollbarWidth: 'none' }}>
                             <ul className="items">
                                 {listitem.List.filter(tainerlist => tainerlist.availablestatus === status || status === 0).map((tainerlist, sindex) => {
                                     return (<li key={'subkey' + sindex} className="col-12 p-0">
@@ -122,7 +124,7 @@ function Trainer({ type, flterValue }) {
                                                                     </>
                                                                     :
                                                                     <>
-                                                                        <Link onClick={(e) => { e.preventDefault(); postSendRequest(tainerlist); }} className="banner-btn">Start Training</Link>
+                                                                        <Link onClick={(e) => { e.preventDefault(); postSendRequest(tainerlist); }} className={`${requestActive} banner-btn`}>Start Training</Link>
                                                                     </>
                                                                 }
                                                             </div>
@@ -144,8 +146,8 @@ function Trainer({ type, flterValue }) {
     };
 
     const bookmarkTainer = async (e, status) => {
-        console.log("e",e);
-        console.log("status",status);
+        /* console.log("e",e);
+        console.log("status",status); */
         const formData = new FormData();
         formData.append('tainerId', e._id);
         setIsLoader(true);
@@ -206,14 +208,14 @@ function Trainer({ type, flterValue }) {
                 } else {
                     if (noOfRec >= allTrainerList.length) {
                         // tempList = allTrainerList;
-                        console.log("tempList", tempList);
-                        console.log(response.data?.result?.trainerlist);
+                        // console.log("tempList", tempList);
+                        // console.log(response.data?.result?.trainerlist);
                         for (let index = 0; index < response.data?.result?.trainerlist.length; index++) {
                             tempList.push(response.data?.result?.trainerlist[index]);
                         }
                     }
                 }
-                console.log("tempList", tempList);
+                // console.log("tempList", tempList);
                 actualnoOfRec = tempList.length || 0;
                 allTrainerList = tempList;
                 setAllList(tempList);
@@ -331,6 +333,7 @@ function Trainer({ type, flterValue }) {
     }
 
     const postSendRequest = async (trainer_data) => {
+        // console.log("trainer_data", trainer_data?.trainingstyle);
         let isSubmit = true;
         if (isSubmit) {
 
@@ -358,12 +361,15 @@ function Trainer({ type, flterValue }) {
             setStartDateStr(selectedStartDate.getDate() + ' ' + monthNames[selectedStartDate.getMonth()]);
             setStartTimeStr(sTime.getHours() + ':' + sTime.getMinutes() + ' - ' + endTime.getHours() + ':' + endTime.getMinutes());
             setSessionBook(trainer_data?.firstname);
+            setTrainingStyle(trainer_data?.trainingstyle.substr(0, 10));
+
 
             setIsLoader(true);
             await axios.post(`${apiUrl}${PORT}/client/session/sessionrequest`, obj, {
             }).then(function (response) {
                 setIsLoader(false);
                 if (response.data.status === 1) {
+                    setRequestActive('disabled');
                     setConfirmReqModal(true);
                 }
                 else {
@@ -440,7 +446,7 @@ function Trainer({ type, flterValue }) {
                                                 <span className="float-md-right">{startDateStr}</span>
                                             </div>
                                             <div className="col-12 session-text">
-                                                <span className="float-md-left">Cross-Fit with {sessionBook}</span>
+                                                <span className="float-md-left">{trainingStyle} with {sessionBook}</span>
                                                 <span className="float-md-right">{startTimeStr}</span>
                                             </div>
                                         </div>

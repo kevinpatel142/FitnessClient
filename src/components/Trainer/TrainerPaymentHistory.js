@@ -3,7 +3,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import Moment from 'react-moment';
 import { Link, useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
+// import ReactExport from 'react-data-export';
 
+/* const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+ */
 function TrainerPaymentHistory() {
 
     const [trainerPayment, setTrainerPayment] = useState([]);
@@ -12,7 +17,7 @@ function TrainerPaymentHistory() {
         axios.get(`${apiUrl}${PORT}/payment/gettrainerpayment`)
             .then((response) => {
                 document.querySelector('.loading').classList.add('d-none');
-                console.log("response", response);
+                // console.log("response", response);
                 if (response.status == 200) {
                     setTrainerPayment(response.data.result);
                 }
@@ -51,7 +56,7 @@ function TrainerPaymentHistory() {
                                                 <tr key={element}>
                                                     <td>
                                                         <div className="">
-                                                            <img className="history-img" src={`${apiUrl}${PORT}${element.client_data.profile}`} alt="img" />
+                                                            <img className="history-img" src={`${apiUrl}${PORT}${element.client_data.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt="img" />
                                                             <span className="history-name">{element.client_data.firstname}</span>
                                                         </div>
                                                     </td>

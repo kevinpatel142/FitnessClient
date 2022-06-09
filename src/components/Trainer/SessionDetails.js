@@ -268,9 +268,9 @@ function SessionDetails() {
             <div className="container-fluid">
                 <div className="fixedblock">
 
-                    {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid /></h5> : ''}
+                    {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid/></h5> : ''}
                     {/* <div onClick={(e) => { addBank(e) }} className="loginbtn w-25 d-block float-right">Add Bank</div> */}
-                    <h1 className="main_title mb-3">Workout From</h1>
+                    <h1 className="main_title mb-4">Workout From</h1>
                     <div className="row">
                         <div className="col-md-4">
                             <div className="grayarea d-flex justify-content-between">

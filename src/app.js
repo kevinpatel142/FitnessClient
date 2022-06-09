@@ -335,7 +335,7 @@ function App() {
                           <div className="col-lg-7 col-12 text-right">
                             <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse float-right`} id="navbarsExample09">
                               <ul className="head-icon list-inline mb-0">
-                                {(pathnameUrl === "/trainer" || pathnameUrl === "/savedtrainer") && (usertype === "client") ?
+                                {(pathnameUrl === "/trainer" || pathnameUrl === "/savedtrainer") || (usertype === "trainer") ?
                                   <>
                                     <li className="list-inline-item"><input className="input_box" placeholder="Search" ref={serachText} onKeyPress={(e) => {
                                       if (e.which === 13) {

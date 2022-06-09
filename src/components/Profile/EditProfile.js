@@ -33,6 +33,10 @@ function EditProfile() {
                 return
             }
             for (const letter of rowMobileNumber.trim()) {
+                /* console.log("1st", mask.charAt(index) == '_');
+                console.log("2nd", mask.charAt(index) == '(');
+                console.log("3rd", mask.charAt(index) == ')');
+                console.log("letter", letter); */
                 if (mask.charAt(index) == '_') {
                     mobileNumber = mobileNumber + letter
                 } else if (mask.charAt(index) == '(') {
@@ -42,11 +46,11 @@ function EditProfile() {
                     mobileNumber = mobileNumber + letter
                 }
                 else {
-                    mobileNumber = mobileNumber + ' '
+                    mobileNumber = mobileNumber + letter
                 }
                 index++
             }
-            // console.log(mobileNumber)
+            // console.log("mobileNumber",mobileNumber)
         }
         setMobilenumber(mobileNumber)
 
@@ -76,6 +80,7 @@ function EditProfile() {
             if (response.data.status === 1) {
                 response.data.result.oldpassword = ""; response.data.result.password = ""; response.data.result.confirmpassword = "";
                 setUser(response.data.result);
+                setMobilenumber(response.data.result.phoneno);
                 user.height = response.data.result.height;
                 user.weight = response.data.result.weight;
                 if (response.data.result.fitnessgoals.length > 0) {
@@ -93,7 +98,7 @@ function EditProfile() {
                 /* console.log(progressphotos); */
                 // console.log(response.data?.result?.profile != "null");
                 let profileImage = response.data?.result?.profile != "null" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
-                console.log("profileImage",profileImage);
+                // console.log("profileImage", profileImage);
                 setProfileImagePreview(profileImage);
                 setProfileImage(profileImage);
                 if (val === 1) {
@@ -237,13 +242,14 @@ function EditProfile() {
         }
         setErrors(errormsg);
         if (isValid === true) {
-            console.log("progressphotos", typeof (progressphotos[0]));
+            // console.log("progressphotos", typeof (progressphotos[0]));
+            // user.phoneno = mobileNumber;
             let obj = {
                 //'profile': profileimage,
                 'firstname': user.firstname,
                 'lastname': user.lastname,
                 'email': user.email,
-                'phoneno': user.phoneno,
+                'phoneno': mobileNumber,
                 'age': user.age,
                 'gender': user.gender,
                 'heightisfeet': user.heightisfeet,
@@ -265,7 +271,7 @@ function EditProfile() {
                 'confirmpassword': user.confirmpassword,
                 // 'progressphotos': progressphotos,
             }
-            console.log("obj", obj);
+            // console.log("obj", obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
@@ -287,11 +293,11 @@ function EditProfile() {
             await axios.post(`${apiUrl}${PORT}/client/account/updateprofile`, form_data, {
             }).then(function (response) {
                 document.querySelector('.loading').classList.add('d-none');
-                console.log("response",response);
+                // console.log("response", response);
                 if (response.data.status === 1) {
                     localStorage.setItem("progressphotos", []);
                     // localStorage.setItem("user", []);
-                    console.log("response", response);
+                    // console.log("response", response);
                     localStorage.setItem('user', JSON.stringify(response.data.result));
                     // history.push("/editprofile");
                     fetchProfile(1);
@@ -451,7 +457,7 @@ function EditProfile() {
                                                     debugger
                                                     user.countryCode = e.target.value;
                                                     user.phoneno = '';
-                                                    setUser(user);
+                                                        setUser(user);
                                                     setMask(country.filter(x => x.code == e.target.value)[0]?.mask) // mask
                                                 }}>
                                                 <option value="">Select country</option>
@@ -472,12 +478,21 @@ function EditProfile() {
                                             id="cardNumber"
                                             value={mobileNumber}
                                             onChange={(event) => {
+                                                if (event.target.value.length === 11)
+                                                            return;
                                                 const { value } = event.target
+                                                // console.log("value",value);
                                                 beautifyMobileNumber(value);
                                             }}
                                             className="w-100 mb-4 input-box"
                                         />
-                                        {/* <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="w-100  mb-4 input-box" placeholder="Mobile Number" /> */}
+                                        {/* <input onChange={(e) => {
+                                            if (e.target.value.length === 11)
+                                                return;
+
+                                            handleInputs(e)
+                                        }} value={user.phoneno} name="phoneno" className="w-100  mb-4 input-box" placeholder="Mobile Number"
+                                        /> */}
                                         <div className="text-danger">{errors.phoneno}</div>
                                     </div>
                                     <div className="col-md-12 col-12">
@@ -485,7 +500,7 @@ function EditProfile() {
                                         <div className="text-danger">{errors.age}</div>
                                     </div>
                                     <div className="col-md-12 col-12">
-                                        <h6>Gender</h6>
+                                        <h6 className="text-blue">Gender</h6>
                                         <div className="genderbox">
                                             <div className="row">
                                                 <div className="col">

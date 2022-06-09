@@ -220,6 +220,39 @@ function ViewPhoto() {
                                             <div></div>
                                         }
                                     </div>
+
+                                    {new Date().toDateString() === new Date(res.date).toDateString() ?
+                                        <div className="col-lg-12 col-md-12 col-12 -d-none mb-4">
+                                            <div className="prog-img">
+                                                <input type="file" id="imgupload" className="fileupload-input" onChange={(e) => { OnFileChange(e, res) }} />
+                                            </div>
+                                        </div>
+                                        :
+                                        <div></div>
+                                    }
+                                    {res?.base64Img && res?.base64Img?.length > 0 && res?.base64Img.map((ele, index) => {
+                                        if (ele?.type?.indexOf('image/') > -1) {
+                                            return <></>
+                                        } else {
+                                            return <div key={index} className="col-lg-3 col-md-6 col-12 mb-2">
+                                                <div className="prog-img">
+                                                    <img src={`${ele?.indexOf('data:image/') > -1 ? ele : apiUrl + PORT + ele}`} alt="img" />
+                                                </div>
+                                            </div>
+                                        }
+                                    })}
+                                    {res?.list && res?.list?.length > 0 && res?.list.map((ele, index) => {
+                                        let isFile = ele.type ? ele.type.indexOf('image') > -1 : false;
+                                        if (!isFile) {
+                                            return <div key={index} className="col-lg-3 col-md-6 col-12 mb-2">
+                                                <div className="prog-img">
+                                                    <img src={apiUrl + PORT + ele} alt="img" />
+                                                </div>
+                                            </div>
+                                        }
+                                    })}
+                                   
+
                                 </div>
                             </>)
 

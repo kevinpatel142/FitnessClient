@@ -371,7 +371,7 @@ function TrainerInformation() {
                                                 <span className="float-md-right">{startDateStr}</span>
                                             </div>
                                             <div className="col-12 session-text">
-                                                <span className="float-md-left">Cross-fit with {list.firstname}</span>
+                                                <span className="float-md-left">{list.trainingstyle.substr(0, 10)} with {list.firstname}</span>
                                                 <span className="float-md-right">{startTimeStr}</span>
                                             </div>
                                         </div>
@@ -519,7 +519,7 @@ function TrainerInformation() {
                                                                 return (<div key={'workout_' + i} className="col-md-4 col-12">
                                                                     <div className="history_block">
                                                                         <div className="d-flex justify-content-between mb-2">
-                                                                            <h4>Strength with {item.trainer_data.firstname}</h4>
+                                                                            <h4>{item.trainer_data.trainingstyle.substr(0, 10)}{/*  with {item.trainer_data.firstname} */}</h4>
                                                                             <Link to={'/workoutform?Id=' + item._id}><span className="work_btn">View Workout</span></Link>
                                                                         </div>
                                                                         <div className="crossfit-t">

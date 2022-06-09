@@ -30,7 +30,7 @@ const PendingWorkout = () => {
                 console.log(error);
             });
 
-        
+
         //  console.log("test-1", test);
     };
     return (
@@ -61,13 +61,13 @@ const PendingWorkout = () => {
                                                 return (<><tr>
                                                     <td>
                                                         <div className="">
-                                                            <img className="history-img" src={apiUrl + PORT + elem?.client_data?.profile} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt="img" style={{objectFit:"cover"}} />
+                                                            <img className="history-img" src={apiUrl + PORT + elem?.client_data?.profile} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt="img" style={{ objectFit: "cover" }} />
                                                             <span className="history-name">{elem.client_data.firstname} {elem.client_data.lastname}</span>
                                                         </div>
                                                     </td>
                                                     <td><span><Moment format="YYYY/MM/DD, hh:m A" date={elem.date} /></span></td>
 
-                                                    <td>{elem.sessionworkout ? <span className="btn-success p-status">Completed</span> : <Link title='Go Workout Form' to={`/sessiondetails?id=${elem._id}`}><span className="btn-warning p-status">Pending</span></Link>}</td>
+                                                    <td>{elem.sessionworkout ? <span className="btn-success p-status">Completed</span> : <Link title='Go Workout Form' to={`/sessiondetails?id=${elem._id}`}><span className="btn-primary p-status">Pending</span></Link>}</td>
                                                 </tr></>)
                                             }) : <><tr><td colspan="10">No Records Found</td></tr></>
                                         }

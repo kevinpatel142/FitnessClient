@@ -184,6 +184,7 @@ function SessionDetails() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+
         let isValid = true;
         // $('#plaidbutton > button').click();
         var errormsg = {};
@@ -215,6 +216,7 @@ function SessionDetails() {
                 .then(response => {
                     setIsLoader(false);
                     if (response.data.status === 1) {
+                        trainerPayment();
                         swal({
                             title: "Success!",
                             text: response.data.message,
@@ -239,6 +241,21 @@ function SessionDetails() {
                     setIsLoader(false);
                 });
         }
+    }
+    const trainerPayment = async () => {
+        const paymentData = {
+            paymentStatus: 1,
+            method: "update",
+            sessionid: sessionId
+        }
+
+        await axios.post(`${apiUrl}${PORT}/payment/trainerpaymenthistory`, paymentData)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
     return (
         <>

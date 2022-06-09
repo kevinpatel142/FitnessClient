@@ -10,6 +10,7 @@ import LoginClient from "./components/Client/Login";
 import MySession from "./components/Client/MySession";
 import MyWorkout from './components/Client/MyWorkout';
 import PaymentHistory from "./components/Client/PaymentHistory";
+import TrainerPaymentHistory from "./components/Trainer/TrainerPaymentHistory";
 import PurchaseSession from './components/Client/PuchaseSession';
 import SavedTrainer from './components/Client/SavedTrainer';
 import ClientSignUp from "./components/Client/SignUp";
@@ -542,8 +543,10 @@ function App() {
                 <Route path="/myratings"><MyRatings></MyRatings></Route>
                 <Route path="/schedulerequest"><ScheduleRequest></ScheduleRequest></Route>
                 <Route path="/sessiondetails"><SessionDetails></SessionDetails></Route>
-                <Route path="/paymenthistory"><PaymentHistory></PaymentHistory></Route>
+                {/* <Route path="/paymenthistory"><PaymentHistory></PaymentHistory></Route> */}
                 <Route path="/payment/clientpaymenthistory"><ClientPaymentHistory></ClientPaymentHistory></Route>
+                <Route path="/paymenthistory"><TrainerPaymentHistory></TrainerPaymentHistory></Route>
+                
                 <Route path="/mysession"><MySession></MySession></Route>
                 <Route path="/booksessionsdetail"><BookSessionsDetail></BookSessionsDetail></Route>
                 <Route path="/pendingworkout"><PendingWorkout></PendingWorkout></Route>

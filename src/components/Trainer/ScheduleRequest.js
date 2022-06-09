@@ -253,6 +253,7 @@ function ScheduleRequest() {
             setIsLoader(false);
             if (response.data.status === 1) {
                 //fetchList(true, e);
+                trainerPayment(formData);
                 getrequestsessionList(1, true, e);
                 getacceptsessionList(1);
             }
@@ -271,6 +272,20 @@ function ScheduleRequest() {
             /* document.querySelector('.loading').classList.add('d-none'); */
             setIsLoader(false);
         });
+    }
+    const trainerPayment = async (data) => {
+        data.append("amount", 35);
+        data.append("type", "Standard");
+        data.append("paymentStatus", "0");
+        data.append("method", "insert");
+        await axios.post(`${apiUrl}${PORT}/payment/trainerpaymenthistory`, data)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
     }
 
     const rejectRequest = async () => {

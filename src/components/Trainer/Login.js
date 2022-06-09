@@ -9,7 +9,7 @@ function Login() {
     const history = useHistory();
     const [isHidden, setIsHidden] = useState(true);
     const [isTokenFound, setTokenFound] = useState(false);
-    const [pushToken, setPushToken] = useState("");
+    const [pushToken, setPushToken] = useState("XYZ");
     // // To load once
     // useEffect(() => {
     //     let data;

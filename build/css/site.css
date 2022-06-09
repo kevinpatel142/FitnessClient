@@ -689,7 +689,7 @@ input:checked+.slider:before {
     padding-left: 20px;
     font-weight: bold;
     color: #243881;
-    font-size: 18px;
+    font-size: 16px;
     clear: both;
     width: 280px !important;
     display: block;
@@ -1001,6 +1001,7 @@ input:checked+.slider:before {
     height: 120px !important;
     margin-bottom: 30px;
     padding: 10px;
+    outline: none;
 }
 
 .sessionbody .modal-body {
@@ -1772,12 +1773,11 @@ button.dropdown-item {
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
 }
-
 .noti_submenu {
     max-height: 450px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    min-height: 35px;
 }
-
 .dropdown-item.active,
 .dropdown-item:active {
     color: #ffff !important;
@@ -3002,6 +3002,9 @@ a.edit-btn:hover {
     border-radius: 8px;
 }
 
+.edit-profile .genderblock .custom-control-label::before, .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    width: 150px;
+}
 .edit-profile .genderblock .custom-control-label::before, .trainer-profile .genderblock .custom-control-label::before {
     font-size: 29px;
     padding-top: 13px;
@@ -3359,17 +3362,10 @@ a.edit-btn:hover {
 }
 
 .rating-content p {
-    display: -webkit-box;
-    max-width: 100%;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 80px;
-    max-height: 90px;
-    line-height: 19px;
-    margin-bottom: 10px;
-}
+    min-height: 105px;
+    line-height: 21px;
+    text-align: justify;
+  }
 
 /*-------------- My Rating Css End ------------------*/
 .history-img {
@@ -4013,8 +4009,11 @@ a.edit-btn:hover {
     padding: 0px 6px;
     position: absolute;
     top: -5px;
-    right: -10px;
-}
+    right: -8px;
+    background-color: #243881 !important;
+    border: 1px solid #243881 !important;
+    box-shadow: none !important;
+  }
 
 .injuries {
     display: -webkit-box;
@@ -4097,6 +4096,79 @@ a.edit-btn:hover {
     white-space: nowrap;
   }
 
+  .fixedblock .grayarea h6{
+    width: 125px;
+  }
+  .fixedblock .grayarea p{
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 19px;
+    max-height: 175px;
+    line-height: 24px;
+    margin-bottom: 0;
+  }
+  #plaidbutton button {
+    background-color: #243881 !important;
+    border: 1px solid #243881 !important;
+    width: 180px;
+    height: 40px;
+    border-radius: 50px !important;
+    margin-top: -7px;
+}
+.read-more-less--more, .read-more-less--less {
+    padding: 4px 14px;
+    border-radius: 50px;
+    border: 1px solid #243881;
+    float: right;
+    margin-top: 5px;
+  }
+  .rating_box .react-simple-star-rating {
+    margin-top: -6px;
+    margin-left: 5px;
+  }
+  .prog-img input[type=file]::file-selector-button {
+    border: 2px solid #243881;
+    padding: 6px 20px;
+    border-radius: 2px 0 0 2px;
+    background-color: #243881;
+    transition: 1s;
+    color:#fff;
+    cursor: pointer;
+    line-height: 27px;
+}
+
+.prog-img input[type=file]::file-selector-button:hover {
+    background-color: #243881;
+    border: 2px solid #243881;
+}
+.fileupload-input {
+    border: 1px solid #ddd;
+    height: 45px;
+    line-height: 27px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 40px;
+    max-height: 186px;
+}
+.text-light-gray{
+    color: #8ea0c1;
+}
+.spoiler p.text-body{
+    clear: both;
+}
+.noti_submenu p {
+    padding: 15px;
+  }
+
 /**-----------------  Media Query Css  start-------------------**/
 
 @media only screen and (max-width: 1360px) {
@@ -4147,6 +4219,18 @@ a.edit-btn:hover {
 
     .sessioninfo h6 {
         font-size: 15px;
+    }
+    .fixedblock .grayarea p{
+        font-size: 12px;
+    }
+    .grayarea h6{
+        font-size: 12px;
+    }
+    .trainer-profile h4 {
+        font-size: 21px;
+      }
+      .edit-profile .genderblock .custom-control-label::before, .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+        width: 128px;
     }
 }
 
@@ -4807,6 +4891,12 @@ a.edit-btn:hover {
     .ratingblock .wrapper .option{
         padding: 0 16px;
     }
+    span.rating-date {
+        width: 100%;
+        float: right;
+        text-align: right;
+        padding-bottom: 5px;
+    }
 }
 
 @media only screen and (max-width: 470px) {
@@ -4847,6 +4937,9 @@ a.edit-btn:hover {
     .head-icon {
         text-align: center;
         margin-top: 3px;
+    }
+    .read-more-less--more, .read-more-less--less{
+        margin-bottom: 10px;
     }
 }
 
@@ -4901,6 +4994,10 @@ a.edit-btn:hover {
     .edit-btn {
         width: 100%;
     }
+    .rating_box img{
+        margin-right: 12px;
+    }
 }
 
 /**----------------- Media Query Css End -------------------**/
+

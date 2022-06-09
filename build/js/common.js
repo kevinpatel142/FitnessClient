@@ -513,3 +513,7 @@ $(".toggle-password").click(function () {
     }
 });
 //-------------- Password Js End---------------------//
+
+//----------- Review script Start ----------------------//
+
+//----------- Review script End ------------------------//

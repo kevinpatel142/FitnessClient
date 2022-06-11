@@ -158,11 +158,32 @@ function App() {
     await axios.get(`${apiUrl}${PORT}/notification/getAll`, {}, {
     }).then(function (response) {
       // console.log("responseNot", response);
-      setAllNotification(response.data.result);
+      const sortList = response.data.result.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // console.log("newList",newList);
+      setAllNotification(sortList);
       // console.log("allNotification", allNotification);
     }).catch(function (err) {
       console.log(err);
     })
+  }
+  const markAllRead = () => {
+    axios.post(`${apiUrl}${PORT}/notification/markAllread`)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+  const markRead = (id) => {
+    axios.post(`${apiUrl}${PORT}/notification/markread`,{id: id})
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
   }
   return (
     <>
@@ -371,10 +392,15 @@ function App() {
                                 <li className="list-inline-item dropdown">
                                   <button className="dropdown-toggle" data-toggle="dropdown" title="Notification">
                                     <i className="far fa-bell"></i>
-                                    <div className="qty">0</div>
+                                    <div className="qty">{allNotification.filter(x => x.isRead === "0").length}</div>
                                   </button>
                                   <ul className="dropdown-menu">
-                                    <li className="d-flex justify-content-between"><span className="noti-text">Notifications</span>{Object.keys(allNotification).length > 0 ? <span className="noti_subtext">Mark all as read</span> : <></> }</li>
+                                    <li className="d-flex justify-content-between">
+                                      <span className="noti-text">Notifications</span>
+                                      {Object.keys(allNotification).length > 0 ?
+                                        <button onClick={markAllRead}><small className='noti_subtext'>Mark all as read</small></button> :
+                                        <></>}
+                                    </li>
                                     <li>
                                       <ul className="list-inline noti_submenu">
                                         {/* {Object.keys(allNotification).map(function (key, value) {
@@ -396,17 +422,18 @@ function App() {
                                         {Object.keys(allNotification).length > 0 ? allNotification.map((elem) => {
                                           let hour;
                                           return <li>
-                                            <button className="dropdown-item">
-                                              <div className="text-right">
-                                                <span><Moment format="hh:m A" date={elem.date} /></span>
+                                            <button onClick={(e) => { e.preventDefault(); markRead(elem._id) }} className="dropdown-item my-1"
+                                              style={elem.isRead == "0" ? { background: "#e8f8fa", borderRadius: "6px", fontWeight: 'bold' } : {}}>
+                                              <strong><div className="text-right">
+                                                <span><Moment format="hh:m A, DD MMM" date={elem.date} /></span>
                                               </div>
-                                              <div className="d-flex notification_i">
-                                                <i className="far fa-check-circle green-text"></i>
-                                                <div className="noti_content">
-                                                  <h5>{elem.title}</h5>
-                                                  <p className="mb-2">{elem.message}</p>
-                                                </div>
-                                              </div>
+                                                <div className="d-flex notification_i">
+                                                  <i className="far fa-check-circle green-text"></i>
+                                                  <div className="noti_content">
+                                                    <h5>{elem.isRead == "0" ? <strong>{elem.title}</strong> : elem.title}</h5>
+                                                    <p className="mb-2">{elem.message}</p>
+                                                  </div>
+                                                </div></strong>
                                             </button>
                                           </li>
 
@@ -546,7 +573,7 @@ function App() {
                 {/* <Route path="/paymenthistory"><PaymentHistory></PaymentHistory></Route> */}
                 <Route path="/payment/clientpaymenthistory"><ClientPaymentHistory></ClientPaymentHistory></Route>
                 <Route path="/paymenthistory"><TrainerPaymentHistory></TrainerPaymentHistory></Route>
-                
+
                 <Route path="/mysession"><MySession></MySession></Route>
                 <Route path="/booksessionsdetail"><BookSessionsDetail></BookSessionsDetail></Route>
                 <Route path="/pendingworkout"><PendingWorkout></PendingWorkout></Route>

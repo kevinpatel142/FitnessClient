@@ -142,18 +142,21 @@ function ClientPayment() {
             isValid = false;
         } */
         /* console.log("payment", payment);
-        console.log("selectedCard", selectedCard);
-        console.log(selectedCard.length === 0); 
-        console.log(selectedCard.length === 0 || selectedCard.length === undefined);*/
-        if (selectedCard.length === 0 || selectedCard.length === undefined) {
-            isValid = false;
-            swal({
-                title: "Error!",
-                text: "Please Add/Choose Card",
-                icon: "error",
-                button: true
-            })
-        }
+        console.log("selectedCard", selectedCard);*/
+        console.log(selectedCard.length === 0);
+        console.log(selectedCard.length === undefined);
+        // console.log(selectedCard.length === 0 && selectedCard.length === undefined);
+        // if (selectedCard.length === undefined) {
+            if (selectedCard.length  === 0) {
+                isValid = false;
+                swal({
+                    title: "Error!",
+                    text: "Please Add/Choose Card",
+                    icon: "error",
+                    button: true
+                })
+            }
+        // }
 
 
         let savepayment = {
@@ -167,7 +170,7 @@ function ClientPayment() {
         }
         // console.log("savepayment",savepayment);
         // setErrors(errormsg);
-        // console.log(isValid);
+        console.log("isValid",isValid);
         if (isValid) {
             /*  let savepayment = {
                  date: new Date(),
@@ -175,6 +178,7 @@ function ClientPayment() {
                  plantype: purchasePlan.planType,
                  amount: purchasePlan.amount
              } */
+             console.log("savepayment",savepayment);
             document.querySelector('.loading').classList.remove('d-none');
             axios.post(`${apiUrl}${PORT}/payment/savepayment`, savepayment)
                 .then(response => {

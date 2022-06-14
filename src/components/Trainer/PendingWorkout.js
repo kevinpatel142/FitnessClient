@@ -65,7 +65,7 @@ const PendingWorkout = () => {
                                                             <span className="history-name">{elem.client_data.firstname} {elem.client_data.lastname}</span>
                                                         </div>
                                                     </td>
-                                                    <td><span><Moment format="YYYY/MM/DD, hh:m A" date={elem.date} /></span></td>
+                                                    <td><span><Moment format="DD MMMM YYYY, hh:mm A" date={elem.date} /></span></td>
 
                                                     <td>{elem.sessionworkout ? <span className="btn-success p-status">Completed</span> : <Link title='Go Workout Form' to={`/sessiondetails?id=${elem._id}`}><span className="btn-primary p-status">Pending</span></Link>}</td>
                                                 </tr></>)

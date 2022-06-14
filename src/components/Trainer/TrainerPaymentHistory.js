@@ -60,7 +60,7 @@ function TrainerPaymentHistory() {
                                                             <span className="history-name">{element.client_data.firstname}</span>
                                                         </div>
                                                     </td>
-                                                    <td><span><Moment format="YYYY/MM/DD, hh:m A" date={element.createdAt} /></span></td>
+                                                    <td><span><Moment format="DD MMMM YYYY, hh:mm A" date={element.createdAt} /></span></td>
                                                     <td><span className={`${element.status == 0 ? "btn-primary" : "btn-success"} p-status`}>
                                                         {element.status == 0 ? "Processing" : "Paid"}
                                                     </span></td>
@@ -68,14 +68,17 @@ function TrainerPaymentHistory() {
                                                 </tr>
                                             </>);
                                         })}
+                                        {!trainerPayment ? <tr><td>No Records Found</td></tr> : <></>}
                                     </tbody>
                                 </table>
 
                             </div>
                         </div>
-                        <div className="col-md-12 col-12 text-center mt-5">
+                        {/* {trainerPayment ? <div className="col-md-12 col-12 text-center mt-5">
                             <button className="training_btn w-25 mx-auto">Export Report</button>
-                        </div>
+                        </div> :
+                            <></>
+                        } */}
                     </div>
                 </div>
             </div>

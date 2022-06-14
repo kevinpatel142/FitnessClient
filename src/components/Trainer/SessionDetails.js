@@ -268,7 +268,7 @@ function SessionDetails() {
             <div className="container-fluid">
                 <div className="fixedblock">
 
-                    {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid/></h5> : ''}
+                    {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid /></h5> : ''}
                     {/* <div onClick={(e) => { addBank(e) }} className="loginbtn w-25 d-block float-right">Add Bank</div> */}
                     <h1 className="main_title mb-4">Workout From</h1>
                     <div className="row">
@@ -485,8 +485,35 @@ function SessionDetails() {
                     </div>
                     <div className="col-md-12">
                         {/* {!trainerData?.bankaccount ? <h5 className='text-danger'><Plaid /></h5> : ''} */}
-                        {!trainerData?.bankaccount ? <div onClick={(e) => { alert('Bank doesn\'t added.') }} className="loginbtn w-25 mx-auto d-block mt-5 disabled">Submit</div> : <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div>}
+                        {!trainerData?.bankaccount ?
+                            // <div onClick={(e) => { alert('Bank doesn\'t added.') }} className="loginbtn w-25 mx-auto d-block mt-5 disabled">Submit</div> 
+                            <a className="loginbtn w-25 mx-auto d-block mt-5" data-toggle="modal" data-dismiss="modal" href="#add_bank_modal">Submit</a>
+
+                            :
+                            <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div>}
                         {/* <div onClick={(e) => { onSubmit(e) }} className="loginbtn w-25 mx-auto d-block mt-5">Submit</div> */}
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id="add_bank_modal" role="dialog" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered mbody sessiondetail" role="document">
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            <div className="col-md-12 col-12">
+                                <h6 className="book-title text-danger text-center">*Bank not added</h6>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                    <h5 className='book-title text-center'>Add bank here</h5>        
+                                        <div className='col-12 d-flex'>
+                                            <span className='p-2'><Plaid /></span>
+                                            <button className="training_btn bg-transparent text-primary" data-toggle="modal" data-target="#cancel-b" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                        {/* <button className="training_btn mb-3" data-toggle="modal" data-target="#confirm-t" data-dismiss="modal">Add Bank</button> */}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

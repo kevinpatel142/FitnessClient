@@ -168,8 +168,10 @@ function SavedTrainer({ type, flterValue }) {
                                                                 </div>
                                                                 <div className="">
                                                                     <span>{tainerlist.firstname}</span>
+                                                                    {console.log("tainerlist", tainerlist)}
                                                                     <i className={tainerlist.availablestatus === 1 ? "fas fa-circle text-success circle-i" : (tainerlist.availablestatus === 2 ? "fas fa-circle text-danger circle-i" : "fas fa-circle text-secondary circle-i")}></i>
-                                                                    <Rating initialValue={tainerlist.rankingtrainer} size="17" readonly="true" allowHover="false" allowHalfIcon="true" />
+                                                                    {/* <Rating initialValue={tainerlist.rankingtrainer} size="20" readonly="true" allowHover="false" allowHalfIcon="true" /> */}
+                                                                    <Rating ratingValue={tainerlist.averageRating * 20} size="20" readonly="true" allowHover="false" allowHalfIcon="true" />
                                                                     <p className="mb-0">
                                                                         {tainerlist.trainingstyle !== "" && tainerlist.trainingstyle ?
                                                                             <span>{tainerlist.trainingstyle.substr(0, 25)}</span> : <></>
@@ -224,7 +226,7 @@ function SavedTrainer({ type, flterValue }) {
         });
     }
     async function GetList(val) {
-        debugger
+        // debugger
         document.querySelector('.loading').classList.remove('d-none');
         var obj = {
             limitValue: limitValue,

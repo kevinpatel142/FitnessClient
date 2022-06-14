@@ -79,8 +79,8 @@ function Trainer({ type, flterValue }) {
                     <div className="loading d-none">
                         <div className="mainloader"></div>
                     </div>
-                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '0px' }}>
-                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '530px', scrollbarWidth: 'none' }}>
+                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '5px' }}>
+                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '500px', scrollbarWidth: 'none' }}>
                             <ul className="items">
                                 {listitem.List.filter(tainerlist => tainerlist.availablestatus === status || status === 0).map((tainerlist, sindex) => {
                                     return (<li key={'subkey' + sindex} className="col-12 p-0">

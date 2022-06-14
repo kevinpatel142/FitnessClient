@@ -98,7 +98,7 @@ function EditProfile() {
                 /* console.log(progressphotos); */
                 // console.log(response.data?.result?.profile != "null");
                 console.log("response",response);
-                let profileImage = response.data?.result?.profile != "null" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
+                let profileImage = response.data?.result?.profile != "null" && response.data?.result?.profile != "undefined" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
                 // console.log("profileImage", profileImage);
                 setProfileImagePreview(profileImage);
                 setProfileImage(profileImage);
@@ -280,21 +280,19 @@ function EditProfile() {
 
             console.log("profileimage", typeof (profileimage));
 
-            let profile;
+            let profile = profileimage;
             if (typeof (profileimage) == 'string') {
                 profile = profileimage.split(apiUrl + PORT);
                 profile = profile[1];
-                
                 setProfileImage(...profileimage, profile);
             }
 
-            console.log("profileimage", profileimage);
             if (profileimage?.type === undefined) {
                 form_data.append("edprofile", profile);
             } else {
                 form_data.append("profile", profile);
             }
-            console.log("profile[1]",profile);
+            
             if (progressphotos?.type === undefined) {
                 form_data.append('edprogressphotos', progressphotos);
             } else {

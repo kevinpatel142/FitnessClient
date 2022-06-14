@@ -95,6 +95,7 @@ function ClientPayment() {
             .then(response => {
                 document.querySelector('.loading').classList.add('d-none');
                 if (response.data.status === 1) {
+                    setSelectedCard([])
                     // console.log("success return");
                     // history.push("/trainer");
                 } else {
@@ -141,24 +142,15 @@ function ClientPayment() {
             errormsg.cvv = "Please enter cvv number!";
             isValid = false;
         } */
-        /* console.log("payment", payment);
-        console.log("selectedCard", selectedCard);*/
-        console.log(selectedCard.length === 0);
-        console.log(selectedCard.length === undefined);
-        // console.log(selectedCard.length === 0 && selectedCard.length === undefined);
-        // if (selectedCard.length === undefined) {
-            if (selectedCard.length  === 0) {
-                isValid = false;
-                swal({
-                    title: "Error!",
-                    text: "Please Add/Choose Card",
-                    icon: "error",
-                    button: true
-                })
-            }
-        // }
-
-
+        if (selectedCard.length === 0) {
+            isValid = false;
+            swal({
+                title: "Error!",
+                text: "Please Add/Choose Card",
+                icon: "error",
+                button: true
+            })
+        }
         let savepayment = {
             date: new Date(),
             noofsession: purchasePlan.sessions,
@@ -170,7 +162,7 @@ function ClientPayment() {
         }
         // console.log("savepayment",savepayment);
         // setErrors(errormsg);
-        console.log("isValid",isValid);
+        console.log("isValid", isValid);
         if (isValid) {
             /*  let savepayment = {
                  date: new Date(),
@@ -178,7 +170,7 @@ function ClientPayment() {
                  plantype: purchasePlan.planType,
                  amount: purchasePlan.amount
              } */
-             console.log("savepayment",savepayment);
+            console.log("savepayment", savepayment);
             document.querySelector('.loading').classList.remove('d-none');
             axios.post(`${apiUrl}${PORT}/payment/savepayment`, savepayment)
                 .then(response => {
@@ -260,7 +252,7 @@ function ClientPayment() {
                         // console.log(response.data.message.code);
                         swal({
                             title: "Error!",
-                            text: response.data.message.code,
+                            text: response.data.message,
                             icon: "error",
                             button: true
                         })
@@ -368,12 +360,13 @@ function ClientPayment() {
                                                                     <span className="plan-details">
                                                                         <span className="d-flex justify-content-between">
                                                                             <span>{ele.funding.toUpperCase()} CARD</span>
+                                                                            {console.log(ele.brand)}
                                                                             {
                                                                                 ele.brand == "Visa" ? <img src="/img/visacard.png" className="cardimg visaimg" alt="Card" />
                                                                                     : ele.brand == "MasterCard" ? <img src="/img/mastercard.png" className="cardimg visaimg" alt="Card" />
                                                                                         : ele.brand == "JCB" ? <img src="/img/jcb.png" className="cardimg visaimg" alt="Card" />
                                                                                             : ele.brand == "Discover" ? <img src="/img/discover.jpg" className="cardimg visaimg" alt="Card" />
-                                                                                                : ele.brand == "American Express" ? <img src="/img/american_exp.jpg" className="cardimg visaimg" alt="Card" />
+                                                                                                : ele.brand == "American Express" ? <img src="/img/american_exp.jpg  " className="cardimg visaimg" alt="Card" />
                                                                                                     : ele.brand
                                                                             }
 

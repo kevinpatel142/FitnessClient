@@ -79,8 +79,8 @@ function Trainer({ type, flterValue }) {
                     <div className="loading d-none">
                         <div className="mainloader"></div>
                     </div>
-                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '5px' }}>
-                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '500px', scrollbarWidth: 'none' }}>
+                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '0px' }}>
+                        <div className="frame smart" onScroll={onScrollDown} id={'smart' + index} style={{ overflow: 'auto', height: '530px', scrollbarWidth: 'none' }}>
                             <ul className="items">
                                 {listitem.List.filter(tainerlist => tainerlist.availablestatus === status || status === 0).map((tainerlist, sindex) => {
                                     return (<li key={'subkey' + sindex} className="col-12 p-0">
@@ -175,12 +175,16 @@ function Trainer({ type, flterValue }) {
         if (isLoaderVal === true || noOfRec <= actualnoOfRec) {
             return;
         } else {
-            setIsLoader(true);
+            // setIsLoader(true);
             isLoaderVal = true;
             const queryStringPara = new URLSearchParams(window.location.search);
             let currentStatus = queryStringPara.get("status") || 1;
             var newpageNum = pageNum;
-            GetList(parseInt(currentStatus), newpageNum + 1);
+            console.log("currentStatus",currentStatus);
+            console.log("newpageNum",newpageNum);
+
+            // GetList(parseInt(currentStatus), newpageNum + 1);
+            GetList(parseInt(currentStatus), newpageNum);
             setPageNum(newpageNum);
         }
     }
@@ -194,6 +198,7 @@ function Trainer({ type, flterValue }) {
         trainerfilterObj.isfilter = flterValue ? true : false;
         setIsLoader(true);
         setStatus(status);
+        console.log("trainerfilterObj", trainerfilterObj);
         await axios.post(`${apiUrl}${PORT}/trainer/trainer/maintrainerlist`, trainerfilterObj).then(function (response) {
             if (response.data.status === 1) {
                 // response.data.result.trainerlist.bookmarktrainer = response.data?.result?.client_data?.bookmarktrainer;

@@ -753,7 +753,15 @@ function MyProfile() {
                                                     <div className="text-danger">{errors.lastname}</div>
 
                                                 </div>
-                                                <div className="col-md-12">
+                                                <div className="col-12 col-md-4">
+                                                <select className="input-box" name='country'>
+                                                        <option>Select country</option>
+                                                        <option value="in">INDIA</option>
+                                                        <option value="us">USA</option>
+                                                    </select>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    
                                                     <input onChange={(e) => {
                                                         if (e.target.value.length === 11)
                                                             return;

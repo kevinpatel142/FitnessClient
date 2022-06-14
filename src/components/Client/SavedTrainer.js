@@ -138,8 +138,8 @@ function SavedTrainer({ type, flterValue }) {
                     <div className="loading d-none">
                         <div className="mainloader"></div>
                     </div>
-                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '5px' }}>
-                        <div className="frame smart" id={'smart' + index} style={{ overflow: 'auto', height: '500px', scrollbarWidth: 'none' }}>
+                    <div className="wrap" style={{ height: '95%', overflow: 'auto', paddingRight: '0px' }}>
+                        <div className="frame smart" id={'smart' + index} style={{ overflow: 'auto', height: '530px', scrollbarWidth: 'none' }}>
                             <ul key={'mainulkey' + index} className="items">
                                 {listitem.List.map((tainerlist, sindex) => {
                                     //if (status === 0 || tainerlist.availablestatus === status) {
@@ -335,9 +335,11 @@ function SavedTrainer({ type, flterValue }) {
                     </div>
                     <div className="row">
                         {List}
-                        <div className="col-md-12 col-sm-12 col-12 pagi_bg">
-                            <Pagination className="pagination-bar" currentPage={pageNum} totalCount={noOfRecords}
-                                pageSize={limitValue} onPageChange={page => curPage(page)} />
+                        <div className="col-md-12 col-sm-12 col-12">
+                            <div className="pagi_bg">
+                                <Pagination className="pagination-bar" currentPage={pageNum} totalCount={noOfRecords}
+                                    pageSize={limitValue} onPageChange={page => curPage(page)} />
+                            </div>
                         </div>
                     </div>
 

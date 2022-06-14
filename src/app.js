@@ -395,10 +395,10 @@ function App() {
                                     <div className="qty">{allNotification.filter(x => x.isRead === "0").length}</div>
                                   </button>
                                   <ul className="dropdown-menu">
-                                    <li className="d-flex justify-content-between">
+                                    <li className="d-flex justify-content-between mb-2">
                                       <span className="noti-text">Notifications</span>
                                       {Object.keys(allNotification).length > 0 ?
-                                        <button onClick={markAllRead}><small className='noti_subtext'>Mark all as read</small></button> :
+                                        <button className="notimark-btn" onClick={markAllRead}><small className='noti_subtext'>Mark all as read</small></button> :
                                         <></>}
                                     </li>
                                     <li>
@@ -425,7 +425,7 @@ function App() {
                                             <button onClick={(e) => { e.preventDefault(); markRead(elem._id) }} className="dropdown-item my-1"
                                               style={elem.isRead == "0" ? { background: "#e8f8fa", borderRadius: "6px", fontWeight: 'bold' } : {}}>
                                               <strong><div className="text-right">
-                                                <span><Moment format="hh:m A, DD MMM" date={elem.date} /></span>
+                                                <span><Moment format="hh:mm A, DD MMM" date={elem.date} /></span>
                                               </div>
                                                 <div className="d-flex notification_i">
                                                   <i className="far fa-check-circle green-text"></i>

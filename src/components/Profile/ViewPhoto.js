@@ -170,12 +170,12 @@ function ViewPhoto() {
                         <div className="col-md-12 col-12">
                             <h1 className="main_title mb-4">Progress Photos</h1>
                         </div>
-                        {console.log("length",getAllPhotos.length)}
-                        {console.log("getAllPhotos",getAllPhotos)}
+                        {console.log("length", getAllPhotos.length)}
+                        {console.log("getAllPhotos", getAllPhotos)}
                         {getAllPhotos.length > 0 && getAllPhotos.map((res, index) => {
                             // debugger
                             return (<>
-                            {console.log("date",res.date)}
+                                {console.log("date", res.date)}
                                 <div key={index} className="col-md-6 col-12">
                                     <div className="row" dataId={index}>
                                         <div className="col-md-12 col-12 mb-4">
@@ -210,7 +210,7 @@ function ViewPhoto() {
                                                 </div>
                                             }
                                         })}
-                                        {new Date().toDateString() === new Date(res.date).toDateString() ?
+                                        {/* {new Date().toDateString() === new Date(res.date).toDateString() ?
                                             <div className="col-lg-3 col-md-6 col-12 -d-none">
                                                 <div className="prog-img">
                                                     <input type="file" id="imgupload" onChange={(e) => { OnFileChange(e, res) }} />
@@ -218,13 +218,15 @@ function ViewPhoto() {
                                             </div>
                                             :
                                             <div></div>
-                                        }
+                                        } */}
                                     </div>
 
                                     {new Date().toDateString() === new Date(res.date).toDateString() ?
                                         <div className="col-lg-12 col-md-12 col-12 -d-none mb-4">
-                                            <div className="prog-img">
-                                                <input type="file" id="imgupload" className="fileupload-input" onChange={(e) => { OnFileChange(e, res) }} />
+                                            <div className="row">
+                                                <div className="prog-img">
+                                                    <input type="file" id="imgupload" className="fileupload-input" onChange={(e) => { OnFileChange(e, res) }} />
+                                                </div>
                                             </div>
                                         </div>
                                         :
@@ -251,7 +253,7 @@ function ViewPhoto() {
                                             </div>
                                         }
                                     })}
-                                   
+
 
                                 </div>
                             </>)

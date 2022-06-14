@@ -97,6 +97,7 @@ function EditProfile() {
                 /* setProgressphotos(JSON.parse(localStorage.getItem("progressphotos"))); */
                 /* console.log(progressphotos); */
                 // console.log(response.data?.result?.profile != "null");
+                console.log("response",response);
                 let profileImage = response.data?.result?.profile != "null" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
                 // console.log("profileImage", profileImage);
                 setProfileImagePreview(profileImage);
@@ -271,16 +272,29 @@ function EditProfile() {
                 'confirmpassword': user.confirmpassword,
                 // 'progressphotos': progressphotos,
             }
-            // console.log("obj", obj);
+            console.log("obj", obj);
             var form_data = new FormData();
             for (var key in obj) {
                 form_data.append(key, obj[key]);
             }
-            if (profileimage?.type === undefined) {
-                form_data.append("edprofile", profileimage);
-            } else {
-                form_data.append("profile", profileimage);
+
+            console.log("profileimage", typeof (profileimage));
+
+            let profile;
+            if (typeof (profileimage) == 'string') {
+                profile = profileimage.split(apiUrl + PORT);
+                profile = profile[1];
+                
+                setProfileImage(...profileimage, profile);
             }
+
+            console.log("profileimage", profileimage);
+            if (profileimage?.type === undefined) {
+                form_data.append("edprofile", profile);
+            } else {
+                form_data.append("profile", profile);
+            }
+            console.log("profile[1]",profile);
             if (progressphotos?.type === undefined) {
                 form_data.append('edprogressphotos', progressphotos);
             } else {

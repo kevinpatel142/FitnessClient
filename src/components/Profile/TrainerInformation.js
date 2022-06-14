@@ -371,7 +371,7 @@ function TrainerInformation() {
                                                 <span className="float-md-right">{startDateStr}</span>
                                             </div>
                                             <div className="col-12 session-text">
-                                                <span className="float-md-left">{list.trainingstyle.substr(0, 10)} with {list.firstname}</span>
+                                                <span className="float-md-left">{list?.trainingstyle?.substr(0, 10)} with {list?.firstname}</span>
                                                 <span className="float-md-right">{startTimeStr}</span>
                                             </div>
                                         </div>

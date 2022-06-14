@@ -133,8 +133,8 @@
     cursor: pointer;
     z-index: 1;
     top: 0;
-  }
-  
+}
+
 .icon img {
     width: 25px;
     margin-top: 40px;
@@ -1773,11 +1773,13 @@ button.dropdown-item {
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
 }
+
 .noti_submenu {
     max-height: 450px;
     overflow-y: auto;
     min-height: 35px;
 }
+
 .dropdown-item.active,
 .dropdown-item:active {
     color: #ffff !important;
@@ -1893,7 +1895,7 @@ button.dropdown-item {
     font-size: 22px;
     font-weight: bold;
     margin-top: 5px;
-  }
+}
 
 .filter_nav li.active button,
 .filter_nav li:hover button {
@@ -2963,11 +2965,12 @@ a.edit-btn:hover {
     border: 1px dashed #243881;
     background-color: #fff;
 }
+
 .upload-btn-wrapper {
     position: relative;
-  }
- 
-  .upload-btn-wrapper input[type="file"] {
+}
+
+.upload-btn-wrapper input[type="file"] {
     font-size: 100px;
     position: absolute;
     left: 0;
@@ -2976,7 +2979,7 @@ a.edit-btn:hover {
     height: 50px;
     width: 100%;
     cursor: pointer;
-  }
+}
 
 .edit_save {
     width: 310px;
@@ -2996,21 +2999,29 @@ a.edit-btn:hover {
 }
 
 .edit-profile .genderblock .custom-control-label::before,
-.edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+.edit-profile .genderblock .custom-control-label::after,
+.trainer-profile .genderblock .custom-control-label::after,
+.trainer-profile .genderblock .custom-control-label::before {
     width: 135px;
     height: 95px;
     border-radius: 8px;
 }
 
-.edit-profile .genderblock .custom-control-label::before, .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+.edit-profile .genderblock .custom-control-label::before,
+.edit-profile .genderblock .custom-control-label::after,
+.trainer-profile .genderblock .custom-control-label::after,
+.trainer-profile .genderblock .custom-control-label::before {
     width: 150px;
 }
-.edit-profile .genderblock .custom-control-label::before, .trainer-profile .genderblock .custom-control-label::before {
+
+.edit-profile .genderblock .custom-control-label::before,
+.trainer-profile .genderblock .custom-control-label::before {
     font-size: 29px;
     padding-top: 13px;
 }
 
-.edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after {
+.edit-profile .genderblock .custom-control-label::after,
+.trainer-profile .genderblock .custom-control-label::after {
     padding-top: 59px;
 }
 
@@ -3365,7 +3376,7 @@ a.edit-btn:hover {
     min-height: 105px;
     line-height: 21px;
     text-align: justify;
-  }
+}
 
 /*-------------- My Rating Css End ------------------*/
 .history-img {
@@ -4013,7 +4024,7 @@ a.edit-btn:hover {
     background-color: #243881 !important;
     border: 1px solid #243881 !important;
     box-shadow: none !important;
-  }
+}
 
 .injuries {
     display: -webkit-box;
@@ -4092,14 +4103,16 @@ a.edit-btn:hover {
 .Workform .nav-tabs {
     margin-bottom: 20px;
 }
+
 .record_table thead th {
     white-space: nowrap;
-  }
+}
 
-  .fixedblock .grayarea h6{
+.fixedblock .grayarea h6 {
     width: 125px;
-  }
-  .fixedblock .grayarea p{
+}
+
+.fixedblock .grayarea p {
     display: -webkit-box;
     max-width: 100%;
     -webkit-line-clamp: 1;
@@ -4110,8 +4123,9 @@ a.edit-btn:hover {
     max-height: 175px;
     line-height: 24px;
     margin-bottom: 0;
-  }
-  #plaidbutton button {
+}
+
+#plaidbutton button {
     background-color: #243881 !important;
     border: 1px solid #243881 !important;
     width: 180px;
@@ -4119,24 +4133,28 @@ a.edit-btn:hover {
     border-radius: 50px !important;
     margin-top: -7px;
 }
-.read-more-less--more, .read-more-less--less {
+
+.read-more-less--more,
+.read-more-less--less {
     padding: 4px 14px;
     border-radius: 50px;
     border: 1px solid #243881;
     float: right;
     margin-top: 5px;
-  }
-  .rating_box .react-simple-star-rating {
+}
+
+.rating_box .react-simple-star-rating {
     margin-top: -6px;
     margin-left: 5px;
-  }
-  .prog-img input[type=file]::file-selector-button {
+}
+
+.prog-img input[type=file]::file-selector-button {
     border: 2px solid #243881;
     padding: 6px 20px;
     border-radius: 2px 0 0 2px;
     background-color: #243881;
     transition: 1s;
-    color:#fff;
+    color: #fff;
     cursor: pointer;
     line-height: 27px;
 }
@@ -4145,6 +4163,7 @@ a.edit-btn:hover {
     background-color: #243881;
     border: 2px solid #243881;
 }
+
 .fileupload-input {
     border: 1px solid #ddd;
     height: 45px;
@@ -4159,15 +4178,33 @@ a.edit-btn:hover {
     min-height: 40px;
     max-height: 186px;
 }
-.text-light-gray{
+
+.text-light-gray {
     color: #8ea0c1;
 }
-.spoiler p.text-body{
+
+.spoiler p.text-body {
     clear: both;
 }
+
 .noti_submenu p {
-    padding: 15px;
-  }
+    font-weight: normal;
+    padding-top: 3px;
+}
+
+.dropdown-item time {
+    font-weight: normal;
+    padding-bottom: 7px;
+    display: block;
+    color: #5e5e5e;
+}
+
+.notimark-btn {
+    height: 0 !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    color: #000 !important;
+}
 
 /**-----------------  Media Query Css  start-------------------**/
 
@@ -4213,23 +4250,32 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before{
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 112px;
     }
 
     .sessioninfo h6 {
         font-size: 15px;
     }
-    .fixedblock .grayarea p{
+
+    .fixedblock .grayarea p {
         font-size: 12px;
     }
-    .grayarea h6{
+
+    .grayarea h6 {
         font-size: 12px;
     }
+
     .trainer-profile h4 {
         font-size: 21px;
-      }
-      .edit-profile .genderblock .custom-control-label::before, .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    }
+
+    .edit-profile .genderblock .custom-control-label::before,
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 128px;
     }
 }
@@ -4272,7 +4318,9 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 90px;
     }
 
@@ -4554,7 +4602,9 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 100px;
     }
 
@@ -4578,11 +4628,13 @@ a.edit-btn:hover {
         padding: 45px !important;
         margin-top: 60px;
     }
-    .workout_Summary .row.mb-3{
+
+    .workout_Summary .row.mb-3 {
         border-bottom: 1px solid #ddd;
     }
-    .workout_Summary .row.mb-3:last-child{
-        border-bottom:0 ;
+
+    .workout_Summary .row.mb-3:last-child {
+        border-bottom: 0;
     }
 }
 
@@ -4872,7 +4924,9 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 90px;
     }
 
@@ -4888,9 +4942,11 @@ a.edit-btn:hover {
         overflow-y: hidden;
         margin-bottom: 10px;
     }
-    .ratingblock .wrapper .option{
+
+    .ratingblock .wrapper .option {
         padding: 0 16px;
     }
+
     span.rating-date {
         width: 100%;
         float: right;
@@ -4932,13 +4988,18 @@ a.edit-btn:hover {
         padding: 10px 47px;
     }
 }
-
-@media only screen and (max-width: 393px) {
-    .head-icon {
+@media only screen and (max-width: 412px) {
+      .head-icon {
         text-align: center;
         margin-top: 3px;
     }
-    .read-more-less--more, .read-more-less--less{
+}
+
+@media only screen and (max-width: 393px) {
+   
+
+    .read-more-less--more,
+    .read-more-less--less {
         margin-bottom: 10px;
     }
 }
@@ -4983,7 +5044,9 @@ a.edit-btn:hover {
     }
 
     .edit-profile .genderblock .custom-control-label::before,
-    .edit-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::after, .trainer-profile .genderblock .custom-control-label::before {
+    .edit-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::after,
+    .trainer-profile .genderblock .custom-control-label::before {
         width: 68px;
     }
 
@@ -4994,10 +5057,10 @@ a.edit-btn:hover {
     .edit-btn {
         width: 100%;
     }
-    .rating_box img{
+
+    .rating_box img {
         margin-right: 12px;
     }
 }
 
 /**----------------- Media Query Css End -------------------**/
-

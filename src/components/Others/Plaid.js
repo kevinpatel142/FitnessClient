@@ -53,6 +53,7 @@ const Plaid = () => {
                         }).then(function (response) {
                             // document.querySelector('.loading').classList.add('d-none');
                             if (response.data.status === 1) {
+                                console.log("response.data", response.data);
                                 localStorage.setItem('user',JSON.stringify(response.data.result));
                                 window.location.reload(false);
                                 // history.push("/signupsuccess");

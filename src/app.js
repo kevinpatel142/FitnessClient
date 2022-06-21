@@ -47,6 +47,7 @@ import MobileVedioSession from "./components/Others/MobileVedioSession";
 import PendingWorkout from './components/Trainer/PendingWorkout';
 import Moment from 'react-moment';
 import ClientPaymentHistory from "./components/Client/ClientPaymentHistory";
+import SessionPaymentDetail from "./components/Client/SessionPaymentDetail";
 
 
 function App() {
@@ -213,6 +214,7 @@ function App() {
         <Route path="/trainersaccountinfo"><TrainerAccountInfo></TrainerAccountInfo></Route>
         <Route path="/termsandcondition"><TermsAndCondition></TermsAndCondition></Route>
         <Route path="/mobilevideosession"><MobileVedioSession></MobileVedioSession></Route>
+        
         {/* <Route path="/banklink"><BankLink></BankLink></Route> */}
         {
           (isLogin === true) ?
@@ -581,6 +583,7 @@ function App() {
                   component={() => <SavedTrainer type={filterPanel} flterValue={serachValue} />}
                 />
                 <Route path="/purchasesession"><PurchaseSession></PurchaseSession></Route>
+                <Route path="/sessionpaymentdetail"><SessionPaymentDetail></SessionPaymentDetail></Route>
                 <Route path="/clientpayment"><ClientPayment></ClientPayment></Route>
                 <Route path="/myprofile"><MyProfile></MyProfile></Route>
                 <Route path="/clientprofile"><ClientProfile></ClientProfile></Route>

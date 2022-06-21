@@ -631,6 +631,21 @@ function MyProfile() {
         setUser(user);
         setFilterWorkout([]);
     };
+    const removeBank = (e, bank_id) => {
+        e.preventDefault();
+        axios.post(`${apiUrl}${PORT}/trainer/accountinfo/removeBank`, { id: bank_id })
+            .then(response => {
+                if(response.data.status == 1){
+                    console.log("response", response.data);
+                    localStorage.setItem('user',JSON.stringify(response.data.result));
+                    window.location.reload(false);
+                }
+                
+            }).catch(err => {   
+                console.log(err);
+            })
+        console.log(bank_id);
+    };
     return (
         <>
             <div className="container-fluid" ref={ref}>
@@ -754,14 +769,14 @@ function MyProfile() {
 
                                                 </div>
                                                 <div className="col-12 col-md-4">
-                                                <select className="input-box" name='country'>
+                                                    <select className="input-box" name='country'>
                                                         <option>Select country</option>
                                                         <option value="in">INDIA</option>
                                                         <option value="us">USA</option>
                                                     </select>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    
+
                                                     <input onChange={(e) => {
                                                         if (e.target.value.length === 11)
                                                             return;
@@ -957,7 +972,35 @@ function MyProfile() {
                                         <div className="text-danger">{errors.confirmpassword}</div>
                                     </div>
                                     <div className="col-md-12">
+                                        {/* {console.log("trainerData", trainerData?.bankaccount)} */}
+                                        {/* {console.log("trainerData", typeof (trainerData?.bankaccount))} */}
+                                        {trainerData?.bankaccount && trainerData?.bankaccount.length >= 0 ?
+                                            <div className='row'>
+                                                <div className='col-12'>
+                                                    <h4 class="font-weight-bold mb-3 float-left">Bank Account(s)</h4>
+                                                    {/* <button onClick={addAnotherBank} class="btn btn-primary btn-sm float-right">Add another bank <span className='font-weight-bold'>+</span></button> */}
+                                                    <h5 className='text-danger'><Plaid /></h5>
+                                                </div>
+                                                {trainerData?.bankaccount.map((bank) => {
+                                                    return <>
+                                                        {/* {console.log("bank", bank)} */}
+                                                        {bank?.accounts.map((elem, i) => {
+                                                            return <>
+                                                                <div className='col-12'>
+                                                                    <h6 className='text-blue'>{i + 1}. {elem.name}
+                                                                        <span onClick={(e) => removeBank(e, elem.account_id)} className='btn btn-sm btn-primary float-right -text-danger' title='Remove'>X</span>
+                                                                    </h6>
+                                                                    <hr />
+                                                                </div>
+                                                            </>
 
+                                                        })}
+
+
+                                                    </>
+                                                })}
+                                            </div> : <></>
+                                        }
                                         {!trainerData?.bankaccount ? <> <h4 class="font-weight-bold mb-3 float-left">Add Bank Account</h4> <h5 className='text-danger'><Plaid /></h5></> : ''}
                                     </div>
 

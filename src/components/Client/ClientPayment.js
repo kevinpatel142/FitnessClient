@@ -4,14 +4,18 @@ import { useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
 import swal from 'sweetalert';
 import { verifytokenCall } from '../Others/Utils.js';
+import { Button, Modal } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+
 function ClientPayment() {
     const history = useHistory();
+    const [open, setOpen] = useState(false);
     const [errors, setErrors] = useState({});
     const [isNewCard, setIsNewCard] = useState(false);
     const [newCardArr, setNewCardArr] = useState([]);
     const [selectedCard, setSelectedCard] = useState([]);
     const userData = JSON.parse(localStorage.getItem("user"));
+    const [confirmReqModal, setConfirmReqModal] = useState(false);
     const initialState = {
         cardholdersName: "",
         cardNumber: "",
@@ -274,16 +278,17 @@ function ClientPayment() {
     // console.log("selectedCard",selectedCard);
     return (
         <>
-            <div clasName="col-12">
-                <h5 className='float-right'>
-                    <small><Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary">Payment History</Link></small>
-                </h5>
-            </div>
-            <div className="container my-md-5 py-md-4">
+
+            <div className="container my-md-5 py-md-4 mob-view">
                 <div className="loading d-none">
                     <div className="mainloader"></div>
                 </div>
                 <div className="commonbox">
+                    <div clasName="col-md-12 col-12 text-right pr-md-0">
+                        <h5 className="mb-3 text-right">
+                            <small><Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary br-radius">Payment History</Link></small>
+                        </h5>
+                    </div>
                     <div className="col-md-12">
                         <div className="row">
                             <div className="col-md-6 p-0">
@@ -301,11 +306,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Plan</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">{purchasePlan.planType} ({purchasePlan.sessions === '1' ? "Single" : purchasePlan.sessions} sessions)</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">{purchasePlan.planType} ({purchasePlan.sessions === '1' ? "Single" : purchasePlan.sessions} sessions)</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -313,11 +318,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Amount</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">${purchasePlan.amount}</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">${purchasePlan.amount}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,11 +330,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Tax</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">$02.00</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">$02.00</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -471,6 +476,10 @@ function ClientPayment() {
                                             {/* <Link to="/paymentSuccess" className="loginbtn mt-4">Pay Now</Link> */}
                                             <div className="loginbtn mt-4" onClick={(e) => { onPayNow(e) }}> Pay Now </div>
                                         </div>
+                                        <Button className="mt-3" data-toggle="modal" data-target="#send-request" onClick={(e) => { setConfirmReqModal(true); }}>
+                                            Demo
+                                        </Button>
+                                        {/* <button data-toggle="modal" data-target="#send-request" onClick={() => { callSendRequest() }} className="training_btn mb-3">Request future session</button> */}
                                     </div>
                                     :
                                     <div className="loginbox clientpayment">
@@ -478,11 +487,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Plan</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">{purchasePlan.planType} ({purchasePlan.sessions} sessions)</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">{purchasePlan.planType} ({purchasePlan.sessions} sessions)</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,11 +499,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Amount</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">${purchasePlan.amount}</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">${purchasePlan.amount}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -502,11 +511,11 @@ function ClientPayment() {
                                         <div className="col-md-12">
                                             <div className="grayblock">
                                                 <div className="row">
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-6 col-sm-6 col-12">
                                                         <h6>Tax</h6>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <p className="text-right">$02.00</p>
+                                                    <div className="col-md-6 col-sm-6 col-12">
+                                                        <p className="text-sm-right">$02.00</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -531,8 +540,8 @@ function ClientPayment() {
                                                 }} />
                                             <div className="text-danger">{errors.newcardNumber}</div>
                                         </div>
-                                        <div className="col-md-12 p-0 d-flex">
-                                            <div className="col-md-8">
+                                        <div className="col-md-12 p-0 d-lg-flex">
+                                            <div className="col-lg-8">
                                                 <label>Expiration date</label>
                                                 <div className="d-flex justify-content-between">
                                                     <select className="input-box w-100 mr-2" value={expirationMonth} name="expirationMonth" onChange={newCardhandleChange}>
@@ -550,7 +559,7 @@ function ClientPayment() {
                                                         <option>11</option>
                                                         <option>12</option>
                                                     </select>
-                                                    <select className="input-box w-100 mr-2" value={expirationYear} name="expirationYear" onChange={newCardhandleChange}>
+                                                    <select className="input-box w-100 mr-lg-2" value={expirationYear} name="expirationYear" onChange={newCardhandleChange}>
                                                         <option>Year</option>
                                                         <option>2022</option>
                                                         <option>2023</option>
@@ -566,7 +575,7 @@ function ClientPayment() {
                                                 <div className="text-danger">{errors.newexpirationMonth}</div>
                                                 <div className="text-danger">{errors.newexpirationYear}</div>
                                             </div>
-                                            <div className="col-md-4">
+                                            <div className="col-lg-4">
                                                 <label>CVC/CVV</label>
                                                 <input className="input-box w-100 mr-2" type="text" maxLength={"3"}
                                                     placeholder="CVV"
@@ -594,13 +603,34 @@ function ClientPayment() {
                                             {/* <Link to="/paymentSuccess" className="loginbtn mt-4">Pay Now</Link> */}
                                             <div className="loginbtn mt-4" onClick={(e) => { addNewCard(e); }}> Add New </div>
                                         </div>
+
                                     </div>
+
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Modal show={confirmReqModal} onHide={(e) => { setConfirmReqModal(false); }} className="mbody sessiondetail" size="md" scrollable={true} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header className="bg-transparent text-dark border-0 session-m">
+                    <Modal.Title></Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="pt-2">
+                    <div className="col-md-12 col-12 text-center" onClick={() => {
+                        setConfirmReqModal(false);
+                        setTimeout(() => {
+                            setOpen(false)
+                        }, 5000);
+                    }}>
+                        <i className="far fa-check-circle check-i"></i>
+                        <h4 className="book-title">Your Session is Booked Successfully !</h4>
+                        <Link to='/sessionpaymentdetail' className="session-btn">Payment Details</Link>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
         </>
     );
 }

@@ -166,7 +166,7 @@ function ClientPayment() {
         }
         // console.log("savepayment",savepayment);
         // setErrors(errormsg);
-        console.log("isValid", isValid);
+        // console.log("isValid", isValid);
         if (isValid) {
             /*  let savepayment = {
                  date: new Date(),
@@ -174,14 +174,17 @@ function ClientPayment() {
                  plantype: purchasePlan.planType,
                  amount: purchasePlan.amount
              } */
-            console.log("savepayment", savepayment);
+            // console.log("savepayment", savepayment);
             document.querySelector('.loading').classList.remove('d-none');
             axios.post(`${apiUrl}${PORT}/payment/savepayment`, savepayment)
                 .then(response => {
                     document.querySelector('.loading').classList.add('d-none');
-                    if (response.data.status === 1)
-                        history.push("/trainer?status=1");
-                    else {
+                    // console.log("response", response);
+                    if (response.data.status === 1) {
+                        localStorage.setItem('clientPayment', JSON.stringify(response.data.clientPayment));
+                        setConfirmReqModal(true)
+                        // history.push("/trainer?status=1");
+                    } else {
                         swal({
                             title: "Error!",
                             text: response.data.message,
@@ -286,7 +289,7 @@ function ClientPayment() {
                 <div className="commonbox">
                     <div clasName="col-md-12 col-12 text-right pr-md-0">
                         <h5 className="mb-3 text-right">
-                            <small><Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary br-radius">Payment History</Link></small>
+                            {/* <small><Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary br-radius">Payment History</Link></small> */}
                         </h5>
                     </div>
                     <div className="col-md-12">
@@ -365,7 +368,7 @@ function ClientPayment() {
                                                                     <span className="plan-details">
                                                                         <span className="d-flex justify-content-between">
                                                                             <span>{ele.funding.toUpperCase()} CARD</span>
-                                                                            {console.log(ele.brand)}
+                                                                            {/* {console.log(ele.brand)} */}
                                                                             {
                                                                                 ele.brand == "Visa" ? <img src="/img/visacard.png" className="cardimg visaimg" alt="Card" />
                                                                                     : ele.brand == "MasterCard" ? <img src="/img/mastercard.png" className="cardimg visaimg" alt="Card" />
@@ -476,9 +479,9 @@ function ClientPayment() {
                                             {/* <Link to="/paymentSuccess" className="loginbtn mt-4">Pay Now</Link> */}
                                             <div className="loginbtn mt-4" onClick={(e) => { onPayNow(e) }}> Pay Now </div>
                                         </div>
-                                        <Button className="mt-3" data-toggle="modal" data-target="#send-request" onClick={(e) => { setConfirmReqModal(true); }}>
+                                        {/* <Button className="mt-3" data-toggle="modal" data-target="#send-request" onClick={(e) => { setConfirmReqModal(true); }}>
                                             Demo
-                                        </Button>
+                                        </Button> */}
                                         {/* <button data-toggle="modal" data-target="#send-request" onClick={() => { callSendRequest() }} className="training_btn mb-3">Request future session</button> */}
                                     </div>
                                     :
@@ -626,7 +629,7 @@ function ClientPayment() {
                     }}>
                         <i className="far fa-check-circle check-i"></i>
                         <h4 className="book-title">Your Session is Booked Successfully !</h4>
-                        <Link to='/sessionpaymentdetail' className="session-btn">Payment Details</Link>
+                        <Link to='/payment/clientpaymenthistory' className="session-btn">Payment Details</Link>
                     </div>
                 </Modal.Body>
             </Modal>

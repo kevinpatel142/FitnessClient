@@ -74,6 +74,7 @@ function Login() {
                 localStorage.setItem('user', JSON.stringify(response.data.result.User));
                 localStorage.setItem('usertype', 'client');
                 localStorage.setItem('token', response.data.result.token);
+                localStorage.setItem('clientPayment', JSON.stringify(response.data.result.clientPayment));
 
                 window.location.href = "/trainer";
             }

@@ -155,12 +155,12 @@
 
 .graysession {
     background: #f4f4f4;
-    padding: 25px 40px;
+    padding: 15px 30px;
     border-radius: 10px;
     margin-bottom: 10px;
     width: 92%;
     font-size: 15px;
-}
+  }
 
 .font-13 {
     font-size: 13px;
@@ -4266,6 +4266,20 @@ a.edit-btn:hover {
     font-weight: normal;
   }
 
+  .no-session {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 19px;
+    margin-top: 10px;
+  }
+    .graysession table th, .graysession table td {
+    text-align: left;
+    border-top: 0;
+    white-space: nowrap;
+  }
+  .choose-pay {
+    line-height: 31px;
+}
 /**-----------------  Media Query Css start-------------------**/
 
 @media only screen and (max-width: 1360px) {
@@ -4341,8 +4355,17 @@ a.edit-btn:hover {
     .payment-detail{
         font-size: 12px;
     }
+    .chooseplan .custom-radio-wrap form .form-group .label-text{
+        width: 255px !important;
+        font-size: 14px;
+    }
 }
 
+@media only screen and (max-width: 1259px) {
+    .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 220px !important;
+    }
+}
 @media only screen and (max-width: 1199px) {
     .Profile .avatar-upload .avatar-preview>div {
         width: 95px;
@@ -4443,6 +4466,9 @@ a.edit-btn:hover {
     .payment-detail {
         font-size: 13px;
       }
+      .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 210px !important;
+    }
 }
 
 @media only screen and (min-width: 992px) {
@@ -4696,7 +4722,7 @@ a.edit-btn:hover {
 
     .graysession {
         width: 100%;
-        padding: 25px 25px;
+        padding: 15px;
     }
 
     .topimg {
@@ -4959,6 +4985,9 @@ a.edit-btn:hover {
     .clientpayment {
         padding: 30px 0px !important;
       }
+      .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 360px !important;
+      }
 }
 
 @media only screen and (max-width: 575px) {
@@ -5047,7 +5076,15 @@ a.edit-btn:hover {
         height: 75px;
     }
 }
+@media only screen and (max-width: 490px) {
+    .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 330px !important;
+    }
+    .choose-pay{
+        width: 100%;
+    }
 
+}
 @media only screen and (max-width: 470px) {
 
     .genderblock .custom-control-label::before,
@@ -5084,12 +5121,18 @@ a.edit-btn:hover {
         font-size: 31px !important;
         margin-top: 25px !important;
       }
+      .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 280px !important;
+    }
 }
 
 @media only screen and (max-width: 412px) {
     .head-icon {
         text-align: center;
         margin-top: 3px;
+    }
+    .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 240px !important;
     }
 }
 
@@ -5158,6 +5201,12 @@ a.edit-btn:hover {
 
     .rating_box img {
         margin-right: 12px;
+    }
+    .chooseplan .custom-radio-wrap form .form-group .label-text {
+        width: 185px !important;
+    }
+    .chooseplan h4{
+        font-size: 21px;
     }
 }
 

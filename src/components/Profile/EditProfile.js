@@ -98,7 +98,7 @@ function EditProfile() {
                 /* console.log(progressphotos); */
                 // console.log(response.data?.result?.profile != "null");
                 console.log("response",response);
-                let profileImage = response.data?.result?.profile != "null" && response.data?.result?.profile != "undefined" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
+                let profileImage = response.data?.result?.profile != "null" && response.data?.result?.profile != "" ? apiUrl + PORT + response.data?.result?.profile : ProfileImage_URL
                 // console.log("profileImage", profileImage);
                 setProfileImagePreview(profileImage);
                 setProfileImage(profileImage);

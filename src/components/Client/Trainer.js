@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import React, { useRef, useEffect, useState } from 'react';
 import { Collapse, Modal } from "react-bootstrap";
 import { Link, useHistory } from 'react-router-dom';
@@ -6,7 +7,6 @@ import { Rating } from 'react-simple-star-rating';
 import swal from 'sweetalert';
 import { apiUrl, PORT } from '../../environment/environment';
 import { verifytokenCall } from '../Others/Utils.js';
-
 function Trainer({ type, flterValue }) {
     const history = useHistory();
     const [allList, setAllList] = useState([]);
@@ -25,6 +25,8 @@ function Trainer({ type, flterValue }) {
     const [pageNum, setPageNum] = useState(1);
     const [noOfRecords, setNoOfRecords] = useState(0);
     const [requestActive, setRequestActive] = useState('');
+    const [upcomingSessions, setUpcomingSessions] = useState([]);
+
     var noOfRec = 0;
     var actualnoOfRec = 0;
     var isLoaderVal = false;
@@ -34,27 +36,65 @@ function Trainer({ type, flterValue }) {
     const [filterObj, setFilterObj] = useState({ availablestatus: parseInt(currentStatus), name: "", isfilter: false, isStandardTrainers: true, ratings: "", typeOfWorkout: "", gender: "", type: "", limitValue: limitValue, pageNumber: pageNum });
     const prevScrollY = useRef(0);
     const [goingUp, setGoingUp] = useState(false);
+    const [clientPayment, setClientPayment] = useState([]);
+    const [planType, setPlanType] = useState('');
+    const [userData, setuserData] = useState([]);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var allTrainerList = [];
     useEffect(() => {
-        document.body.classList.add('scrollHide');
+        /* let trainerType = clientPayment.filter(x => x.plantype == 'Elite')
+        console.log("type" , trainerType); */
         callToken();
         getTypeOfWorkout();
         GetList((status || parseInt(currentStatus)), 1);
+        
     }, []);
+    useEffect(() => {
+        document.body.classList.add('scrollHide');
+        let localdata = JSON.parse(localStorage.getItem("clientPayment"));
+        var clientPayments = localdata;
+        let user = JSON.parse(localStorage.getItem("user"));
+        setuserData(user);
+        // console.log("clientPayments", clientPayments);
+        setClientPayment(clientPayment, localdata);
+        // console.log("clientPayment", clientPayment);
+    }, [])
 
     const callToken = () => {
         verifytokenCall();
         setTimeout(() => {
+            // getSessions();
             callToken();
         }, 3000);
     }
 
     const loadData = async (list, bookmarktrainer, status) => {
+        getSessions();
         let finalList = [];
         for (var i = 0; i < 3; i++) {
             finalList.push({ "id": i + 1, "List": [], "bookmarktrainerList": bookmarktrainer });
         }
+        /* for (var j = 0; j < list.length; j++) {
+            list[j].isPay = false;
+            for (var k = 0; k < finalList.length; k++) {
+                let localdata = JSON.parse(localStorage.getItem("clientPayment"));
+                if (list[j]?.type != undefined) {
+                    localdata.map((type) => {
+                        list[j].isPay = false
+                        if (type.plantype?.toLowerCase() === list[j]?.type?.toLowerCase()) {
+                            list[j].isPay = true
+                        } else if (type.plantype?.toLowerCase() !== list[j]?.type?.toLowerCase()) {
+                            list[j].isPay = false
+                        }
+                    })
+                }
+                if (j < list.length)
+                    finalList[k].List.push(list[j]);
+
+                if (k < finalList.length - 1)
+                    j++;
+            }
+        } */
         for (var j = 0; j < list.length; j++) {
             for (var k = 0; k < finalList.length; k++) {
                 if (j < list.length)
@@ -63,6 +103,7 @@ function Trainer({ type, flterValue }) {
                     j++;
             }
         }
+        // console.log("finalList", finalList);
         if (list.length === 0) {
             const updatedList = <div className="col-12">
                 <h4 className="no-record-box">
@@ -84,6 +125,7 @@ function Trainer({ type, flterValue }) {
                             <ul className="items">
                                 {listitem.List.filter(tainerlist => tainerlist.availablestatus === status || status === 0).map((tainerlist, sindex) => {
                                     return (<li key={'subkey' + sindex} className="col-12 p-0">
+                                        {/* {console.log("tainerlist",tainerlist.isPay)} */}
                                         <div title={tainerlist.firstname}>
                                             <div className="banner-img">
                                                 <img src={`${apiUrl + PORT + tainerlist.coverprofile}`} onError={(e) => { e.target.src = "/img/Back-No-Image.png" }} alt="" />
@@ -94,9 +136,11 @@ function Trainer({ type, flterValue }) {
                                                             <i className={`${(listitem.bookmarktrainerList.filter(f => f === tainerlist._id).length > 0) ? "fa" : "far"} fa-bookmark`}></i>
                                                         </button>
                                                     </div>
+
                                                     <div className="banner-user">
                                                         <div className="d-sm-flex justify-content-between">
                                                             <div className="d-flex">
+
                                                                 <Link to={'/trainerinformation?Id=' + tainerlist._id} title={tainerlist.firstname} className="user-name">
                                                                     <div className="user-pro">
                                                                         <img src={`${apiUrl + PORT + tainerlist.profile}`} onError={(e) => { e.target.src = "/img/Small-no-img.png" }} alt="" />
@@ -120,15 +164,38 @@ function Trainer({ type, flterValue }) {
                                                             <div className="">
                                                                 {(status !== 1) ?
                                                                     <>
-                                                                        <Link to={`/mysession`} className="banner-btn">Start Training</Link>
+                                                                        <Link to={`/mysession`} className="banner-btn shadow">Start Training</Link>
+
                                                                     </>
                                                                     :
                                                                     <>
-                                                                        <Link onClick={(e) => { e.preventDefault(); postSendRequest(tainerlist); }} className={`${requestActive} banner-btn`}>Start Training</Link>
+                                                                        {/* {console.log("clientPayment.length--",clientPayment.length > 0)} */}
+                                                                        {/* {tainerlist.isPay === true ?
+                                                                            <Link onClick={(e) => { e.preventDefault(); postSendRequest(tainerlist); }} className={`${requestActive} banner-btn`}>Start Training</Link>
+                                                                            : <Link onClick={(e) => { e.preventDefault(); alert("Please purchase plan") }} className={`${requestActive} banner-btn`}>Start Training</Link>
+                                                                        } */}
+                                                                        <Link onClick={(e) => { e.preventDefault(); postSendRequest(tainerlist); }} className={`${requestActive} banner-btn shadow`}>Start Training</Link>
                                                                     </>
                                                                 }
                                                             </div>
                                                         </div>
+                                                        {console.log("ok",upcomingSessions)}
+                                                        {upcomingSessions.length > 0 ? upcomingSessions.map((elem) => {
+                                                            console.log("elem.trainerid == tainerlist._id",elem.trainerid == tainerlist._id);
+                                                            if (elem.trainerid == tainerlist._id) {
+                                                                let startHour = moment(elem.startdatetime).format("DD-MM-YYYY hh:mm A")
+                                                                let minutes = moment(elem.startdatetime).add(-40, "minutes").format("DD-MM-YYYY hh:mm A")
+                                                                let current = moment(new Date()).format("DD-MM-YYYY hh:mm A")
+                                                                /* console.log(startHour);
+                                                                console.log(minutes);
+                                                                console.log(current);
+                                                                console.log("check", minutes <= current && startHour > current);
+                                                                console.log("check DY", '28-06-2022 04:45 PM' <= "28-06-2022 04:46 PM" && '28-06-2022 05:00 PM' > "28-06-2022 04:46 PM"); */
+                                                                return (<>
+                                                                    {minutes <= current && startHour > current ? <span className='btn btn-sm btn-light p-0 m-0'><i class="fa fa-hourglass-half"></i> 15min left</span> : <></>}
+                                                                </>)
+                                                            }
+                                                        }) : <></>}
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,8 +247,8 @@ function Trainer({ type, flterValue }) {
             const queryStringPara = new URLSearchParams(window.location.search);
             let currentStatus = queryStringPara.get("status") || 1;
             var newpageNum = pageNum;
-            console.log("currentStatus",currentStatus);
-            console.log("newpageNum",newpageNum);
+            // console.log("currentStatus", currentStatus);
+            // console.log("newpageNum", newpageNum);
 
             // GetList(parseInt(currentStatus), newpageNum + 1);
             GetList(parseInt(currentStatus), newpageNum);
@@ -198,7 +265,7 @@ function Trainer({ type, flterValue }) {
         trainerfilterObj.isfilter = flterValue ? true : false;
         setIsLoader(true);
         setStatus(status);
-        console.log("trainerfilterObj", trainerfilterObj);
+        // console.log("trainerfilterObj", trainerfilterObj);
         await axios.post(`${apiUrl}${PORT}/trainer/trainer/maintrainerlist`, trainerfilterObj).then(function (response) {
             if (response.data.status === 1) {
                 // response.data.result.trainerlist.bookmarktrainer = response.data?.result?.client_data?.bookmarktrainer;
@@ -277,7 +344,7 @@ function Trainer({ type, flterValue }) {
             .then(function (response) {
                 if (response.data.status === 1)
                     setWorkOutList(response.data.result);
-                    
+
                 else {
                     swal({
                         title: "Error!",
@@ -338,8 +405,33 @@ function Trainer({ type, flterValue }) {
     }
 
     const postSendRequest = async (trainer_data) => {
-        // console.log("trainer_data", trainer_data?.trainingstyle);
         let isSubmit = true;
+        const paymentData = JSON.parse(localStorage.getItem("clientPayment"));
+        if (trainer_data.type != undefined) {
+            const isFound = paymentData.some(element => {
+                if (element.plantype.toLowerCase() === trainer_data.type.toLowerCase()) {
+                    return true;
+                }
+                return false;
+            });
+            if (!isFound) {
+                isSubmit = false;
+                swal({
+                    title: "Notice!",
+                    text: "Please purchase session",
+                    icon: "error",
+                    button: true
+                })
+            }
+        } else {
+            isSubmit = false;
+            swal({
+                title: "Notice!",
+                text: "Please purchase session",
+                icon: "error",
+                button: true
+            })
+        }
         if (isSubmit) {
 
             var sTime = selectedStartTime;
@@ -428,6 +520,26 @@ function Trainer({ type, flterValue }) {
         });
         GetList(parseInt(currentStatus), 1)
     }
+    const getSessions = async () => {
+        // console.log("userData",userData._id);
+        await axios.get(`${apiUrl}${PORT}/client/session/getclientsession`, { id: userData._id })
+            .then((response) => {
+                console.log(response.status);
+                if (response.status == 200) {
+                    console.log("up",response.data.result.upcomingList);
+                    // upcomingSessions = response.data.result.upcomingList;
+                    setUpcomingSessions(response.data.result.upcomingList);
+                    
+
+                    
+                    console.log("response", response.data.result.upcomingList);
+                }
+
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+    console.log("setUpcomingSessions-last", upcomingSessions);
     return (
         <>{isLoader &&
             <div className="loading">

@@ -10,6 +10,7 @@ function ClientPaymentHistory() {
         axios.get(`${apiUrl}${PORT}/payment/clientpaymenthistory`)
             .then(response => {
                 if (response.status == 200) {
+                    response.data.result.reverse();
                     setPaymentList(response.data.result);
                 }
 
@@ -40,7 +41,7 @@ function ClientPaymentHistory() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {paymentList.map((element) => {
+                                        {paymentList.length > 0 ? paymentList.map((element) => {
                                             return (
                                                 <>
                                                     <tr key={`payment_${element}`}>
@@ -49,12 +50,12 @@ function ClientPaymentHistory() {
                                                         <td>{element.noofsession == 1 ? 'Single session' : element.noofsession+" sessions"}</td>
                                                         <td><span className="btn-success p-status">Paid</span></td>
                                                         <td>$ {element.amount.toFixed(2)}</td>
-                                                        <td><Link className="detail-btn" to="/sessionpaymentdetail"><i class="fas fa-eye"></i></Link></td>
+                                                        <td><Link className="detail-btn" to={`/sessionpaymentdetail?id=${element._id}`}><i class="fas fa-eye"></i></Link></td>
                                                     </tr>
                                                 </>
                                             )
 
-                                        })}
+                                        }): <><tr><td colSpan="10" className="-text-center">No Records found</td></tr></>}
                                     </tbody>
                                 </table>
                             </div>

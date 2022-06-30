@@ -29,6 +29,7 @@ function TrainerInformation() {
     const [reportObj, setReportObj] = useState({ trainerid: "", reason: "", isBlock: null });
     const [currentFlag, setCurrentFlag] = useState("");
     const [temptime, setTemptime] = useState(new Date());
+    const [clientPayment, setClientPayment] = useState([]);
     // const [plusTime, setPlusTime] = useState();
     const confirmReqModalClose = () => setConfirmReqModal(false);
     // const [isLoader, setIsLoader] = useState(false);
@@ -48,6 +49,9 @@ function TrainerInformation() {
 
     useEffect(() => {
         document.body.classList.remove('scrollHide');
+        /* let localdata = localStorage.getItem("clientPayment");
+        let clientPayments = JSON.parse(localdata);
+        setClientPayment(clientPayments); */
         setMountRender(false);
         callToken();
         GetList(Id);
@@ -209,10 +213,23 @@ function TrainerInformation() {
         setTrainerId(id);
         await axios.post(`${apiUrl}${PORT}/trainer/trainer/gettrainer`, { userId: id })
             .then(function (response) {
+                console.log("response", response);
                 document.querySelector('.loading').classList.add('d-none');
-                response.data.result.trainerlist.isbookmarktrainer = response.data?.result?.client_bm_data.some(s => s === Id);
-                setList(response.data.result?.trainerlist);
-                setSessionRequestList(response.data.result?.sessionrequestlist);
+                if (response.status == 200) {
+                    response.data.result.trainerlist.isbookmarktrainer = response.data?.result?.client_bm_data.some(s => s === Id);
+                    setList(response.data.result?.trainerlist);
+                    setSessionRequestList(response.data.result?.sessionrequestlist);
+                    let localdata = JSON.parse(localStorage.getItem("clientPayment"));
+                    response.data.result.trainerlist.isPay = false;
+                    localdata.map((elem) => {
+                        if (response.data.result.trainerlist.type != undefined) {
+                            if (elem.plantype.toLowerCase() == response.data.result.trainerlist.type.toLowerCase()) {
+                                response.data.result.trainerlist.isPay = true;
+                                return false;
+                            }
+                        }
+                    })
+                }
                 /* renderArr(response.data.result); */
             }).catch(function (error) {
                 //document.querySelector('.loading').classList.add('d-none');
@@ -567,7 +584,17 @@ function TrainerInformation() {
                             </label>
                             <div className="text-danger">{errors.isAgree}</div>
                         </div>
-                        <div className="training_btn" onClick={(e) => { e.preventDefault(); postSendRequest() }}>Send Request</div>
+                        {list?.isPay == true ?
+                            <div className="training_btn" onClick={(e) => { e.preventDefault(); postSendRequest() }}>Send Request</div>
+                            : <div className="training_btn" onClick={(e) => {
+                                e.preventDefault();
+                                swal({
+                                    title: "Notice!",
+                                    text: "Please purchase plan",
+                                    icon: "error",
+                                    button: true
+                                })
+                            }}>Send Request</div>}
                     </div>
                 </Modal.Body>
             </Modal>

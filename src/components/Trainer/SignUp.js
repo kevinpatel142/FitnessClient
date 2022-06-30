@@ -190,9 +190,9 @@ function SignUp() {
     };
 
 
-    const [emailnotifications,setEmailnotifications] = useState(true);
-    const [maillinglist,setMaillinglist] = useState(true);
-    const [textnotifications,setTextnotifications] = useState(true);
+    const [emailnotifications, setEmailnotifications] = useState(true);
+    const [maillinglist, setMaillinglist] = useState(true);
+    const [textnotifications, setTextnotifications] = useState(true);
     /* const [webnotifications,setWebnotifications] = useState(true);
     const [mobilenotifications,setMobilenotifications] = useState(true); */
 
@@ -492,16 +492,16 @@ function SignUp() {
     };
 
     const handleInputs = (e) => {
-        if (e.target.name === "emailnotifications"){
+        if (e.target.name === "emailnotifications") {
             setEmailnotifications(!emailnotifications);
             // setUser({...user, [e.target.name] : emailnotifications})
         }
 
-        if (e.target.name === "maillinglist"){
+        if (e.target.name === "maillinglist") {
             setMaillinglist(!maillinglist);
             // setUser({ ...user, [e.target.name]: maillinglist });
         }
-        if (e.target.name === "textnotifications"){
+        if (e.target.name === "textnotifications") {
             setTextnotifications(!textnotifications);
             // setUser({ ...user, [e.target.name]: textnotifications });
         }
@@ -640,7 +640,7 @@ function SignUp() {
             formData.append('experience', parseInt(expVal));//parseInt(document.getElementById("experience").value));
             formData.append('specialitys', specialityslist.toString());
             formData.append('introduction', user.introduction);
-           
+
             formData.append('emailnotifications', emailnotifications);
             formData.append('maillinglist', maillinglist);
             formData.append('textnotifications', textnotifications);
@@ -726,11 +726,13 @@ function SignUp() {
                 document.querySelector('.loading').classList.add('d-none');
                 if (response.data.status === 1) {
                     setUserId(response.data.result._id);
-                    //history.push("/trainersaccountinfo");
+                    
                     document.querySelector('.loading').classList.remove('d-none');
                     // $('#plaidbutton > button').click();
                     // console.log("on trigger");
                     $('#add_bank_modal').click();
+                    // history.push("/");
+
                 }
                 else {
                     swal({
@@ -930,7 +932,7 @@ function SignUp() {
                 <div id="plaidbutton">
                     <PlaidLink style={{ display: "none" }}
                         token={token}
-                        onSuccess={onSuccess}>
+                        onSuccess={onSuccess}> 
                         Connect a bank account
                     </PlaidLink>
                 </div>
@@ -1088,9 +1090,18 @@ function SignUp() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-12">
-                                        <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="w-100  mb-3 input-box" maxLength={10} placeholder="Mobile Number" />
-                                        <div className="text-danger">{errors.phoneno}</div>
+                                    <div className='row'>
+                                        <div class="col-12 col-md-4">
+                                            <select class="input-box" name="country">
+                                                <option>Select country</option>
+                                                <option value="in">INDIA</option>
+                                                <option value="us">USA</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-12 col-md-8">
+                                            <input onChange={(e) => handleInputs(e)} value={user.phoneno} name="phoneno" className="w-100  mb-3 input-box" maxLength={10} placeholder="Mobile Number" />
+                                            <div className="text-danger">{errors.phoneno}</div>
+                                        </div>
                                     </div>
                                     <div className="col-md-12">
                                         <label>Gender</label>

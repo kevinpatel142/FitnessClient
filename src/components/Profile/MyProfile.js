@@ -76,17 +76,18 @@ function MyProfile() {
         ).then(function (response) {
             // console.log("response", response);
             document.querySelector('.loading').classList.add('d-none');
+            console.log("response",response);
             if (response.data.status === 1) {
                 if (usertype === "client") {
                     response.data.result.oldpassword = ""; response.data.result.password = ""; response.data.result.confirmPassword = "";
                     if (response.data.result) {
                         setClient(response.data.result);
 
-                        setProfileImagePreview((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
-                        setProfileImage((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
+                        setProfileImagePreview((response.data.result.profile != "null" && response.data.result.profile != "") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
+                        setProfileImage((response.data.result.profile != "null" && response.data.result.profile != "") ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
 
-                        setTrainerProfileImagePreview((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
-                        setTrainerImage((response.data.result.profile != "null") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerProfileImagePreview((response.data.result.profile != "null" && response.data.result.profile != "") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
+                        setTrainerImage((response.data.result.profile != "null" && response.data.result.profile != "") ? apiUrl + PORT + response.data.result.profile : TrainerProfileImage_URL);
                     }
                 } else {
                     // debugger
@@ -94,6 +95,7 @@ function MyProfile() {
                     if (response.data.result) {
                         setExp(response.data.result.experience);
                         setUser(response.data.result);
+                        console.log("response.data.result", response.data.result);
                         // console.log("response.data.result.profile", response.data.result);
                         setProfileImagePreview((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
                         setProfileImage((response.data.result.profile) ? apiUrl + PORT + response.data.result.profile : ProfileImage_URL);
@@ -463,31 +465,33 @@ function MyProfile() {
     }
 
     const OnQualificationFileChange = (event, value) => {
-        const file_size = event.target.files[0]?.size;
-        if (file_size > 1048000) {
-            setImagesQuaPathList([]);
-            alert("File size more than 1 MB. File size must under 1MB !");
-            event.preventDefault();
-        } else {
-            const fileReader = new window.FileReader();
-            const file = event.target.files[0];
-            // console.log("file", file);
-
-            fileReader.onload = fileLoad => {
-                //const { result } = fileLoad.target;
-
-                var maxId = imagesQuaPathList.length > 0 ? (imagesQuaPathList.length + 1) : 1;
-                imagesQuaPathList.push({
-                    "uri": file,
-                    "path": '/public/trainerqualifications/' + file.name,
-                    "name": file.name,
-                    "type": file.type,
-                    "id": maxId,
-                    "qualification": value
-                });
-                setImagesQuaPathList(imagesQuaPathList);
-            };
-            fileReader.readAsDataURL(file);
+        if(event.target.files[0] !== undefined){
+            const file_size = event.target.files[0]?.size;
+            if (file_size > 1048000) {
+                setImagesQuaPathList([]);
+                alert("File size more than 1 MB. File size must under 1MB !");
+                event.preventDefault();
+            } else {
+                const fileReader = new window.FileReader();
+                const file = event.target.files[0];
+                
+                // console.log("file", file);
+    
+                fileReader.onload = fileLoad => {
+                    var maxId = imagesQuaPathList.length > 0 ? (imagesQuaPathList.length + 1) : 1;
+                    // console.log("maxId", maxId);
+                    imagesQuaPathList.push({
+                        "uri": file,
+                        "path": '/public/trainerqualifications/' + file.name,
+                        "name": file.name,
+                        "type": file.type,
+                        "id": maxId,
+                        "qualification": value
+                    });
+                    setImagesQuaPathList(imagesQuaPathList);
+                };
+                fileReader.readAsDataURL(file);
+            }
         }
     };
 

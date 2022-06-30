@@ -50,9 +50,8 @@ function TrainerPaymentHistory() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {trainerPayment.map((element) => {
+                                        {trainerPayment.length > 0 ? trainerPayment.map((element) => {
                                             return (<>
-
                                                 <tr key={element}>
                                                     <td>
                                                         <div className="">
@@ -67,8 +66,8 @@ function TrainerPaymentHistory() {
                                                     <td><span>$ {element.amount.toString(2)}</span></td>
                                                 </tr>
                                             </>);
-                                        })}
-                                        {!trainerPayment ? <tr><td>No Records Found</td></tr> : <></>}
+                                        }): <tr><td>No Records Found</td></tr>}
+                                        {/* {!trainerPayment ? <tr><td>No Records Found</td></tr> : <></>} */}
                                     </tbody>
                                 </table>
 

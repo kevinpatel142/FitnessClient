@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { apiUrl, PORT } from '../../environment/environment';
 import axios from 'axios';
 import { verifytokenCall } from '../Others/Utils.js';
+import { Link } from 'react-router-dom';
 function PurchaseSession() {
     const history = useHistory();
     const [plan, setPlan] = useState('S-1-60');
@@ -58,7 +59,7 @@ function PurchaseSession() {
                 <div className="col-lg-10 offset-lg-1 col-12">
                     <div className="chooseplan">
                         <div className="row">
-                            <div className="col-lg-5 col-md-6">
+                            <div className="col-xl-5 col-md-6">
                                 <div className={`planblock bg-white ${(plan.indexOf('S') > -1) ? "active" : ""}`}>
                                     <div className="headerblock">
                                         <h4>Standard</h4>
@@ -81,7 +82,7 @@ function PurchaseSession() {
                                                 })
                                                 :
                                                 <>
-                                                    No sessions found!
+                                                    <div className="no-session"> No sessions found!</div>
                                                 </>
                                             }
                                             {/* <div className="form-group">
@@ -102,8 +103,8 @@ function PurchaseSession() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-1 d-none d-lg-block"></div>
-                            <div className="col-lg-5 col-md-6">
+                            <div className="col-xl-1 d-none d-xl-block"></div>
+                            <div className="col-xl-5 col-md-6">
                                 <div className={`planblock bg-white ${(plan.indexOf('S') > -1) ? "" : "active"}`}>
                                     <div className="headerblock">
                                         <h4>Elite</h4>
@@ -126,7 +127,7 @@ function PurchaseSession() {
                                                 })
                                                 :
                                                 <>
-                                                    No sessions found!
+                                                    <div className="no-session"> No sessions found!</div>
                                                 </>
                                             }
 
@@ -153,19 +154,24 @@ function PurchaseSession() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-12">
-                                <h4 className="font-weight-bold my-4">Purchased Session</h4>
+                            <div className="col-xl-11 col-lg-11 d-sm-flex">
+                                <h4 className="font-weight-bold my-sm-4 align-self-center">Purchased Session</h4>
+                                <Link to="/payment/clientpaymenthistory" class="text-decoration-none btn btn-primary br-radius mt-2 mt-md-4 mb-4 ml-sm-auto choose-pay">Payment History</Link>
                             </div>
                             <div className="col-md-12 mb-5">
                                 <div class="graysession">
-                                    <table class="w-100">
-                                        <tr>
-                                            <td> <span className="textgray">Date : </span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
-                                            <td><span className="textgray">Plan : </span><span className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</span></td>
-                                            <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
-                                            <td><span className="textgray">Total :</span><span className="text-success font-weight-bold"> ${planDetail.amount}</span></td>
-                                        </tr>
-                                    </table>
+                                    <div className="table-responsive">
+                                        <table class="table w-100 mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td><span className="textgray">Date :</span><span className="text-primary font-weight-bold"> {planDetail.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</span></td>
+                                                    <td><span className="textgray">Plan :</span><span className="text-primary font-weight-bold bg-transparent planborder"> {planDetail.planType}</span></td>
+                                                    <td><span className="textgray">Sessions :</span><span className="text-primary font-weight-bold"> {planDetail.sessions === '1' ? 'Single' : planDetail.sessions}</span></td>
+                                                    <td><span className="textgray">Total :</span><span className="text-primary font-weight-bold"> ${planDetail.amount}</span></td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

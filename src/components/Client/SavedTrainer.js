@@ -11,6 +11,7 @@ function SavedTrainer({ type, flterValue }) {
     const [bookmarkTrainerList, setbookmarkTrainerList] = useState([]);
     const [pageNum, setPageNum] = useState(1);
     const [noOfRecords, setNoOfRecords] = useState(0);
+    const [clientPayment, setClientPayment] = useState([]);
     const limitValue = 6;
     function initScroll() {
         // $(".smart").each(function () {
@@ -90,6 +91,8 @@ function SavedTrainer({ type, flterValue }) {
 
     //Onload event set here.
     useEffect(() => {
+        let localdata = localStorage.getItem("clientPayment");
+        let clientPayment = JSON.parse(localdata);
         callToken();
         GetList(1);
         //initScroll();

@@ -95,6 +95,7 @@ function ScheduleRequest() {
             setIsLoader(false);
             if (response.data.status === 1) {
                 if (response?.data?.result) {
+                    console.log("result", response?.data?.result);
                     setaNoOfRecords(response.data?.result[0]?.totalCount[0]?.count || 0);
                     setAcceptList(response.data?.result[0]?.paginatedResults);
                 } else {
@@ -366,7 +367,7 @@ function ScheduleRequest() {
             setIsLoader(true);
             await axios.post(`${apiUrl}${PORT}/trainer/session/sessionactivestatusupdate`, formData, {
             }).then(function (response) {
-                /* document.querySelector('.loading').classList.add('d-none'); */
+                // document.querySelector('.loading').classList.add('d-none');
                 setIsLoader(false);
                 if (response.data.status === 1) {
                     //history.push('/videosession');
@@ -383,7 +384,7 @@ function ScheduleRequest() {
                 }
             }).catch(function (error) {
                 //window.alert(error);
-                /* document.querySelector('.loading').classList.add('d-none'); */
+                // document.querySelector('.loading').classList.add('d-none');
                 setIsLoader(false);
             });
         } else {

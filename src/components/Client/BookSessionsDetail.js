@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import { verifytokenCall } from '../Others/Utils.js';
 import { isSameDay, startOfToday, endOfDay } from 'date-fns';
 
+
 function BookSessionsDetail() {
     const history = useHistory();
     const [trainerId, setTrainerId] = useState();
@@ -33,6 +34,7 @@ function BookSessionsDetail() {
     const [selectedStartDate, setSelectedStartDate] = useState(new Date());
     const [startDateStr, setStartDateStr] = useState('');
     const [startTimeStr, setStartTimeStr] = useState('');
+    const [clientPayment, setClientPayment] = useState([]);
 
     const callToken = () => {
         verifytokenCall();
@@ -55,6 +57,21 @@ function BookSessionsDetail() {
                         element.rankingtrainer = ((rankInfo.length > 0) ? (rankInfo.reduce((a, v) => a = a + v.rate, 0) / rankInfo.length) : 0);
                     });
                 }
+                let localdata = JSON.parse(localStorage.getItem("clientPayment"));
+                const trainer = response?.data?.result?.sessionrequestlist[0].trainer_data;
+                trainer.isPay = false;
+                localdata.map((elem) => {
+                    if (response.data?.result?.sessionrequestlist[0].trainer_data?.type != undefined) {
+                        if (elem.plantype.toLowerCase() == 'elite') {
+                            trainer.isPay = true;
+                            return false;
+                        } else if (elem.plantype.toLowerCase() == 'standard') {
+                            trainer.isPay = true;
+                            return false;
+                        }
+                    }
+                })
+                response.data.result.sessionrequestlist[0].trainer_data = trainer;
                 setTrainerId(response.data?.result?.sessionrequestlist[0]?.trainer_data?._id);
                 setSessionInfo(response.data?.result?.sessionrequestlist || []);
                 if (sessionType === "My Session") {
@@ -100,6 +117,8 @@ function BookSessionsDetail() {
     }
 
     useEffect(() => {
+        let localdata = localStorage.getItem("clientPayment");
+        let clientPayment = JSON.parse(localdata);
         callToken();
         getSessionById();
         getSettingbycode();
@@ -213,7 +232,7 @@ function BookSessionsDetail() {
                 'endhour': formatDate(endTime),
                 'startdatetime': ssdate,
                 'enddatetime': endate,
-                'requestType':0
+                'requestType': 0
             }
 
             setStartDateStr(selectedStartDate.getDate() + ' ' + monthNames[selectedStartDate.getMonth()]);
@@ -368,7 +387,19 @@ function BookSessionsDetail() {
                                         </> :
                                         <>
                                             <div className="col-md-8 col-12">
-                                                <a href={() => false} data-toggle="modal" data-target="#session-detail" onClick={() => { setSessionDetailModal(true); }} className="train-again cursor-pointer">Train Again</a>
+                                                {item.trainer_data.isPay == true ?
+                                                    <a href={() => false} data-toggle="modal" data-target="#session-detail" onClick={() => { setSessionDetailModal(true); }} className="train-again cursor-pointer">Train Again</a>
+                                                    : <a href={() => false} data-toggle="modal" data-target="#session-detail" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        swal({
+                                                            title: "Notice!",
+                                                            text: "Please purchase plan",
+                                                            icon: "error",
+                                                            button: true
+                                                        })
+                                                    }} className="train-again cursor-pointer">Train Again</a>
+                                                }
+                                                {/* : <div className="training_btn" href={() => false}  onClick={(e) => { e.preventDefault(); alert("Please purchase plan") }}>Request Future Session</div> */}
                                             </div>
                                         </>
                                     }
@@ -474,8 +505,8 @@ function BookSessionsDetail() {
                                 </div>
                             </>
                         }
-                        <div className="training_btn" href={() => false}
-                            onClick={() => { sessionFuturReqCall(); }}>Request Future Session</div>
+                        <div className="training_btn" href={() => false} onClick={() => { sessionFuturReqCall(); }}>Request Future Session</div>
+
                     </div>
                 </Modal.Body>
             </Modal>

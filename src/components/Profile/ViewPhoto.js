@@ -205,7 +205,9 @@ function ViewPhoto() {
                                                     </div>
                                                 }
                                             })}
-                                            {res?.list && res?.list?.length > 0 && res?.list.map((ele, index) => {
+                                            
+                                {/* SHOW SECOND IMAGE FORM TBL  */}
+                                            {/* {res?.list && res?.list?.length > 0 && res?.list.map((ele, index) => {
                                                 let isFile = ele.type ? ele.type.indexOf('image') > -1 : false;
                                                 if (!isFile) {
                                                     return <div key={index} className="col-lg-3 col-md-6 col-12 mb-2">
@@ -214,7 +216,7 @@ function ViewPhoto() {
                                                         </div>
                                                     </div>
                                                 }
-                                            })}
+                                            })} */}
                                             {/* {new Date().toDateString() === new Date(res.date).toDateString() ?
                                                 <div className="col-lg-3 col-md-6 col-12 -d-none">
                                                     <div className="prog-img">

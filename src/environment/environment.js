@@ -1,6 +1,17 @@
 //For local setup
+// const local = {
+//     apiUrl: "http://knktfitapi-env.eba-hdh2fsbk.us-east-2.elasticbeanstalk.com",
+//     PORT: "",
+//     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
+//     authDomain: "knkt-fitness.firebaseapp.com",
+//     projectId: "knkt-fitness",
+//     storageBucket: "knkt-fitness.appspot.com",
+//     messagingSenderId: "393182006473",
+//     appId: "1:393182006473:web:8ba490cdd1eb733ec19118",
+//     measurementId: "G-1PN8VFBQB8"
+// };
 const local = {
-    apiUrl: "http://knktfitapi-env.eba-hdh2fsbk.us-east-2.elasticbeanstalk.com",
+    apiUrl: "https://api.knktfit.com",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",

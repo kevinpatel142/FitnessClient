@@ -180,7 +180,7 @@ function ViewPhoto() {
                         {getAllPhotos.length > 0 && getAllPhotos.map((res, index) => {
                             if(res != ''){
                                 return (<>
-                                    {console.log("date", res.date)}
+                                    {console.log("res", res)}
                                     <div key={index} className="col-md-6 col-12">
                                         <div className="row" dataId={index}>
                                             <div className="col-md-12 col-12 mb-4">
@@ -237,7 +237,7 @@ function ViewPhoto() {
                                             :
                                             <div></div>
                                         }
-                                        {res?.base64Img && res?.base64Img?.length > 0 && res?.base64Img.map((ele, index) => {
+                                       {/*  {res?.base64Img && res?.base64Img?.length > 0 && res?.base64Img.map((ele, index) => {
                                             if (ele?.type?.indexOf('image/') > -1) {
                                                 return <></>
                                             } else {
@@ -247,7 +247,7 @@ function ViewPhoto() {
                                                     </div>
                                                 </div>
                                             }
-                                        })}
+                                        })} */}
                                         {/* {res?.list && res?.list?.length > 0 && res?.list.map((ele, index) => {
                                             let isFile = ele.type ? ele.type.indexOf('image') > -1 : false;
                                             if (!isFile) {

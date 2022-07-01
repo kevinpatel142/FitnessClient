@@ -7,6 +7,7 @@ import { Rating } from 'react-simple-star-rating';
 import swal from 'sweetalert';
 import { apiUrl, PORT } from '../../environment/environment';
 import { verifytokenCall } from '../Others/Utils.js';
+let upcoming = [];
 function Trainer({ type, flterValue }) {
     const history = useHistory();
     const [allList, setAllList] = useState([]);
@@ -26,6 +27,7 @@ function Trainer({ type, flterValue }) {
     const [noOfRecords, setNoOfRecords] = useState(0);
     const [requestActive, setRequestActive] = useState('');
     const [upcomingSessions, setUpcomingSessions] = useState([]);
+    
 
     var noOfRec = 0;
     var actualnoOfRec = 0;
@@ -42,12 +44,13 @@ function Trainer({ type, flterValue }) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var allTrainerList = [];
     useEffect(() => {
+        getSessions();
         /* let trainerType = clientPayment.filter(x => x.plantype == 'Elite')
         console.log("type" , trainerType); */
         callToken();
         getTypeOfWorkout();
         GetList((status || parseInt(currentStatus)), 1);
-        
+
     }, []);
     useEffect(() => {
         document.body.classList.add('scrollHide');
@@ -69,7 +72,7 @@ function Trainer({ type, flterValue }) {
     }
 
     const loadData = async (list, bookmarktrainer, status) => {
-        getSessions();
+        
         let finalList = [];
         for (var i = 0; i < 3; i++) {
             finalList.push({ "id": i + 1, "List": [], "bookmarktrainerList": bookmarktrainer });
@@ -179,12 +182,13 @@ function Trainer({ type, flterValue }) {
                                                                 }
                                                             </div>
                                                         </div>
-                                                        {console.log("ok",upcomingSessions)}
+                                                        {/* {console.log("ok", upcomingSessions)} */}
+
                                                         {upcomingSessions.length > 0 ? upcomingSessions.map((elem) => {
-                                                            console.log("elem.trainerid == tainerlist._id",elem.trainerid == tainerlist._id);
+                                                            // console.log("elem.trainerid == tainerlist._id", elem.trainerid == tainerlist._id);
                                                             if (elem.trainerid == tainerlist._id) {
                                                                 let startHour = moment(elem.startdatetime).format("DD-MM-YYYY hh:mm A")
-                                                                let minutes = moment(elem.startdatetime).add(-40, "minutes").format("DD-MM-YYYY hh:mm A")
+                                                                let minutes = moment(elem.startdatetime).add(-15, "minutes").format("DD-MM-YYYY hh:mm A")
                                                                 let current = moment(new Date()).format("DD-MM-YYYY hh:mm A")
                                                                 /* console.log(startHour);
                                                                 console.log(minutes);
@@ -192,7 +196,7 @@ function Trainer({ type, flterValue }) {
                                                                 console.log("check", minutes <= current && startHour > current);
                                                                 console.log("check DY", '28-06-2022 04:45 PM' <= "28-06-2022 04:46 PM" && '28-06-2022 05:00 PM' > "28-06-2022 04:46 PM"); */
                                                                 return (<>
-                                                                    {minutes <= current && startHour > current ? <span className='btn btn-sm btn-light p-0 m-0'><i class="fa fa-hourglass-half"></i> 15min left</span> : <></>}
+                                                                    {minutes <= current && startHour > current ? <span className='btn btn-sm btn-light p-1 mt-2 px-2' style={{fontSize: "11px",borderRadius: "10px",color: "#243881"}}><i class="fa fa-hourglass-half"></i> 15 mins left</span> : <></>}
                                                                 </>)
                                                             }
                                                         }) : <></>}
@@ -521,20 +525,17 @@ function Trainer({ type, flterValue }) {
         GetList(parseInt(currentStatus), 1)
     }
     const getSessions = async () => {
+        console.log("in session");
         // console.log("userData",userData._id);
         await axios.get(`${apiUrl}${PORT}/client/session/getclientsession`, { id: userData._id })
             .then((response) => {
-                console.log(response.status);
                 if (response.status == 200) {
-                    console.log("up",response.data.result.upcomingList);
+                    console.log("up", response.data.result.upcomingList);
                     // upcomingSessions = response.data.result.upcomingList;
-                    setUpcomingSessions(response.data.result.upcomingList);
-                    
-
-                    
-                    console.log("response", response.data.result.upcomingList);
+                    upcoming = response.data.result.upcomingList;
+                    setUpcomingSessions(upcoming);
+                    console.log("upcomingSessions_first", upcomingSessions);
                 }
-
             }).catch((err) => {
                 console.log(err);
             })

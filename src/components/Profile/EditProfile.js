@@ -283,7 +283,7 @@ function EditProfile() {
             let profile = profileimage;
             if (typeof (profileimage) == 'string') {
                 profile = profileimage.split(apiUrl + PORT);
-                profile = profile[1];
+                profile = profile[1] || '';
                 setProfileImage(...profileimage, profile);
             }
 

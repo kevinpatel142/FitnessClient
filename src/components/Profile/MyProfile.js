@@ -284,7 +284,7 @@ function MyProfile() {
             let profile;
             if (typeof (trainerimagepreview) == 'string') {
                 profile = trainerimagepreview.split(apiUrl + PORT);
-                profile = profile[1];
+                profile = profile[1] || '';
                 setTrainerImage(...trainerimagepreview, profile);
             } else {
                 profile = trainerimagepreview;
@@ -300,7 +300,7 @@ function MyProfile() {
             let coverProfile;
             if (typeof (coverimage) == "string") {
                 coverProfile = coverimage.split(apiUrl + PORT);
-                coverProfile = coverProfile[1];
+                coverProfile = coverProfile[1] || '';
             } else {
                 coverProfile = coverimage;
             }

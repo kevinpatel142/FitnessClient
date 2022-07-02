@@ -11,7 +11,8 @@
 //     measurementId: "G-1PN8VFBQB8"
 // };
 const local = {
-    apiUrl: "https://api.knktfit.com",
+    //apiUrl: "https://api.knktfit.com",
+    apiUrl: "http://18.223.146.145:3155",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",
@@ -24,7 +25,8 @@ const local = {
 
 //For staging server
 const staging = {
-    apiUrl: "https://api.knktfit.com",
+    //apiUrl: "https://api.knktfit.com",
+    apiUrl: "http://18.223.146.145:3155",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",

@@ -91,6 +91,7 @@ function App() {
   //     }
   //   }, 3000);
   // }
+
   useEffect(() => {
     setPathnameUrl(window.location.pathname);
     if (window.location.pathname !== '/trainer' && window.location.pathname !== '/savedtrainer')
@@ -101,10 +102,14 @@ function App() {
       axios.get(`${apiUrl}${PORT}/account/verifytoken`, {}, {
       }).then(function (response) {
         if (response.data.status === 1) {
-          if (usertype === "client")
+          if (usertype === "client") {
             setIsLogin(true);
-          else if (usertype === "trainer")
+            history.push("/trainer");
+          }
+          else if (usertype === "trainer") {
             setIsLogin(true);
+            history.push("/schedulerequest");
+          }
         }
       }).catch(function (error) {
         console.log(error);
@@ -177,7 +182,7 @@ function App() {
       })
   }
   const markRead = (id) => {
-    axios.post(`${apiUrl}${PORT}/notification/markread`,{id: id})
+    axios.post(`${apiUrl}${PORT}/notification/markread`, { id: id })
       .then(response => {
         console.log(response);
       })
@@ -214,7 +219,7 @@ function App() {
         <Route path="/trainersaccountinfo"><TrainerAccountInfo></TrainerAccountInfo></Route>
         <Route path="/termsandcondition"><TermsAndCondition></TermsAndCondition></Route>
         <Route path="/mobilevideosession"><MobileVedioSession></MobileVedioSession></Route>
-        
+
         {/* <Route path="/banklink"><BankLink></BankLink></Route> */}
         {
           (isLogin === true) ?

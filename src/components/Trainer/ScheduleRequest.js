@@ -28,7 +28,12 @@ function ScheduleRequest() {
     const [userDetail, setUserDetail] = useState();
     const handleClose = () => setDetailModal(false);
     const rejectRequestClose = () => setSessionResponseModal(false);
+    var isFirstLoader = false;
     useEffect(() => {
+        if (isFirstLoader == false) {
+            history.push("/schedulerequest");
+            isFirstLoader = true;
+        }
         callToken();
         PendingcallToken();
         //fetchList(false, null);

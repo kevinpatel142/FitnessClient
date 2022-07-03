@@ -43,7 +43,12 @@ function Trainer({ type, flterValue }) {
     const [userData, setuserData] = useState([]);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var allTrainerList = [];
+    var isFirstLoader = false;
     useEffect(() => {
+        if(isFirstLoader ==  false){
+            history.push("/trainer");
+            isFirstLoader = true;
+        }
         getSessions();
         /* let trainerType = clientPayment.filter(x => x.plantype == 'Elite')
         console.log("type" , trainerType); */

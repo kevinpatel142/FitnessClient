@@ -13,7 +13,6 @@ const local = {
 
 //For staging server
 const staging = {
-
     apiUrl: "https://18.224.209.86:",
     PORT: "3155",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",

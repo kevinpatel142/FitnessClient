@@ -111,16 +111,18 @@ function ViewPhoto() {
     };
 
     const uploadImages = async (e) => {
+        console.log("on submit");
         e.preventDefault();
         document.querySelector('.loading').classList.remove('d-none');
         const formData = new FormData();
         var filelist = [];
         // debugger
-        // console.log("getAllPhotos",getAllPhotos);
+        console.log("getAllPhotos",getAllPhotos);
         for (var key in getAllPhotos[0].list) {
             if (getAllPhotos[0].list[key].type !== undefined) {
                 formData.append(getAllPhotos[0].list[key].name, getAllPhotos[0].list[key]);
                 filelist.push(getAllPhotos[0].list[key].name);
+                // console.log("filelist", filelist);
             } else {
                 let isCheckBase64 = getAllPhotos[0].list[key]?.indexOf('data:image/') > -1;
                 if (!isCheckBase64) {
@@ -132,6 +134,8 @@ function ViewPhoto() {
         filelist = filelist.filter(function (element) {
             return element !== undefined;
         });
+        console.log("filelist", filelist);
+        console.log("progressphotos", new Date(getAllPhotos[0].date));
         formData.append("filelist", JSON.stringify(filelist));
         formData.append("progressphotos", new Date(getAllPhotos[0].date));
         //formData.append("progressphotos", JSON.stringify(getAllPhotos[0].date));

@@ -1,6 +1,6 @@
 
 const local = {
-    apiUrl: "https://api.knktfit.com/",
+    apiUrl: "https://api.knktfit.com",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",
@@ -14,7 +14,7 @@ const local = {
 //For staging server
 const staging = {
 
-    apiUrl: "https://api.knktfit.com/",
+    apiUrl: "https://api.knktfit.com",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",
@@ -28,7 +28,7 @@ const staging = {
 //For production server
 const production = {
 
-    apiUrl: "https://api.knktfit.com/",
+    apiUrl: "https://api.knktfit.com",
     PORT: "",
     apiKey: "AIzaSyAOmre6mkoJWjDQWTyrNdT-7L7E4mz9B1U",
     authDomain: "knkt-fitness.firebaseapp.com",

@@ -36,7 +36,6 @@
     "production-build": "cross-env REACT_APP_ENV=production cross-env REACT_APP_BASENAME=/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync build/ s3://knkt-web-app",
     "prod": "npm run build && npm run deploy"
   },
   "eslintConfig": {

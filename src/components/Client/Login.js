@@ -76,7 +76,7 @@ function Login() {
                 localStorage.setItem('token', response.data.result.token);
                 localStorage.setItem('clientPayment', JSON.stringify(response.data.result.clientPayment));
 
-                window.location.href = "https://knktfit.com/trainer";
+                window.location.href = "/trainer";
             }
             else {
                 swal({

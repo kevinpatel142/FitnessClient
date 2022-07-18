@@ -8,8 +8,11 @@ export function verifytokenCall() {
         axios.get(`${apiUrl}${PORT}/account/verifytoken`, {}, {
         }).then(function (response) {
             if (response.data.status === 1) {
+                debugger
+                console.log("1st",response.data?.result?.User?.videostatus === 1);
+                console.log("2nd",response.data?.result?.User?.meetingid !== "");
                 if (response.data?.result?.User?.videostatus === 1 && response.data?.result?.User?.meetingid !== "") {
-                    window.location.href = ("/Incoming?mid=" + response.data?.result?.User?.meetingid);
+                    window.location.href = ("/#/Incoming?mid=" + response.data?.result?.User?.meetingid);
                 }
             }
             return true;

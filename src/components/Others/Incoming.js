@@ -10,9 +10,11 @@ function Incoming() {
     const [firstname, setFirstname] = useState(0);
     const [profile, setProfile] = useState(0);
     const [isLoader, setIsLoader] = useState(false);
-    let mid = new URLSearchParams(window.location.search).get("mid");
+    // let mid = new URLSearchParams(window.location.search).get("mid");
+    let mid = window.location.href.split('id=')[1];
     var loginUser = {};
     const loginuserdetail = localStorage.getItem('user');
+    const loginuserrole = localStorage.getItem('usertype');
     if (loginuserdetail) {
         loginUser = JSON.parse(loginuserdetail);
     }
@@ -55,13 +57,18 @@ function Incoming() {
         }
         axios.post(`${apiUrl}${PORT}/meeting/getconnectvideosession`, obj, {
         }).then(function (response) {
+            debugger
             if (response.data.status === 1) {
                 setFirstname(response.data?.result?.senderData?.firstname || "Guest");
                 setProfile((apiUrl + PORT + response.data?.result?.senderData?.profile) || "/img/Small-no-img.png");
                 if (response.data?.result?.videoSessions?.statusid === 0) {
                     return true;
-                } if (response.data?.result?.videoSessions?.statusid === 1) {
-                    history.push("/videosession?mid=" + response.data?.result?.videoSessions?.meetingid);
+                } else if (response.data?.result?.videoSessions?.statusid === 1) {
+                    //history.push("/videosession?mid=" + response.data?.result?.videoSessions?.meetingid);
+                    window.location.href = "/#/videosession?mid=" + response.data?.result?.videoSessions?.meetingid
+                } else if (response.data?.result?.videoSessions?.statusid === 3) {
+                    debugger
+                    window.location.href = (loginuserrole === 'client') ? "/#/trainer?status=1" : "/#/schedulerequest";
                 } else {
                     history.goBack();
                 }
@@ -84,8 +91,7 @@ function Incoming() {
             setPlaying(false);
             if (response.data.status === 1) {
                 history.push("/videosession?mid=" + mid);
-            }
-            else {
+            } else {
                 swal({
                     title: "Error!",
                     text: response.data.message,

@@ -9,8 +9,10 @@ function MobileVedioSession() {
     const history = useHistory();
     const domain = 'meet.jit.si';
     let api = {};
-    const mid = new URLSearchParams(window.location.search).get("mid");
+    // const mid = new URLSearchParams(window.location.search).get("mid");
+    const mid = window.location.href.split('id=')[1];
     const token = new URLSearchParams(window.location.search).get("token");
+    // const token = window.location.href.split('token=')[1];
     var loginUser = {};
     const loginuserrole = localStorage.getItem('usertype');
     const loginuserdetail = localStorage.getItem('user');
@@ -46,7 +48,7 @@ function MobileVedioSession() {
                     return true;
                 } else if (response.data?.result?.videoSessions?.statusid === 2) {
                     // Set redirect in mobile screen
-                    window.location.href = (loginuserrole === 'client') ? "/rating?id=" + response.data?.result?.videoSessions?.sessionid : "/sessiondetails?id=" + response.data?.result?.videoSessions?.sessionid;
+                    window.location.href = (loginuserrole === 'client') ? "/#/rating?id=" + response.data?.result?.videoSessions?.sessionid : "/#/sessiondetails?id=" + response.data?.result?.videoSessions?.sessionid;
                 }
                 else {
                     // goback time set redirect mobile screen
@@ -76,7 +78,7 @@ function MobileVedioSession() {
             if (response.data.status === 1) {
                 var sesId = response.data?.result?.sessionid;
                 // Set redirect in mobile screen
-                window.location.href = (loginuserrole === 'client') ? "/rating?id=" + sesId : "/sessiondetails?id=" + sesId;
+                window.location.href = (loginuserrole === 'client') ? "/#/rating?id=" + sesId : "/#/sessiondetails?id=" + sesId;
             }
             else {
                 swal({

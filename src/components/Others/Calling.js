@@ -8,7 +8,8 @@ function Calling() {
     const history = useHistory();
     const [time, setTime] = useState(0);
 
-    let mid = new URLSearchParams(window.location.search).get("mid");
+    // let mid = new URLSearchParams(window.location.search).get("mid");
+    let mid = window.location.href.split('id=')[1];
     var loginUser = {};
     const loginuserdetail = localStorage.getItem('user');
     const loginuserrole = localStorage.getItem('usertype');
@@ -61,10 +62,12 @@ function Calling() {
         axios.post(`${apiUrl}${PORT}/meeting/getconnectvideosession`, obj, {
         }).then(function (response) {
             if (response.data.status === 1) {
+                // debugger
                 setFirstname(response.data?.result?.receiverData?.firstname || "Guest");
                 setProfile((apiUrl + PORT + response.data?.result?.receiverData?.profile) || "/img/Small-no-img.png");
                 if (response.data?.result?.videoSessions?.statusid === 1) {
-                    history.push("/videosession?mid=" + response.data?.result?.videoSessions?.meetingid);
+                    //history.push("/videosession?mid=" + response.data?.result?.videoSessions?.meetingid);
+                    window.location.href = "/#/videosession?mid=" + response.data?.result?.videoSessions?.meetingid;
                 } else if (response.data?.result?.videoSessions?.statusid === 2 || response.data?.result?.videoSessions?.statusid === 3) {
                     history.goBack();
                 }

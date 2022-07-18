@@ -9,7 +9,10 @@ function Videosession() {
     const history = useHistory();
     const domain = 'meet.jit.si';
     let api = {};
-    const mid = new URLSearchParams(window.location.search).get("mid");
+    // debugger
+    // const mid = new URLSearchParams(window.location.search).get("mid");
+    const mid = window.location.href.split('id=')[1];
+    console.log("mid",mid);
     var loginUser = {};
     const loginuserrole = localStorage.getItem('usertype');
     const loginuserdetail = localStorage.getItem('user');
@@ -34,11 +37,16 @@ function Videosession() {
         }
         axios.post(`${apiUrl}${PORT}/meeting/getconnectvideosession`, obj, {
         }).then(function (response) {
+            // debugger
             if (response.data.status === 1) {
                 if (response.data?.result?.videoSessions?.statusid === 1) {
                     return true;
                 } else if (response.data?.result?.videoSessions?.statusid === 2) {
-                    window.location.href = (loginuserrole === 'client') ? "/rating?id=" + response.data?.result?.videoSessions?.sessionid : "/sessiondetails?id=" + response.data?.result?.videoSessions?.sessionid;
+                    window.location.href = (loginuserrole === 'client') ? "/#/rating?id=" + response.data?.result?.videoSessions?.sessionid : "/#/sessiondetails?id=" + response.data?.result?.videoSessions?.sessionid;
+                    // history.push(loginuserrole === 'client') ? "/rating?id=" + response.data?.result?.videoSessions?.sessionid : "/sessiondetails?id=" + response.data?.result?.videoSessions?.sessionid;
+                } else if (response.data?.result?.videoSessions?.statusid === 3) {
+                    window.location.href = (loginuserrole === 'client') ? "/#/trainer?status=1" : "/#/schedulerequest";
+                    // history.push(loginuserrole === 'client') ? "/trainer?status=1" : "/schedulerequest";
                 }
                 else {
                     history.goBack();
@@ -63,9 +71,8 @@ function Videosession() {
             if (response.data.status === 1) {
                 var sesId = response.data?.result?.sessionid;
                 //window.location.href = (loginuserrole === 'client') ? "/trainer" : "/schedulerequest";
-                window.location.href = (loginuserrole === 'client') ? "/rating?id=" + sesId : "/sessiondetails?id=" + sesId;
-            }
-            else {
+                window.location.href = (loginuserrole === 'client') ? "/#/rating?id=" + sesId : "/#/sessiondetails?id=" + sesId;
+            } else {
                 swal({
                     title: "Error!",
                     text: response.data.message,
@@ -87,8 +94,8 @@ function Videosession() {
                 prejoinPageEnabled: false,
                 startWithVideoMuted: 2,
                 startWithAudioMuted: 2,
-                startAudioMuted:0,
-                startVideoMuted:0
+                startAudioMuted: 0,
+                startVideoMuted: 0
             },
             userInfo: {
                 displayName: (loginUser?.firstname || "Guest")
@@ -98,7 +105,7 @@ function Videosession() {
         api = new window.JitsiMeetExternalAPI(domain, options);
         api.addEventListeners({
             participantJoined: function () {
-                
+
                 var plist = api.getParticipantsInfo();
                 console.log(plist);
             }
